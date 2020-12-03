@@ -8,6 +8,8 @@ package core;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.AsyncContext;
+import javax.servlet.AsyncEvent;
+import javax.servlet.AsyncListener;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,7 +31,25 @@ public class HelloWorld extends HttpServlet {
             final PrintWriter pw = response.getWriter();
             System.out.println("Main Thread :" + Thread.currentThread().getName());
             final AsyncContext contextAsynchronous = request.startAsync();
+            
             contextAsynchronous.setTimeout(12000);
+            contextAsynchronous.addListener(new AsyncListener() {
+
+                @Override
+                public void onTimeout(AsyncEvent arg0) throws IOException {
+                }
+                @Override
+                public void onStartAsync(AsyncEvent arg0) throws IOException {
+                }
+                @Override
+                public void onError(AsyncEvent arg0) throws IOException {
+                }
+                @Override
+                public void onComplete(AsyncEvent arg0) throws IOException {
+
+                System.out.println(" sending mail (finished task)");
+                }
+            });
             
             out.println("<!DOCTYPE html>");
             out.println("<html>");
