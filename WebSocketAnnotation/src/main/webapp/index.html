@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Start Page</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+
+        </script>
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+
+                var uriWS = "ws://localhost:9191/WebSocketAnnotation/square";
+                var miWebsocket = new WebSocket(uriWS);
+                console.log(miWebsocket);
+
+                miWebsocket.onopen = function (evento) {
+                    console.log("open");
+                    miWebsocket.send("23");
+                }
+
+                miWebsocket.onmessage = function (evento) {
+
+                    console.log("explorer said : Server sended this value "+evento.data);
+                }
+
+            });
+        </script>
+    </head>
+    <body>
+        <h1>WebSocketAnnotation!</h1>
+    </body>
+</html>
