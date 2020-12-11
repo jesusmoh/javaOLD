@@ -5,11 +5,14 @@
  */
 package core.persistence.repository;
 
+import core.model.entities.Person;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 /**
  *
  * @author JOrtiz
  */
-public interface IPersonRepo {
+public interface IPersonRepo extends JpaRepository<Person, Integer>{
     
     void addPerson(String p);
 }
