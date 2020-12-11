@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package core.persistence.repository;
+package core.model.service;
 
 /**
  *
  * @author JOrtiz
  */
-public class PersonaDAO {
-    
+public interface IPersonService
+{   
+    void addPerson(String p);
 }
