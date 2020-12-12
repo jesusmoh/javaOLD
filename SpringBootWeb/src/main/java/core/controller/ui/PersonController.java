@@ -5,6 +5,9 @@
  */
 package core.controller.ui;
 
+import core.model.entities.Person;
+import core.model.service.IPersonService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,10 +20,16 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author JOrtiz
  */
 @Controller
-public class BootController {
+public class PersonController {
     
-    @RequestMapping("/url")
-    public String page(Model model) {
+    @Autowired(required=true)
+    private IPersonService iPersonService;
+    
+    
+    @RequestMapping("/person")
+    public String page(Model model) 
+    {
+        iPersonService.save(new Person());
         model.addAttribute("name", "Upps");
         return "index";
     }

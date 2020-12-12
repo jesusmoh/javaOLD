@@ -5,11 +5,13 @@
  */
 package core.model.service;
 
+import core.model.entities.Person;
+
 /**
  *
  * @author JOrtiz
  */
 public interface IPersonService
 {   
-    void addPerson(String p);
+    void save(Person p);
 }
