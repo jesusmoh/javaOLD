@@ -6,14 +6,13 @@
 package core.persistence.repository;
 
 import core.model.entities.Person;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  *
  * @author JOrtiz
  */
-@Qualifier("mailService")
+
 public interface IPersonRepo extends JpaRepository<Person, Integer>{
     
     
