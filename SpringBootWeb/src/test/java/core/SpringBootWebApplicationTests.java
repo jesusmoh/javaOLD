@@ -7,7 +7,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 class SpringBootWebApplicationTests {
 
 	@Test
-	void contextLoads() {
+	void createUser() 
+        {
+
 	}
 
 }

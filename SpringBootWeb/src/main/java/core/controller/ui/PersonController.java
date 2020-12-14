@@ -7,7 +7,7 @@ package core.controller.ui;
 
 import core.model.entities.Person;
 import core.model.service.IPersonService;
-import core.model.service.PersonService;
+import core.model.service.PersonServiceImp;
 import core.persistence.repository.IPersonRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

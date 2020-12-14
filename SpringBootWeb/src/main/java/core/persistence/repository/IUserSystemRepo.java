@@ -5,7 +5,7 @@
  */
 package core.persistence.repository;
 
-import core.model.entities.User;
+import core.model.entities.UserSystem;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -13,7 +13,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author JOrtiz
  */
 
-public interface IUserRepo extends JpaRepository<User, Integer>{
+public interface IUserSystemRepo extends JpaRepository<UserSystem, Integer>{
     
-    
+    UserSystem findByName(String name);
 }

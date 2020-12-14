@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 
       
 @Service   
-public class PersonService implements IPersonService {
+public class PersonServiceImp implements IPersonService {
    
     @Autowired
     IPersonRepo iPersonRepo;
