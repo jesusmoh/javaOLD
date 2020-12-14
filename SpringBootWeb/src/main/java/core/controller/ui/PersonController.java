@@ -6,6 +6,7 @@
 package core.controller.ui;
 
 import core.model.entities.Person;
+import core.model.service.PersonService;
 import core.persistence.repository.IPersonRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,13 +24,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class PersonController {
     
     @Autowired
-    private IPersonRepo iPersonRepo;
-    
+    private PersonService personService;
     
     @RequestMapping("/person")
     public String page(Model model) 
     {
-        iPersonRepo.save(new Person());
+        personService.save(new Person());
         model.addAttribute("name", "Upps");
         return "index";
     }
