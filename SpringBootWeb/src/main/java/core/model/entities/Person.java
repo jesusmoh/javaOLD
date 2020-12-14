@@ -23,6 +23,8 @@ public class Person implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    private String name;
+    
     public Integer getId() {
         return id;
     }
@@ -55,5 +57,14 @@ public class Person implements Serializable {
     public String toString() {
         return "core.model.entities.Person[ id=" + id + " ]";
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
     
 }
