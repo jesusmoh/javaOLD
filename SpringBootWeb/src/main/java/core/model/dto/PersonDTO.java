@@ -3,18 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package core.model.service;
-
-import core.model.entities.Person;
-import java.util.List;
+package core.model.dto;
 
 /**
  *
  * @author JOrtiz
  */
-public interface IPersonService {
+public class PersonDTO {
     
-    void save(Person p);
-    
-    List<Person> listAll();
 }

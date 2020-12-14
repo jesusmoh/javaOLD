@@ -7,6 +7,7 @@ package core.model.service;
 
 import core.model.entities.Person;
 import core.persistence.repository.IPersonRepo;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,11 @@ public class PersonService implements IPersonService {
     @Override
     public void save(Person p) {
         iPersonRepo.save(p);
+    }
+
+    @Override
+    public List<Person> listAll() {
+        return iPersonRepo.findAll();
     }
     
 
