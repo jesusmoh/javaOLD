@@ -17,12 +17,15 @@ import org.springframework.stereotype.Service;
 
       
 @Service   
-public class PersonService {
+public class PersonService implements IPersonService {
    
     @Autowired
     IPersonRepo iPersonRepo;
+
+    @Override
+    public void save(Person p) {
+        iPersonRepo.save(p);
+    }
     
-    public Person save(Person person) {
-		return iPersonRepo.saveAndFlush(person);
-	}
+
 }
