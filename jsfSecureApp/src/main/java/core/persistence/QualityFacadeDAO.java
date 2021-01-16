@@ -6,7 +6,6 @@
 package core.persistence;
 
 import core.model.entities.Quality;
-import core.model.entities.User;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
