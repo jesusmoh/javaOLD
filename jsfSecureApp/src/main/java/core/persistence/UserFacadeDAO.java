@@ -33,7 +33,7 @@ public class UserFacadeDAO extends AbstractFacade<User> {
     public User findUserByName(String name) {
         User user = new User();
         try {
-            Query query = em.createNativeQuery("SELECT * FROM app_users WHERE name='"+name+"';",User.class);
+            Query query = em.createNativeQuery("SELECT * FROM app_users WHERE username='"+name+"';",User.class);
             user =  (User) query.getSingleResult();
 
         } catch (Exception ex) {

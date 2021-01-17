@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author JOrtiz
  */
-public interface DataService {
+public interface DataSecureUserService {
     
     public User createUser(String name, String username,String password,String group);
     
@@ -23,6 +23,6 @@ public interface DataService {
     
     public User findUser(String username);
     
-    public List<Quality> getQualities(String username);
+    public List<Quality> getQualities(String userId);
     
 }

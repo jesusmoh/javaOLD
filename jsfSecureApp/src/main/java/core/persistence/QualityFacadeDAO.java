@@ -32,10 +32,10 @@ public class QualityFacadeDAO extends AbstractFacade<Quality> {
     }
     
     
-     public List<Quality> getQualitiesByUserName(String name) {
+     public List<Quality> getQualitiesByUserName(String userId) {
         List<Quality> list = null;
         try {
-            Query query = em.createNativeQuery("SELECT * FROM app_users INNER JOIN app_qualities ON app_qualities.user_id=app_users.id WHERE app_users.name='"+name+"';",Quality.class);
+            Query query = em.createNativeQuery("SELECT * FROM app_users INNER JOIN app_qualities ON app_qualities.user_id=app_users.id WHERE app_users.id="+userId+";",Quality.class);
             list = query.getResultList();
 
         } catch (Exception ex) {

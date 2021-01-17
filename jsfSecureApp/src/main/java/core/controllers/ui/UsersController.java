@@ -6,12 +6,12 @@
 package core.controllers.ui;
 
 import core.model.entities.User;
-import core.services.DataService;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import core.services.DataSecureUserService;
 
 /**
  *
@@ -22,7 +22,7 @@ import javax.inject.Inject;
 public class UsersController {
 
     @Inject
-    DataService dataService;
+    DataSecureUserService dataService;
 
     private List<User> allUsers;
 

@@ -7,13 +7,15 @@ package core.controllers.ui;
 
 import core.model.entities.Quality;
 import core.model.entities.User;
-import core.services.DataService;
 import java.util.List;
 import java.util.Optional;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import core.services.DataSecureUserService;
+import javax.faces.context.FacesContext;
+import javax.security.enterprise.SecurityContext;
 
 /**
  *
@@ -24,7 +26,14 @@ import javax.inject.Inject;
 public class HomeController {
 
     @Inject
-    DataService dataService;
+    DataSecureUserService dataService;
+    
+    @Inject
+    SecurityContext securityContext;
+    
+    @Inject
+    FacesContext facesContext;
+    
  
     public HomeController() {
     }
@@ -34,11 +43,11 @@ public class HomeController {
     
     @PostConstruct
     public void initialize(){
-       String username="jesus";
+       String username=securityContext.getCallerPrincipal().getName();
        this.currentUser= dataService.findUser(username);
        if(this.currentUser!=null)
        {
-        this.currentQualities=dataService.getQualities(username);
+        this.currentQualities=dataService.getQualities( this.currentUser.getId().toString());
        }
     }
     

@@ -13,30 +13,35 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
 import javax.transaction.Transactional;
 
 /**
  *
  * @author JOrtiz
  */
-@Named(value = "dataService")
+@Named(value = "dataSecureUserService")
 @ApplicationScoped
-public class DataServiceImpl implements DataService {
+public class DataSecureUserServiceImpl implements DataSecureUserService {
 
     @EJB
     private QualityFacadeDAO qualityFacadeDAO;
     @EJB
     private UserFacadeDAO userFacadeDAO;
-
-    public DataServiceImpl() {
+    @Inject
+    Pbkdf2PasswordHash passwordHash;
+    
+    
+    public DataSecureUserServiceImpl() {
     }
 
     @Override
     @Transactional
-    public User createUser(String name, String username, String password, String group) {
+    public User createUser(String name,  String username,String password, String group) {
         User u = new User();
         u.setName(name);
-        u.setPassword(password);
+        u.setPassword(passwordHash.generate(password.toCharArray()));
         u.setUsergroup(group);
         u.setUsername(username);
         userFacadeDAO.create(u);
@@ -68,10 +73,9 @@ public class DataServiceImpl implements DataService {
     }
     
     @Transactional
-
     @Override
-    public List<Quality> getQualities(String username) {
-        return qualityFacadeDAO.getQualitiesByUserName(username);
+    public List<Quality> getQualities(String userId) {
+        return qualityFacadeDAO.getQualitiesByUserName(userId);
     }
     
 }
