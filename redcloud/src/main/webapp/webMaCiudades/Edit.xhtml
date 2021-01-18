@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="WebMaCiudadesEditDlg" widgetVar="WebMaCiudadesEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditWebMaCiudadesTitle}">
+            <h:form id="WebMaCiudadesEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{webMaCiudadesController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditWebMaCiudadesLabel_codigo}" for="codigo" />
+                        <p:inputText id="codigo" value="#{webMaCiudadesController.selected.codigo}" title="#{bundle.EditWebMaCiudadesTitle_codigo}" required="true" requiredMessage="#{bundle.EditWebMaCiudadesRequiredMessage_codigo}"/>
+                        <p:outputLabel value="#{bundle.EditWebMaCiudadesLabel_descripcion}" for="descripcion" />
+                        <p:inputText id="descripcion" value="#{webMaCiudadesController.selected.descripcion}" title="#{bundle.EditWebMaCiudadesTitle_descripcion}" />
+                        <p:outputLabel value="#{bundle.EditWebMaCiudadesLabel_actualizado}" for="actualizado" />
+                        <p:inputText id="actualizado" value="#{webMaCiudadesController.selected.actualizado}" title="#{bundle.EditWebMaCiudadesTitle_actualizado}" />
+                        <p:outputLabel value="#{bundle.EditWebMaCiudadesLabel_fecReg}" for="fecReg" />
+                        <p:calendar id="fecReg" pattern="MM/dd/yyyy HH:mm:ss" value="#{webMaCiudadesController.selected.fecReg}" title="#{bundle.EditWebMaCiudadesTitle_fecReg}"  showOn="button"/>
+                        <p:outputLabel value="#{bundle.EditWebMaCiudadesLabel_usuario}" for="usuario" />
+                        <p:inputText id="usuario" value="#{webMaCiudadesController.selected.usuario}" title="#{bundle.EditWebMaCiudadesTitle_usuario}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{webMaCiudadesController.update}" value="#{bundle.Save}" update="display,:WebMaCiudadesListForm:datalist,:growl" oncomplete="handleSubmit(args, 'WebMaCiudadesEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="WebMaCiudadesEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>
