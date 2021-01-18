@@ -13,7 +13,7 @@ public class MessageEJB {
 
     public String sms()
     {
-        return " -_- SMS";
+        return " -_- @EJB";
     }
     
 }

@@ -12,6 +12,6 @@ package core;
 public class SimpleJavaClassMessage {
 
     public String sms() {
-        return " *_* Hi ";
+        return " *_* Hi @Inject ";
     }
 }
