@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListPCorporativoTitle}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <h:form id="PCorporativoListForm">
+                <p:panel header="#{bundle.ListPCorporativoTitle}">
+                    <p:dataTable id="datalist" value="#{pCorporativoController.items}" var="item"
+                                 selectionMode="single" selection="#{pCorporativoController.selected}"
+                                 paginator="true"
+                                 rowKey="#{item.ikey}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 >
+
+                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                        <p:column filterBy="#{item.PCorporativoPK.codigoBarra}" footerText="exact" filterMatchMode="exact" style="text-align: center;" width="7%">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPCorporativoTitle_PCorporativoPK_codigoBarra}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.PCorporativoPK.codigoBarra}"/>
+                        </p:column>
+                          <p:column style="text-align: center;" width="11%">
+                            <f:facet name="header">
+                                <h:outputText value=""/>
+                            </f:facet>
+                            <p:barcode value="#{item.PCorporativoPK.codigoBarra}" type="ean13"/>
+                        </p:column>
+                        <p:column filterBy="#{item.codigoProductoCliente}" footerText="exact" filterMatchMode="exact" style="text-align: center;">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPCorporativoTitle_codigoProductoCliente}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.codigoProductoCliente}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.PCorporativoPK.rucCliente}" footerText="exact" filterMatchMode="exact" style="text-align: center;">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPCorporativoTitle_PCorporativoPK_rucCliente}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.PCorporativoPK.rucCliente}"/>
+                        </p:column>
+                         <p:column filterBy="#{item.nombreProducto}" footerText="contains" filterMatchMode="contains" style="text-align: center;" width="15%">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPCorporativoTitle_nombreProducto}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nombreProducto}"/>
+                        </p:column>
+                        <p:column style="text-align: center">
+                            <f:facet name="header">
+                                <h:outputText value="Foto" />
+                            </f:facet>
+                            <di >
+                                <img src="../images/#{item.PCorporativoPK.rucCliente}/recursos/imagenes/bo/#{item.codigoProductoCliente}.jpg"  width="80" height="80"  style="border-radius: 20%;"></img>
+                            </di>
+                        </p:column>
+                         <p:column filterBy="#{item.codigoArticuloProveedor}" footerText="exact" filterMatchMode="exact" style="text-align: center;">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPCorporativoTitle_codigoArticuloProveedor}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.codigoArticuloProveedor}"/>
+                        </p:column>
+                         <p:column filterBy="#{item.nombreProveedor}" footerText="contains" filterMatchMode="contains" style="text-align: center;">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPCorporativoTitle_nombreProveedor}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nombreProveedor}"/>
+                        </p:column>
+                         <p:column filterBy="#{item.rucProveedor}" footerText="exact" filterMatchMode="exact" style="text-align: center;">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPCorporativoTitle_rucProveedor}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.rucProveedor}"/>
+                        </p:column>
+                         <p:column filterBy="#{item.rsocialProveedor}" footerText="contains" filterMatchMode="contains" style="text-align: center;">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListPCorporativoTitle_rsocialProveedor}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.rsocialProveedor}"/>
+                        </p:column>
+                       
+                       
+                        <f:facet name="footer">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{pCorporativoController.prepareCreate}" update=":PCorporativoCreateForm" oncomplete="PF('PCorporativoCreateDialog').show()"/>
+                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":PCorporativoViewForm" oncomplete="PF('PCorporativoViewDialog').show()" disabled="#{empty pCorporativoController.selected}"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":PCorporativoEditForm" oncomplete="PF('PCorporativoEditDialog').show()" disabled="#{empty pCorporativoController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{pCorporativoController.destroy}" update=":growl,datalist" disabled="#{empty pCorporativoController.selected}"/>
+                        </f:facet>
+                    </p:dataTable>
+                </p:panel>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+    </ui:composition>
+
+</html>

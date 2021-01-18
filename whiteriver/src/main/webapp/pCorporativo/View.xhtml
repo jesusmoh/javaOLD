@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PCorporativoViewDlg" widgetVar="PCorporativoViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewPCorporativoTitle}">
+            <h:form id="PCorporativoViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="4" rendered="#{pCorporativoController.selected != null}">
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_PCorporativoPK_codigoBarra}"/>
+                        <h:outputText value="#{pCorporativoController.selected.PCorporativoPK.codigoBarra}" title="#{bundle.ViewPCorporativoTitle_PCorporativoPK_codigoBarra}"/>
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_PCorporativoPK_rucCliente}"/>
+                        <h:outputText value="#{pCorporativoController.selected.PCorporativoPK.rucCliente}" title="#{bundle.ViewPCorporativoTitle_PCorporativoPK_rucCliente}"/>
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_codClasificacionN1}"/>
+                        <h:outputText value="#{pCorporativoController.selected.codClasificacionN1}" title="#{bundle.ViewPCorporativoTitle_codClasificacionN1}"/>
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_codClasificacionN2}"/>
+                        <h:outputText value="#{pCorporativoController.selected.codClasificacionN2}" title="#{bundle.ViewPCorporativoTitle_codClasificacionN2}"/>
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_codClasificacionN3}"/>
+                        <h:outputText value="#{pCorporativoController.selected.codClasificacionN3}" title="#{bundle.ViewPCorporativoTitle_codClasificacionN3}"/>
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_codigoArticuloProveedor}"/>
+                        <h:outputText value="#{pCorporativoController.selected.codigoArticuloProveedor}" title="#{bundle.ViewPCorporativoTitle_codigoArticuloProveedor}"/>
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_codigoBalanza}"/>
+                        <h:outputText value="#{pCorporativoController.selected.codigoBalanza}" title="#{bundle.ViewPCorporativoTitle_codigoBalanza}"/>
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_codigoBarraPrincipal}"/>
+                        <h:outputText value="#{pCorporativoController.selected.codigoBarraPrincipal}" title="#{bundle.ViewPCorporativoTitle_codigoBarraPrincipal}"/>
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_codigoIva}"/>
+                        <h:outputText value="#{pCorporativoController.selected.codigoIva}" title="#{bundle.ViewPCorporativoTitle_codigoIva}"/>
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_codigoProductoCliente}"/>
+                        <h:outputText value="#{pCorporativoController.selected.codigoProductoCliente}" title="#{bundle.ViewPCorporativoTitle_codigoProductoCliente}"/>
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_departamentoVentaCodigo}"/>
+                        <h:outputText value="#{pCorporativoController.selected.departamentoVentaCodigo}" title="#{bundle.ViewPCorporativoTitle_departamentoVentaCodigo}"/>
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_departamentoVentaDescripcion}"/>
+                        <h:outputText value="#{pCorporativoController.selected.departamentoVentaDescripcion}" title="#{bundle.ViewPCorporativoTitle_departamentoVentaDescripcion}"/>
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_descripcionClasificacionN1}"/>
+                        <h:outputText value="#{pCorporativoController.selected.descripcionClasificacionN1}" title="#{bundle.ViewPCorporativoTitle_descripcionClasificacionN1}"/>
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_descripcionClasificacionN2}"/>
+                        <h:outputText value="#{pCorporativoController.selected.descripcionClasificacionN2}" title="#{bundle.ViewPCorporativoTitle_descripcionClasificacionN2}"/>
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_descripcionClasificacionN3}"/>
+                        <h:outputText value="#{pCorporativoController.selected.descripcionClasificacionN3}" title="#{bundle.ViewPCorporativoTitle_descripcionClasificacionN3}"/>
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_esCodigoBarraPrincipal}"/>
+                        <h:outputText value="#{pCorporativoController.selected.esCodigoBarraPrincipal}" title="#{bundle.ViewPCorporativoTitle_esCodigoBarraPrincipal}"/>
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_estado}"/>
+                        <h:outputText value="#{pCorporativoController.selected.estado}" title="#{bundle.ViewPCorporativoTitle_estado}"/>
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_fechaActualizacion}"/>
+                        <h:outputText value="#{pCorporativoController.selected.fechaActualizacion}" title="#{bundle.ViewPCorporativoTitle_fechaActualizacion}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_fechaRegistro}"/>
+                        <h:outputText value="#{pCorporativoController.selected.fechaRegistro}" title="#{bundle.ViewPCorporativoTitle_fechaRegistro}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_imagen1}"/>
+                        <h:outputText value="#{pCorporativoController.selected.imagen1}" title="#{bundle.ViewPCorporativoTitle_imagen1}"/>
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_imagen2}"/>
+                        <h:outputText value="#{pCorporativoController.selected.imagen2}" title="#{bundle.ViewPCorporativoTitle_imagen2}"/>
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_imagen3}"/>
+                        <h:outputText value="#{pCorporativoController.selected.imagen3}" title="#{bundle.ViewPCorporativoTitle_imagen3}"/>
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_marca}"/>
+                        <h:outputText value="#{pCorporativoController.selected.marca}" title="#{bundle.ViewPCorporativoTitle_marca}"/>
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_nombreProducto}"/>
+                        <h:outputText value="#{pCorporativoController.selected.nombreProducto}" title="#{bundle.ViewPCorporativoTitle_nombreProducto}"/>
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_nombreProveedor}"/>
+                        <h:outputText value="#{pCorporativoController.selected.nombreProveedor}" title="#{bundle.ViewPCorporativoTitle_nombreProveedor}"/>
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_rsocialProveedor}"/>
+                        <h:outputText value="#{pCorporativoController.selected.rsocialProveedor}" title="#{bundle.ViewPCorporativoTitle_rsocialProveedor}"/>
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_rucProveedor}"/>
+                        <h:outputText value="#{pCorporativoController.selected.rucProveedor}" title="#{bundle.ViewPCorporativoTitle_rucProveedor}"/>
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_sugerencia}"/>
+                        <h:outputText value="#{pCorporativoController.selected.sugerencia}" title="#{bundle.ViewPCorporativoTitle_sugerencia}"/>
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_webMaClasificacionN1Codigo}"/>
+                        <h:outputText value="#{pCorporativoController.selected.webMaClasificacionN1Codigo}" title="#{bundle.ViewPCorporativoTitle_webMaClasificacionN1Codigo}"/>
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_webMaClasificacionN1Descripcion}"/>
+                        <h:outputText value="#{pCorporativoController.selected.webMaClasificacionN1Descripcion}" title="#{bundle.ViewPCorporativoTitle_webMaClasificacionN1Descripcion}"/>
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_webMaClasificacionN2Codigo}"/>
+                        <h:outputText value="#{pCorporativoController.selected.webMaClasificacionN2Codigo}" title="#{bundle.ViewPCorporativoTitle_webMaClasificacionN2Codigo}"/>
+                        <h:outputText value="#{bundle.ViewPCorporativoLabel_webMaClasificacionN2Descripcion}"/>
+                        <h:outputText value="#{pCorporativoController.selected.webMaClasificacionN2Descripcion}" title="#{bundle.ViewPCorporativoTitle_webMaClasificacionN2Descripcion}"/>
+
+                        <p:graphicImage value="../images/#{pCorporativoController.selected.PCorporativoPK.rucCliente}/recursos/imagenes/bo/#{pCorporativoController.selected.codigoProductoCliente}.jpg" stream="false" width="100" height="100"  style="border-radius: 20%;" />
+                        <p:graphicImage value="../images/#{pCorporativoController.selected.PCorporativoPK.rucCliente}/recursos/imagenes/web/#{pCorporativoController.selected.codigoProductoCliente}-#{1}.jpg" stream="false" width="50" height="50"  style="border-radius: 20%;" />
+                        <p:graphicImage value="../images/#{pCorporativoController.selected.PCorporativoPK.rucCliente}/recursos/imagenes/web/#{pCorporativoController.selected.codigoProductoCliente}-#{2}.jpg" stream="false" width="50" height="50"  style="border-radius: 20%;"/>
+                        <p:graphicImage value="../images/#{pCorporativoController.selected.PCorporativoPK.rucCliente}/recursos/imagenes/web/#{pCorporativoController.selected.codigoProductoCliente}-#{3}.jpg" stream="false" width="50" height="50"  style="border-radius: 20%;"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="PCorporativoViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

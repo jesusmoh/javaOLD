@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PCorporativoCreateDlg" widgetVar="PCorporativoCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreatePCorporativoTitle}">
+            <h:form id="PCorporativoCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{pCorporativoController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_PCorporativoPK_rucCliente}" for="PCorporativoPK_rucCliente" />
+                        <p:inputText id="PCorporativoPK_rucCliente" value="#{pCorporativoController.selected.PCorporativoPK.rucCliente}" title="#{bundle.CreatePCorporativoTitle_PCorporativoPK_rucCliente}" required="true" requiredMessage="#{bundle.CreatePCorporativoRequiredMessage_PCorporativoPK_rucCliente}"/>
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_PCorporativoPK_codigoBarra}" for="PCorporativoPK_codigoBarra" />
+                        <p:inputText id="PCorporativoPK_codigoBarra" value="#{pCorporativoController.selected.PCorporativoPK.codigoBarra}" title="#{bundle.CreatePCorporativoTitle_PCorporativoPK_codigoBarra}" required="true" requiredMessage="#{bundle.CreatePCorporativoRequiredMessage_PCorporativoPK_codigoBarra}"/>
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_codClasificacionN1}" for="codClasificacionN1" />
+                        <p:inputText id="codClasificacionN1" value="#{pCorporativoController.selected.codClasificacionN1}" title="#{bundle.CreatePCorporativoTitle_codClasificacionN1}" />
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_codClasificacionN2}" for="codClasificacionN2" />
+                        <p:inputText id="codClasificacionN2" value="#{pCorporativoController.selected.codClasificacionN2}" title="#{bundle.CreatePCorporativoTitle_codClasificacionN2}" />
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_codClasificacionN3}" for="codClasificacionN3" />
+                        <p:inputText id="codClasificacionN3" value="#{pCorporativoController.selected.codClasificacionN3}" title="#{bundle.CreatePCorporativoTitle_codClasificacionN3}" />
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_codigoArticuloProveedor}" for="codigoArticuloProveedor" />
+                        <p:inputText id="codigoArticuloProveedor" value="#{pCorporativoController.selected.codigoArticuloProveedor}" title="#{bundle.CreatePCorporativoTitle_codigoArticuloProveedor}" />
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_codigoBalanza}" for="codigoBalanza" />
+                        <p:inputText id="codigoBalanza" value="#{pCorporativoController.selected.codigoBalanza}" title="#{bundle.CreatePCorporativoTitle_codigoBalanza}" />
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_codigoBarraPrincipal}" for="codigoBarraPrincipal" />
+                        <p:inputText id="codigoBarraPrincipal" value="#{pCorporativoController.selected.codigoBarraPrincipal}" title="#{bundle.CreatePCorporativoTitle_codigoBarraPrincipal}" />
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_codigoIva}" for="codigoIva" />
+                        <p:inputText id="codigoIva" value="#{pCorporativoController.selected.codigoIva}" title="#{bundle.CreatePCorporativoTitle_codigoIva}" />
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_codigoProductoCliente}" for="codigoProductoCliente" />
+                        <p:inputText id="codigoProductoCliente" value="#{pCorporativoController.selected.codigoProductoCliente}" title="#{bundle.CreatePCorporativoTitle_codigoProductoCliente}" required="true" requiredMessage="#{bundle.CreatePCorporativoRequiredMessage_codigoProductoCliente}"/>
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_departamentoVentaCodigo}" for="departamentoVentaCodigo" />
+                        <p:inputText id="departamentoVentaCodigo" value="#{pCorporativoController.selected.departamentoVentaCodigo}" title="#{bundle.CreatePCorporativoTitle_departamentoVentaCodigo}" />
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_departamentoVentaDescripcion}" for="departamentoVentaDescripcion" />
+                        <p:inputText id="departamentoVentaDescripcion" value="#{pCorporativoController.selected.departamentoVentaDescripcion}" title="#{bundle.CreatePCorporativoTitle_departamentoVentaDescripcion}" />
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_descripcionClasificacionN1}" for="descripcionClasificacionN1" />
+                        <p:inputText id="descripcionClasificacionN1" value="#{pCorporativoController.selected.descripcionClasificacionN1}" title="#{bundle.CreatePCorporativoTitle_descripcionClasificacionN1}" />
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_descripcionClasificacionN2}" for="descripcionClasificacionN2" />
+                        <p:inputText id="descripcionClasificacionN2" value="#{pCorporativoController.selected.descripcionClasificacionN2}" title="#{bundle.CreatePCorporativoTitle_descripcionClasificacionN2}" />
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_descripcionClasificacionN3}" for="descripcionClasificacionN3" />
+                        <p:inputText id="descripcionClasificacionN3" value="#{pCorporativoController.selected.descripcionClasificacionN3}" title="#{bundle.CreatePCorporativoTitle_descripcionClasificacionN3}" />
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_esCodigoBarraPrincipal}" for="esCodigoBarraPrincipal" />
+                        <p:inputText id="esCodigoBarraPrincipal" value="#{pCorporativoController.selected.esCodigoBarraPrincipal}" title="#{bundle.CreatePCorporativoTitle_esCodigoBarraPrincipal}" />
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_estado}" for="estado" />
+                        <p:inputText id="estado" value="#{pCorporativoController.selected.estado}" title="#{bundle.CreatePCorporativoTitle_estado}" />
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_fechaActualizacion}" for="fechaActualizacion" />
+                        <p:calendar id="fechaActualizacion" pattern="MM/dd/yyyy HH:mm:ss" value="#{pCorporativoController.selected.fechaActualizacion}" title="#{bundle.EditPCorporativoTitle_fechaActualizacion}"  showOn="button"/>
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_fechaRegistro}" for="fechaRegistro" />
+                        <p:calendar id="fechaRegistro" pattern="MM/dd/yyyy HH:mm:ss" value="#{pCorporativoController.selected.fechaRegistro}" title="#{bundle.EditPCorporativoTitle_fechaRegistro}"  showOn="button"/>
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_imagen1}" for="imagen1" />
+                        <p:inputText id="imagen1" value="#{pCorporativoController.selected.imagen1}" title="#{bundle.CreatePCorporativoTitle_imagen1}" />
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_imagen2}" for="imagen2" />
+                        <p:inputText id="imagen2" value="#{pCorporativoController.selected.imagen2}" title="#{bundle.CreatePCorporativoTitle_imagen2}" />
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_imagen3}" for="imagen3" />
+                        <p:inputText id="imagen3" value="#{pCorporativoController.selected.imagen3}" title="#{bundle.CreatePCorporativoTitle_imagen3}" />
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_marca}" for="marca" />
+                        <p:inputText id="marca" value="#{pCorporativoController.selected.marca}" title="#{bundle.CreatePCorporativoTitle_marca}" />
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_nombreProducto}" for="nombreProducto" />
+                        <p:inputText id="nombreProducto" value="#{pCorporativoController.selected.nombreProducto}" title="#{bundle.CreatePCorporativoTitle_nombreProducto}" />
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_nombreProveedor}" for="nombreProveedor" />
+                        <p:inputText id="nombreProveedor" value="#{pCorporativoController.selected.nombreProveedor}" title="#{bundle.CreatePCorporativoTitle_nombreProveedor}" />
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_rsocialProveedor}" for="rsocialProveedor" />
+                        <p:inputText id="rsocialProveedor" value="#{pCorporativoController.selected.rsocialProveedor}" title="#{bundle.CreatePCorporativoTitle_rsocialProveedor}" />
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_rucProveedor}" for="rucProveedor" />
+                        <p:inputText id="rucProveedor" value="#{pCorporativoController.selected.rucProveedor}" title="#{bundle.CreatePCorporativoTitle_rucProveedor}" />
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_sugerencia}" for="sugerencia" />
+                        <p:inputText id="sugerencia" value="#{pCorporativoController.selected.sugerencia}" title="#{bundle.CreatePCorporativoTitle_sugerencia}" />
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_webMaClasificacionN1Codigo}" for="webMaClasificacionN1Codigo" />
+                        <p:inputText id="webMaClasificacionN1Codigo" value="#{pCorporativoController.selected.webMaClasificacionN1Codigo}" title="#{bundle.CreatePCorporativoTitle_webMaClasificacionN1Codigo}" />
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_webMaClasificacionN1Descripcion}" for="webMaClasificacionN1Descripcion" />
+                        <p:inputText id="webMaClasificacionN1Descripcion" value="#{pCorporativoController.selected.webMaClasificacionN1Descripcion}" title="#{bundle.CreatePCorporativoTitle_webMaClasificacionN1Descripcion}" />
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_webMaClasificacionN2Codigo}" for="webMaClasificacionN2Codigo" />
+                        <p:inputText id="webMaClasificacionN2Codigo" value="#{pCorporativoController.selected.webMaClasificacionN2Codigo}" title="#{bundle.CreatePCorporativoTitle_webMaClasificacionN2Codigo}" />
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_webMaClasificacionN2Descripcion}" for="webMaClasificacionN2Descripcion" />
+                        <p:inputText id="webMaClasificacionN2Descripcion" value="#{pCorporativoController.selected.webMaClasificacionN2Descripcion}" title="#{bundle.CreatePCorporativoTitle_webMaClasificacionN2Descripcion}" />
+                        <p:outputLabel value="#{bundle.CreatePCorporativoLabel_ikey}" for="ikey" />
+                        <p:inputText id="ikey" value="#{pCorporativoController.selected.ikey}" title="#{bundle.CreatePCorporativoTitle_ikey}" required="true" requiredMessage="#{bundle.CreatePCorporativoRequiredMessage_ikey}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{pCorporativoController.create}" value="#{bundle.Save}" update="display,:PCorporativoListForm:datalist,:growl" oncomplete="handleSubmit(args,'PCorporativoCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="PCorporativoCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>
