@@ -20,11 +20,9 @@
                                 <p:outputLabel for="username" value="Username"/>
                                 <p:inputText id="username" value="#{loginController.username}"/>
                                 <p:message for="username"/>
-                                
                                 <p:outputLabel for="password" value="Password"/>
                                 <p:inputText id="password" value="#{loginController.password}" type="password"/>
                                 <p:message for="password"/>
-                                
                                 <p:commandButton id="submit" update="@form" value="Login" action="#{loginController.execute}" ajax="false"/>
                             </h:panelGrid>
                         </h:form>
