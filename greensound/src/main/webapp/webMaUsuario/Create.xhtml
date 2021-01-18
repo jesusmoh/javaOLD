@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="WebMaUsuarioCreateDlg" widgetVar="WebMaUsuarioCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateWebMaUsuarioTitle}">
+            <h:form id="WebMaUsuarioCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{webMaUsuarioController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateWebMaUsuarioLabel_nombre}" for="nombre" />
+                        <p:inputText id="nombre" value="#{webMaUsuarioController.selected.nombre}" title="#{bundle.CreateWebMaUsuarioTitle_nombre}" required="true" requiredMessage="#{bundle.CreateWebMaUsuarioRequiredMessage_nombre}"/>
+                        <p:outputLabel value="#{bundle.CreateWebMaUsuarioLabel_password}" for="password" />
+                        <p:inputText id="password" value="#{webMaUsuarioController.selected.password}" title="#{bundle.CreateWebMaUsuarioTitle_password}" required="true" requiredMessage="#{bundle.CreateWebMaUsuarioRequiredMessage_password}"/>
+                        <p:outputLabel value="#{bundle.CreateWebMaUsuarioLabel_codigo}" for="codigo" />
+                        <p:inputText id="codigo" value="#{webMaUsuarioController.selected.codigo}" title="#{bundle.CreateWebMaUsuarioTitle_codigo}" required="true" requiredMessage="#{bundle.CreateWebMaUsuarioRequiredMessage_codigo}"/>
+                        <p:outputLabel value="#{bundle.CreateWebMaUsuarioLabel_operacion}" for="operacion" />
+                        <p:inputText id="operacion" value="#{webMaUsuarioController.selected.operacion}" title="#{bundle.CreateWebMaUsuarioTitle_operacion}" required="true" requiredMessage="#{bundle.CreateWebMaUsuarioRequiredMessage_operacion}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{webMaUsuarioController.create}" value="#{bundle.Save}" update="display,:WebMaUsuarioListForm:datalist,:growl" oncomplete="handleSubmit(args,'WebMaUsuarioCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="WebMaUsuarioCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

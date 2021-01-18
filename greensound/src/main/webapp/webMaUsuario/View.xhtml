@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="WebMaUsuarioViewDlg" widgetVar="WebMaUsuarioViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewWebMaUsuarioTitle}">
+            <h:form id="WebMaUsuarioViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{webMaUsuarioController.selected != null}">
+                        <h:outputText value="#{bundle.ViewWebMaUsuarioLabel_nombre}"/>
+                        <h:outputText value="#{webMaUsuarioController.selected.nombre}" title="#{bundle.ViewWebMaUsuarioTitle_nombre}"/>
+                        <h:outputText value="#{bundle.ViewWebMaUsuarioLabel_password}"/>
+                        <h:outputText value="#{webMaUsuarioController.selected.password}" title="#{bundle.ViewWebMaUsuarioTitle_password}"/>
+                        <h:outputText value="#{bundle.ViewWebMaUsuarioLabel_codigo}"/>
+                        <h:outputText value="#{webMaUsuarioController.selected.codigo}" title="#{bundle.ViewWebMaUsuarioTitle_codigo}"/>
+                        <h:outputText value="#{bundle.ViewWebMaUsuarioLabel_operacion}"/>
+                        <h:outputText value="#{webMaUsuarioController.selected.operacion}" title="#{bundle.ViewWebMaUsuarioTitle_operacion}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="WebMaUsuarioViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="WebMaUsuarioEditDlg" widgetVar="WebMaUsuarioEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditWebMaUsuarioTitle}">
+            <h:form id="WebMaUsuarioEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{webMaUsuarioController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditWebMaUsuarioLabel_nombre}" for="nombre" />
+                        <p:inputText id="nombre" value="#{webMaUsuarioController.selected.nombre}" title="#{bundle.EditWebMaUsuarioTitle_nombre}" required="true" requiredMessage="#{bundle.EditWebMaUsuarioRequiredMessage_nombre}"/>
+                        <p:outputLabel value="#{bundle.EditWebMaUsuarioLabel_password}" for="password" />
+                        <p:inputText id="password" value="#{webMaUsuarioController.selected.password}" title="#{bundle.EditWebMaUsuarioTitle_password}" required="true" requiredMessage="#{bundle.EditWebMaUsuarioRequiredMessage_password}"/>
+                        <p:outputLabel value="#{bundle.EditWebMaUsuarioLabel_codigo}" for="codigo" />
+                        <p:inputText id="codigo" value="#{webMaUsuarioController.selected.codigo}" title="#{bundle.EditWebMaUsuarioTitle_codigo}" required="true" requiredMessage="#{bundle.EditWebMaUsuarioRequiredMessage_codigo}"/>
+                        <p:outputLabel value="#{bundle.EditWebMaUsuarioLabel_operacion}" for="operacion" />
+                        <p:inputText id="operacion" value="#{webMaUsuarioController.selected.operacion}" title="#{bundle.EditWebMaUsuarioTitle_operacion}" required="true" requiredMessage="#{bundle.EditWebMaUsuarioRequiredMessage_operacion}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{webMaUsuarioController.update}" value="#{bundle.Save}" update="display,:WebMaUsuarioListForm:datalist,:growl" oncomplete="handleSubmit(args, 'WebMaUsuarioEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="WebMaUsuarioEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>
