@@ -7,8 +7,6 @@ package core.controller.ui;
 
 import core.model.entities.Person;
 import core.model.service.IPersonService;
-import core.model.service.PersonServiceImp;
-import core.persistence.repository.IPersonRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,8 +28,11 @@ public class PersonController {
     @RequestMapping("/person")
     public String page(Model model) 
     {
-        ipersonService.save(new Person());
-        model.addAttribute("name", "Upps");
+        Person p1 = new Person();
+        p1.setName("Peter Parker");
+        ipersonService.save(p1);
+
+        model.addAttribute("name", " This template page(index.html) was updated with a new Person("+p1.getName()+") and db also. For see new value use GET verb /wspersons");
         return "index";
     }
     
