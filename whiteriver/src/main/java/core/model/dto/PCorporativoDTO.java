@@ -1,47 +1,85 @@
 package core.model.dto;
 
-
 import java.util.Date;
 import javax.json.bind.annotation.JsonbDateFormat;
-
+import javax.persistence.Column;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class PCorporativoDTO {
 
+    @NotNull
+    @Size(min = 5, max = 14)
+    @Column(name = "codigo_barra")
     private String codigoBarra;
+    @NotNull
+    @Size(min = 11, max = 14)
     private String rucCliente;
     private Integer codClasificacionN1;
     private Integer codClasificacionN2;
     private Integer codClasificacionN3;
+    @Size(max = 50)
     private String codigoArticuloProveedor;
     private Integer codigoBalanza;
     private Short codigoIva;
-    private int codigoProductoCliente;
+    private Integer codigoProductoCliente;
     private Short departamentoVentaCodigo;
+    @Size(max = 50)
     private String departamentoVentaDescripcion;
+    @Size(max = 50)
     private String descripcionClasificacionN1;
+    @Size(max = 50)
     private String descripcionClasificacionN2;
+    @Size(max = 50)
     private String descripcionClasificacionN3;
     @JsonbDateFormat(value = "yyyy-MM-dd'T'HH:mm:ss")
     private Date fechaActualizacion;
     @JsonbDateFormat(value = "yyyy-MM-dd'T'HH:mm:ss")
     private Date fechaRegistro;
+    @NotNull
+ 
     private String imagen;
+    @NotNull
     private String imagen1;
     private String imagen2;
     private String imagen3;
+    @Size(max = 50)
     private String marca;
+    @Size(max = 50)
+    @NotNull
     private String nombreProducto;
+    @Size(max = 50)
     private String nombreProveedor;
+    @Size(max = 50)
     private String rsocialProveedor;
+    @Size(min = 1, max = 15)
     private String rucProveedor;
+    @Size(max = 255)
     private String sugerencia;
     private Integer webMaClasificacionN1Codigo;
+    @Size(max = 50)
     private String webMaClasificacionN1Descripcion;
     private Integer webMaClasificacionN2Codigo;
+    @Size(max = 50)
     private String webMaClasificacionN2Descripcion;
-   
+    @NotNull
+    private String imageBase64;
+
+    public PCorporativoDTO() {
+    }
+
+    
+    
     public String getCodigoBarra() {
         return codigoBarra;
+    }
+
+    public String getImageBase64() {
+        return imageBase64;
+    }
+
+    public void setImageBase64(String imageBase64) {
+        this.imageBase64 = imageBase64;
     }
 
     public void setCodigoBarra(String codigoBarra) {
@@ -55,7 +93,7 @@ public class PCorporativoDTO {
     public void setRucCliente(String rucCliente) {
         this.rucCliente = rucCliente;
     }
-    
+
     public Integer getCodClasificacionN1() {
         return codClasificacionN1;
     }
@@ -96,7 +134,6 @@ public class PCorporativoDTO {
         this.codigoBalanza = codigoBalanza;
     }
 
-
     public Short getCodigoIva() {
         return codigoIva;
     }
@@ -105,11 +142,11 @@ public class PCorporativoDTO {
         this.codigoIva = codigoIva;
     }
 
-    public int getCodigoProductoCliente() {
+    public Integer getCodigoProductoCliente() {
         return codigoProductoCliente;
     }
 
-    public void setCodigoProductoCliente(int codigoProductoCliente) {
+    public void setCodigoProductoCliente(Integer codigoProductoCliente) {
         this.codigoProductoCliente = codigoProductoCliente;
     }
 
@@ -152,7 +189,6 @@ public class PCorporativoDTO {
     public void setDescripcionClasificacionN3(String descripcionClasificacionN3) {
         this.descripcionClasificacionN3 = descripcionClasificacionN3;
     }
-
 
     public Date getFechaActualizacion() {
         return fechaActualizacion;
@@ -281,8 +317,5 @@ public class PCorporativoDTO {
     public void setImagen(String imagen) {
         this.imagen = imagen;
     }
-
-   
-    
 
 }

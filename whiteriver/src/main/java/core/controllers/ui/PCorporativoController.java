@@ -74,6 +74,10 @@ public class PCorporativoController implements Serializable {
             items = null;    // Invalidate list of items to trigger re-query.
         }
     }
+    
+     public void refreshAll() {
+      items = getFacade().findAll();
+    }
 
     public List<PCorporativo> getItems() {
         if (items == null) {

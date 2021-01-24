@@ -7,6 +7,7 @@ package core.model.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.json.bind.annotation.JsonbDateFormat;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -17,6 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -75,12 +77,12 @@ public class PCorporativo implements Serializable {
     private Integer codClasificacionN2;
     @Column(name = "cod_clasificacion_n3")
     private Integer codClasificacionN3;
-    @Size(max = 255)
+    @Size(max = 50)
     @Column(name = "codigo_articulo_proveedor")
     private String codigoArticuloProveedor;
     @Column(name = "codigo_balanza")
     private Integer codigoBalanza;
-    @Size(max = 255)
+    @Size(max = 50)
     @Column(name = "codigo_barra_principal")
     private String codigoBarraPrincipal;
     @Column(name = "codigo_iva")
@@ -91,16 +93,16 @@ public class PCorporativo implements Serializable {
     private int codigoProductoCliente;
     @Column(name = "departamento_venta_codigo")
     private Short departamentoVentaCodigo;
-    @Size(max = 255)
+    @Size(max = 50)
     @Column(name = "departamento_venta_descripcion")
     private String departamentoVentaDescripcion;
-    @Size(max = 255)
+    @Size(max = 50)
     @Column(name = "descripcion_clasificacion_n1")
     private String descripcionClasificacionN1;
-    @Size(max = 255)
+    @Size(max = 50)
     @Column(name = "descripcion_clasificacion_n2")
     private String descripcionClasificacionN2;
-    @Size(max = 255)
+    @Size(max = 50)
     @Column(name = "descripcion_clasificacion_n3")
     private String descripcionClasificacionN3;
     @Column(name = "es_codigo_barra_principal")
@@ -109,9 +111,11 @@ public class PCorporativo implements Serializable {
     private Integer estado;
     @Column(name = "fecha_actualizacion")
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonbDateFormat(value = "yyyy-MM-dd'T'HH:mm:ss")
     private Date fechaActualizacion;
     @Column(name = "fecha_registro")
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonbDateFormat(value = "yyyy-MM-dd'T'HH:mm:ss")
     private Date fechaRegistro;
     @Size(max = 255)
     @Column(name = "imagen")
@@ -137,7 +141,7 @@ public class PCorporativo implements Serializable {
     @Size(max = 255)
     @Column(name = "rsocial_proveedor")
     private String rsocialProveedor;
-    @Size(max = 255)
+    @Size(max = 20)
     @Column(name = "ruc_proveedor")
     private String rucProveedor;
     @Size(max = 2147483647)
@@ -145,12 +149,12 @@ public class PCorporativo implements Serializable {
     private String sugerencia;
     @Column(name = "web_ma_clasificacion_n1_codigo")
     private Integer webMaClasificacionN1Codigo;
-    @Size(max = 255)
+    @Size(max = 50)
     @Column(name = "web_ma_clasificacion_n1_descripcion")
     private String webMaClasificacionN1Descripcion;
     @Column(name = "web_ma_clasificacion_n2_codigo")
     private Integer webMaClasificacionN2Codigo;
-    @Size(max = 255)
+    @Size(max = 50)
     @Column(name = "web_ma_clasificacion_n2_descripcion")
     private String webMaClasificacionN2Descripcion;
     @Basic(optional = false)

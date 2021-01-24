@@ -1,15 +1,37 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Facelet Title</title>
+        <title>cServer App</title>
         <h:outputStylesheet name="css/jsfcrud.css"/>
     </h:head>
     <h:body>
-        <br />
-        <h:link outcome="/pCorporativo/List" value="Web UI"/>
-        <p><a href="/cServer/docs/index.html">Documentación de los WS</a></p>
+        <div class="card" align="center">
+            <h:form>
+                <p:messages id="messages" showDetail="true" >
+                    <p:autoUpdate/>
+                </p:messages>
+                <h5 class="p-mt-0">Administrador web</h5>
+                <div class="p-field p-grid">
+                    <p:outputLabel for="pwd1" style="width:200px" value="Usuario"/>
+                    <br/>
+                    <div class="p-col">
+                        <p:inputText id="pwd1" value="#{userLoginController.username}"  label="Password 1" required="true"/>
+                    </div>
+                </div>
+                <div class="p-field p-grid">
+                    <p:outputLabel for="pwd2" style="width:200px" value="Contraseña"/>
+                    <br/>
+                    <div class="p-col">
+                        <p:password id="pwd2" value="#{userLoginController.password}" label="Password 2" required="true"/>
+                    </div>
+                </div>
+                <br/>
+                <h:commandButton action="#{userLoginController.login(event)}" value="Login"> </h:commandButton> 
+            </h:form>
+        </div>
     </h:body>
 
 

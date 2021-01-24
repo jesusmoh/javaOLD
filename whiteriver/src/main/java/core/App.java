@@ -5,70 +5,33 @@
  */
 package core;
 
-import core.model.entities.PCache;
-import core.persistence.dao.PCacheFacadeDAO;
-import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
-import javax.ejb.Stateless;
+import java.util.Set;
+import javax.annotation.security.DeclareRoles;
+import javax.enterprise.context.ApplicationScoped;
+import javax.security.enterprise.authentication.mechanism.http.BasicAuthenticationMechanismDefinition;
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Application;
 
 /**
  *
  * @author JOrtiz
  */
+@ApplicationPath("/api/v1/")
+@BasicAuthenticationMechanismDefinition(realmName = "userRealm")
+@ApplicationScoped
+@DeclareRoles({"99999"}) 
+public class App extends Application {
 
-@Singleton
-@Stateless
-@Startup
-public class App {
-
-    @EJB
-    private PCacheFacadeDAO pCacheFacadeCRUD;
-
-    private PCache imgFtp=null;
-    private PCache imgCarpeta=null;
-
-    @PostConstruct
-    private void init() {
-        
-        System.out.print("-------------------- INICIANDO CSERVER --------------------------");
-        
-        imgFtp = pCacheFacadeCRUD.find("ftp_img");
-        imgCarpeta = pCacheFacadeCRUD.find("carpeta_img");
-
-        if (imgFtp == null) {
-            pCacheFacadeCRUD.create(new PCache("ftp_img", "http://10.11.44.142:9191/cServer/images/","URL de ip pública"));
-        }
-         if (imgCarpeta == null) {
-            pCacheFacadeCRUD.create(new PCache("carpeta_img", "/mnt/cServer/","Carpeta con las imágenes para publicar"));
-        }
-    }  
-
-
-    public PCache getImgFtp() {
-        return imgFtp;
+    @Override
+    public Set<Class<?>> getClasses() {
+        Set<Class<?>> resources = new java.util.HashSet<>();
+        addRestResourceClasses(resources);
+        return resources;
     }
 
-    public void setImgFtp(PCache imgFtp) {
-        this.imgFtp = imgFtp;
+    private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(core.controllers.restservice.PCorporativoFacadeREST.class);
+        resources.add(core.model.util.ConstraintViolationExceptionMapper.class);
     }
-
-    public PCacheFacadeDAO getpCacheFacadeCRUD() {
-        return pCacheFacadeCRUD;
-    }
-
-    public void setpCacheFacadeCRUD(PCacheFacadeDAO pCacheFacadeCRUD) {
-        this.pCacheFacadeCRUD = pCacheFacadeCRUD;
-    }
-
-    public PCache getImgCarpeta() {
-        return imgCarpeta;
-    }
-
-    public void setImgCarpeta(PCache imgCarpeta) {
-        this.imgCarpeta = imgCarpeta;
-    }
-    
     
 }

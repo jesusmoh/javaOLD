@@ -30,6 +30,7 @@ public class ApplicationRestConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(core.controllers.restservice.PCorporativoFacadeREST.class);
+        resources.add(core.model.util.ConstraintViolationExceptionMapper.class);
     }
     
 }

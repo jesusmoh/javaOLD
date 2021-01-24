@@ -96,6 +96,7 @@
                             <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":PCorporativoViewForm" oncomplete="PF('PCorporativoViewDialog').show()" disabled="#{empty pCorporativoController.selected}"/>
                             <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":PCorporativoEditForm" oncomplete="PF('PCorporativoEditDialog').show()" disabled="#{empty pCorporativoController.selected}"/>
                             <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{pCorporativoController.destroy}" update=":growl,datalist" disabled="#{empty pCorporativoController.selected}"/>
+                            <p:commandButton id="refreshAll"  value="Refrescar" actionListener="#{pCorporativoController.refreshAll()}" update=":growl,datalist"/>
                         </f:facet>
                     </p:dataTable>
                 </p:panel>

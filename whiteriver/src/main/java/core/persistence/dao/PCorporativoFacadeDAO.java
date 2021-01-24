@@ -30,4 +30,6 @@ public class PCorporativoFacadeDAO extends AbstractFacade<PCorporativo> {
         super(PCorporativo.class);
     }
     
+    
+    
 }

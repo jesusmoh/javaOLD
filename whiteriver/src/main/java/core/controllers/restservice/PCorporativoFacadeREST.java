@@ -5,7 +5,7 @@
  */
 package core.controllers.restservice;
 
-import core.App;
+import core.AppIniCache;
 import core.model.dto.PCorporativoDTO;
 import core.persistence.AbstractFacade;
 import core.model.entities.PCorporativo;
@@ -14,10 +14,16 @@ import core.model.util.StringSimilarity;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -32,8 +38,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.PathSegment;
+import javax.ws.rs.core.Response;
+import org.eclipse.microprofile.faulttolerance.Fallback;
 import org.modelmapper.ModelMapper;
+import org.eclipse.microprofile.faulttolerance.Timeout;
+import org.eclipse.microprofile.faulttolerance.exceptions.CircuitBreakerOpenException;
 
 /**
  *
@@ -45,55 +54,15 @@ import org.modelmapper.ModelMapper;
 public class PCorporativoFacadeREST extends AbstractFacade<PCorporativo> {
 
     @EJB
-    private App app;
+    private AppIniCache app;
     private final ModelMapper modelMapper = new ModelMapper();
 
     @PersistenceContext(unitName = "core_cServer_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
-    private PCorporativo getMultipleKey(PathSegment pathSegment) {
-
-        PCorporativoPK pkey = new PCorporativoPK();
-        PCorporativo key = new PCorporativo(pkey);
-
-        javax.ws.rs.core.MultivaluedMap<String, String> map = pathSegment.getMatrixParameters();
-
-        java.util.List<String> rucCliente = map.get("rucCliente");
-        if (rucCliente != null && !rucCliente.isEmpty()) {
-            key.getPCorporativoPK().setRucCliente((rucCliente.get(0)));
-        }
-
-        java.util.List<String> codigoBarra = map.get("codigoBarra");
-        if (codigoBarra != null && !codigoBarra.isEmpty()) {
-            key.getPCorporativoPK().setRucCliente((codigoBarra.get(0)));
-        }
-
-        java.util.List<String> rucProveedor = map.get("rucProveedor");
-        if (rucProveedor != null && !rucProveedor.isEmpty()) {
-            key.setRucProveedor((rucProveedor.get(0)));
-        }
-
-        java.util.List<String> codigoArticuloProveedor = map.get("codigoArticuloProveedor");
-        if (codigoArticuloProveedor != null && !codigoArticuloProveedor.isEmpty()) {
-            key.setCodigoArticuloProveedor((codigoArticuloProveedor.get(0)));
-        }
-        java.util.List<String> nombreProducto = map.get("nombreProducto");
-        if (nombreProducto != null && !nombreProducto.isEmpty()) {
-            key.setNombreProducto((nombreProducto.get(0)));
-        }
-        java.util.List<String> nombreProveedor = map.get("nombreProveedor");
-        if (nombreProveedor != null && !nombreProveedor.isEmpty()) {
-            key.setNombreProveedor((nombreProveedor.get(0)));
-        }
-        java.util.List<String> codigoIva = map.get("codigoIva");
-        if (codigoIva != null && !codigoIva.isEmpty()) {
-            key.setCodigoIva(new Short(codigoIva.get(0)));
-        }
-        java.util.List<String> rsocialProveedor = map.get("rsocialProveedor");
-        if (rsocialProveedor != null && !rsocialProveedor.isEmpty()) {
-            key.setRsocialProveedor(rsocialProveedor.get(0));
-        }
-        return key;
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
     }
 
     public PCorporativoFacadeREST() {
@@ -102,89 +71,194 @@ public class PCorporativoFacadeREST extends AbstractFacade<PCorporativo> {
 
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
+    @RolesAllowed("99999")
+    @Timeout(value = 5000)
+    
+    @Fallback(applyOn = CircuitBreakerOpenException.class, fallbackMethod = "createPFallBack")
     @ApiOperation(value = "Crea Producto Dado un JSON", notes = "Crea un producto dado un JSON")
-    public void createP(PCorporativoDTO entity) {
-        super.create(modelMapper.map(entity, PCorporativo.class));
+    public Response createP(PCorporativoDTO entity) {
+        PCorporativo p = new PCorporativo();
+        p = modelMapper.map(entity, PCorporativo.class);
+        PCorporativoPK pk = new PCorporativoPK(entity.getCodigoBarra(), entity.getRucCliente());
+        p.setPCorporativoPK(pk);
+        if (super.find(p.getPCorporativoPK()) == null) {
+            if (app.getImgBase64().getValue().equalsIgnoreCase("true") && entity.getImageBase64().equalsIgnoreCase("true")) {
+                try {
+                    byte[] data = Base64.getDecoder().decode(entity.getImagen());
+                    byte[] data1 = Base64.getDecoder().decode(entity.getImagen1());
+                    byte[] data2 = Base64.getDecoder().decode(entity.getImagen2());
+                    byte[] data3 = Base64.getDecoder().decode(entity.getImagen3());
+                    OutputStream stream = new FileOutputStream(app.getImgCarpeta().getValue() + entity.getRucCliente() + "/recursos/imagenes/bo/" + entity.getCodigoProductoCliente() + ".JPG");
+                    OutputStream stream1 = new FileOutputStream(app.getImgCarpeta().getValue() + entity.getRucCliente() + "/recursos/imagenes/web/" + entity.getCodigoProductoCliente() + "-1.JPG");
+                    OutputStream stream2 = new FileOutputStream(app.getImgCarpeta().getValue() + entity.getRucCliente() + "/recursos/imagenes/web/" + entity.getCodigoProductoCliente() + "-2.JPG");
+                    OutputStream stream3 = new FileOutputStream(app.getImgCarpeta().getValue() + entity.getRucCliente() + "/recursos/imagenes/web/" + entity.getCodigoProductoCliente() + "-3.JPG");
+                    stream.write(data);
+                    stream1.write(data1);
+                    stream2.write(data2);
+                    stream3.write(data3);
+                } catch (FileNotFoundException ex) {
+                    System.out.println("" + ex.getMessage());
+                    return Response.status(400).entity(entity).build();
+                } catch (IOException ex) {
+                    System.out.println("" + ex.getMessage());
+                    return Response.status(400).entity(entity).build();
+                }
+            }
+            super.create(p);
+            return Response.status(200).entity(entity).build();
+        } else {
+            return Response.status(400).entity(entity).build();
+        }
     }
 
     @PUT
     @Path("{id}")
+    @RolesAllowed("99999")
+    @Timeout(value = 5000)
+    
+    @Fallback(applyOn = CircuitBreakerOpenException.class, fallbackMethod = "editFallBack")
     @ApiOperation(value = "Actualiza Producto Dado un JSON", notes = "Actualiza un producto dado un JSON y el codigoBarra EAN13 + el campo rucCliente ")
     @Consumes({MediaType.APPLICATION_JSON})
-    public void edit(
+    public Response edit(
             @ApiParam(example = "codigoBarra=7730744095194&rucCliente=214102650015")
-            @PathParam("id") String id, 
-            PCorporativoDTO entity) {
-        
+            @PathParam("id") String id,
+            PCorporativoDTO entity
+    ) {
         Map<String, String> p = getQueryMap(id);
         PCorporativoPK pk = new PCorporativoPK();
         pk.setCodigoBarra(p.get("codigoBarra"));
         pk.setRucCliente(p.get("rucCliente"));
-        PCorporativo pp =modelMapper.map(entity, PCorporativo.class);
+        PCorporativo pp = modelMapper.map(entity, PCorporativo.class);
         pp.setPCorporativoPK(pk);
-        super.edit(pp);
+        if (super.find(pk) != null) {
+            if (app.getImgBase64().getValue().equalsIgnoreCase("true") && entity.getImageBase64().equalsIgnoreCase("true")) {
+                try {
+                    byte[] data = Base64.getDecoder().decode(entity.getImagen());
+                    byte[] data1 = Base64.getDecoder().decode(entity.getImagen1());
+                    byte[] data2 = Base64.getDecoder().decode(entity.getImagen2());
+                    byte[] data3 = Base64.getDecoder().decode(entity.getImagen3());
+                    OutputStream stream = new FileOutputStream(app.getImgCarpeta().getValue() + entity.getRucCliente() + "/recursos/imagenes/bo/" + entity.getCodigoProductoCliente() + ".JPG");
+                    OutputStream stream1 = new FileOutputStream(app.getImgCarpeta().getValue() + entity.getRucCliente() + "/recursos/imagenes/web/" + entity.getCodigoProductoCliente() + "-1.JPG");
+                    OutputStream stream2 = new FileOutputStream(app.getImgCarpeta().getValue() + entity.getRucCliente() + "/recursos/imagenes/web/" + entity.getCodigoProductoCliente() + "-2.JPG");
+                    OutputStream stream3 = new FileOutputStream(app.getImgCarpeta().getValue() + entity.getRucCliente() + "/recursos/imagenes/web/" + entity.getCodigoProductoCliente() + "-3.JPG");
+                    stream.write(data);
+                    stream1.write(data1);
+                    stream2.write(data2);
+                    stream3.write(data3);
+                } catch (FileNotFoundException ex) {
+                    System.out.println("" + ex.getMessage());
+                    return Response.status(400).entity(entity).build();
+                } catch (IOException ex) {
+                    System.out.println("" + ex.getMessage());
+                    return Response.status(400).entity(entity).build();
+                }
+            }
+            super.edit(pp);
+            return Response.status(200).entity(entity).build();
+        } else {
+            return Response.status(400).entity(entity).build();
+        }
     }
 
     @DELETE
     @Path("{id}")
+    @RolesAllowed("99999")
+    @Timeout(value = 5000)
+    
     @ApiOperation(value = "Elimina Producto", notes = "Elimina un producto dado un valor para el campo codigoBarra EAN13 y otro valor para el campo rucCliente de de la empresa modelo ")
-    public void remove(
+    public Response remove(
             @ApiParam(example = "codigoBarra=7730744095194&rucCliente=214102650015")
-            @PathParam("id") String id) 
-    {
+            @PathParam("id") String id
+    ) {
         Map<String, String> p = getQueryMap(id);
         PCorporativoPK pk = new PCorporativoPK();
         pk.setCodigoBarra(p.get("codigoBarra"));
         pk.setRucCliente(p.get("rucCliente"));
-        super.remove(new PCorporativo(pk));
+
+        PCorporativo toDelete = super.find(pk);
+        if (toDelete != null) {
+            super.remove(toDelete);
+            return Response.status(200).entity(toDelete).build();
+        } else {
+            return Response.status(400).entity(pk).build();
+        }
     }
 
     @GET
     @Path("{id}")
+    @RolesAllowed("99999")
+    @Timeout(value = 5000)
+    
+    @Fallback(applyOn = CircuitBreakerOpenException.class, fallbackMethod = "findBarcodeAndRutFallBack")
     @ApiOperation(value = "Producto por código de barra y un ruc", notes = "Obtiene un producto dado un valor para el campo codigoBarra EAN13 y otro valor para el campo rucCliente de de la empresa modelo.")
     @Produces({MediaType.APPLICATION_JSON})
-    public PCorporativoDTO find(
+    public PCorporativoDTO findBarcodeAndRut(
             @ApiParam(example = "codigoBarra=7730744095194&rucCliente=214102650015")
-            @PathParam("id") String id) 
-    {
+            @PathParam("id") String id
+    ) {
         Map<String, String> p = getQueryMap(id);
         PCorporativoPK pk = new PCorporativoPK();
         pk.setCodigoBarra(p.get("codigoBarra"));
         pk.setRucCliente(p.get("rucCliente"));
         PCorporativoDTO pro = new PCorporativoDTO();
-        pro =generateDTO(super.find(pk));
+        PCorporativo entity = super.find(pk);
+        if (entity.getPCorporativoPK() != null && entity.getNombreProducto() != null && entity.getImagen() != null) {
+            pro = generateDTO(entity);
+        } else {
+            pro = new PCorporativoDTO();
+        }
         return pro;
     }
 
     @GET
     @Path("codigobarra/{id}")
     @Produces({MediaType.APPLICATION_JSON})
+    @RolesAllowed("99999")
+    @Timeout(value = 5000)
+    
+    @Fallback(applyOn = CircuitBreakerOpenException.class, fallbackMethod = "find2FallBack")
     @ApiOperation(value = "Producto por código de barra", notes = "Obtiene el mejor producto dado un código de barra EAN13.")
     public PCorporativoDTO find2(
             @ApiParam(example = "7730744095194")
-            @PathParam("id") String id)
-    {
+            @PathParam("id") String id
+    ) {
         PCorporativoDTO pro = new PCorporativoDTO();
         PCorporativo entity = getProductoPorCodigoBarra(id);
-        pro = generateDTO(entity);
+        if (entity.getPCorporativoPK() != null && entity.getNombreProducto() != null && entity.getImagen() != null) {
+            pro = generateDTO(entity);
+        } else {
+            pro = new PCorporativoDTO();
+        }
         return pro;
+    }
+
+    public PCorporativoDTO fPCorporativoDTO() {
+        PCorporativoDTO r = new PCorporativoDTO();
+        return r;
     }
 
     @GET
     @Path("proveedorarticulo/{id}")
+    @RolesAllowed("99999")
+    @Timeout(value = 5000)
+    
     @ApiOperation(value = "Códigos de barras de un artículo y proveedor", notes = "Obtiene los productos dado un codigoArticuloProveedor y el rucProveedor")
     @Produces({MediaType.APPLICATION_JSON})
     public List<PCorporativoDTO> findProveedorAndArticulo(
             @ApiParam(example = "codigoArticuloProveedor=9519-01456&rucProveedor=215084930013")
             @PathParam("id") String id) {
-            Map<String, String> p = getQueryMap(id);
+        Map<String, String> p = getQueryMap(id);
         return generateDTOlist(getProductosByProveedor(p.get("rucProveedor"), p.get("codigoArticuloProveedor")));
     }
 
     @GET
     @Path("ruccliente/{id}")
     @Produces({MediaType.APPLICATION_JSON})
-     @ApiOperation(value = "Producto por rucCliente", notes = "Obtiene los productos dado un rucCliente modelo")
+    @RolesAllowed("99999")
+    @Timeout(value = 10000)
+    
+    @Fallback(applyOn = CircuitBreakerOpenException.class, fallbackMethod = "findArticulosPorRutClienteFallBack")
+    @ApiOperation(value = "Productos por rucCliente", notes = "Obtiene los productos dado un rucCliente modelo")
     public List<PCorporativoDTO> findArticulosPorRutCliente(
             @ApiParam(example = "214102650015")
             @PathParam("id") String id) {
@@ -197,11 +271,11 @@ public class PCorporativoFacadeREST extends AbstractFacade<PCorporativo> {
 
     }
 
-    /*
-    A EVALUAR
-    
     @GET
     @Path("similitud/{id}")
+    @RolesAllowed("99999")
+    @Timeout(value = 5000)
+    
     @Produces({MediaType.APPLICATION_JSON})
     public PCorporativoDTO findSimilitud(@PathParam("id") String id) {
 
@@ -210,12 +284,6 @@ public class PCorporativoFacadeREST extends AbstractFacade<PCorporativo> {
         PCorporativo key = new PCorporativo(pk);
 
         return generateDTO(getProductoByProveedor(key.getNombreProducto(), key.getNombreProveedor(), key.getCodigoIva(), key.getRsocialProveedor()));
-    }
-     */
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
     }
 
     public PCorporativo getProductoPorCodigoBarra(String codigobarra) {
@@ -333,4 +401,30 @@ public class PCorporativoFacadeREST extends AbstractFacade<PCorporativo> {
         }
         return l;
     }
+
+    
+     private PCorporativoDTO find2FallBack(String id){
+        System.out.println("Getting PCorporativoDTO for Barcode  has failed. The Circuit breaker is open");
+        return (new PCorporativoDTO());
+    }
+      private PCorporativoDTO findBarcodeAndRutFallBack(String id){
+        System.out.println("Getting PCorporativoDTO for Barcode/Rut  has failed. The Circuit breaker is open");
+        return (new PCorporativoDTO());
+    }
+      
+       private Response createPFallBack(PCorporativoDTO entity){
+        System.out.println("Getting PCorporativoDTO for create PCorporativoDTO  has failed. The Circuit breaker is open");
+        return Response.status(400).entity(entity).build();
+    }
+       
+        private Response editFallBack(String id, PCorporativoDTO entity){
+        System.out.println("Getting PCorporativoDTO for edit PCorporativoDTO  has failed. The Circuit breaker is open");
+        return Response.status(400).entity(entity).build();
+    }
+        private List<PCorporativoDTO> findArticulosPorRutClienteFallBack(String id){
+        System.out.println("Getting PCorporativoDTO for edit PCorporativoDTO  has failed. The Circuit breaker is open");
+        List<PCorporativoDTO> l = new ArrayList<PCorporativoDTO>();
+        return l;
+    }
+//
 }

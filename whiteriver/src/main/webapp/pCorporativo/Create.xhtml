@@ -11,7 +11,7 @@
         <p:dialog id="PCorporativoCreateDlg" widgetVar="PCorporativoCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreatePCorporativoTitle}">
             <h:form id="PCorporativoCreateForm">
                 <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{pCorporativoController.selected != null}">
+                    <p:panelGrid columns="4" rendered="#{pCorporativoController.selected != null}">
                         <p:outputLabel value="#{bundle.CreatePCorporativoLabel_PCorporativoPK_rucCliente}" for="PCorporativoPK_rucCliente" />
                         <p:inputText id="PCorporativoPK_rucCliente" value="#{pCorporativoController.selected.PCorporativoPK.rucCliente}" title="#{bundle.CreatePCorporativoTitle_PCorporativoPK_rucCliente}" required="true" requiredMessage="#{bundle.CreatePCorporativoRequiredMessage_PCorporativoPK_rucCliente}"/>
                         <p:outputLabel value="#{bundle.CreatePCorporativoLabel_PCorporativoPK_codigoBarra}" for="PCorporativoPK_codigoBarra" />

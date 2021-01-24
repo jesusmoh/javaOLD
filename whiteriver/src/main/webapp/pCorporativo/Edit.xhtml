@@ -11,7 +11,7 @@
         <p:dialog id="PCorporativoEditDlg" widgetVar="PCorporativoEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditPCorporativoTitle}">
             <h:form id="PCorporativoEditForm">
                 <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{pCorporativoController.selected != null}">
+                    <p:panelGrid columns="4" rendered="#{pCorporativoController.selected != null}">
                         <p:outputLabel value="#{bundle.EditPCorporativoLabel_PCorporativoPK_rucCliente}" for="PCorporativoPK_rucCliente" />
                         <p:inputText id="PCorporativoPK_rucCliente" value="#{pCorporativoController.selected.PCorporativoPK.rucCliente}" title="#{bundle.EditPCorporativoTitle_PCorporativoPK_rucCliente}" required="true" requiredMessage="#{bundle.EditPCorporativoRequiredMessage_PCorporativoPK_rucCliente}"/>
                         <p:outputLabel value="#{bundle.EditPCorporativoLabel_PCorporativoPK_codigoBarra}" for="PCorporativoPK_codigoBarra" />

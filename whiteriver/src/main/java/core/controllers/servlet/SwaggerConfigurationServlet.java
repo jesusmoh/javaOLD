@@ -24,7 +24,7 @@ public class SwaggerConfigurationServlet extends HttpServlet {
         BeanConfig beanConfig = new BeanConfig();
         beanConfig.setBasePath("/cServer/api/v1");
         beanConfig.setTitle("Swagger cServer Web Services Documentation");
-        beanConfig.setResourcePackage("core.controllers.service.rest");
+        beanConfig.setResourcePackage("core.controllers.restservice");
         beanConfig.setPrettyPrint(true);
         beanConfig.setScan(true);
         beanConfig.setSchemes(new String[]{"http"});

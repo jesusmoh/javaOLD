@@ -21,12 +21,12 @@ public class PCorporativoPK implements Serializable {
 
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 255)
+    @Size(min = 5, max = 14)
     @Column(name = "codigo_barra")
     private String codigoBarra;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 255)
+    @Size(min = 11, max = 14)
     @Column(name = "ruc_cliente")
     private String rucCliente;
 

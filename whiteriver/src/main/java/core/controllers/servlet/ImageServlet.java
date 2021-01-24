@@ -5,7 +5,7 @@
  */
 package core.controllers.servlet;
 
-import core.App;
+import core.AppIniCache;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ImageServlet extends HttpServlet {
 
     @EJB
-    private App app;
+    private AppIniCache app;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
