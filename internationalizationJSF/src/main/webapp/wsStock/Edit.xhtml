@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="WsStockEditDlg" widgetVar="WsStockEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditWsStockTitle}">
+            <h:form id="WsStockEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{wsStockController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditWsStockLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{wsStockController.selected.id}" title="#{bundle.EditWsStockTitle_id}" required="true" requiredMessage="#{bundle.EditWsStockRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.EditWsStockLabel_codEmp}" for="codEmp" />
+                        <p:inputText id="codEmp" value="#{wsStockController.selected.codEmp}" title="#{bundle.EditWsStockTitle_codEmp}" />
+                        <p:outputLabel value="#{bundle.EditWsStockLabel_codProd}" for="codProd" />
+                        <p:inputText id="codProd" value="#{wsStockController.selected.codProd}" title="#{bundle.EditWsStockTitle_codProd}" />
+                        <p:outputLabel value="#{bundle.EditWsStockLabel_deposito}" for="deposito" />
+                        <p:inputText id="deposito" value="#{wsStockController.selected.deposito}" title="#{bundle.EditWsStockTitle_deposito}" />
+                        <p:outputLabel value="#{bundle.EditWsStockLabel_movil}" for="movil" />
+                        <p:inputText id="movil" value="#{wsStockController.selected.movil}" title="#{bundle.EditWsStockTitle_movil}" />
+                        <p:outputLabel value="#{bundle.EditWsStockLabel_saldo}" for="saldo" />
+                        <p:inputText id="saldo" value="#{wsStockController.selected.saldo}" title="#{bundle.EditWsStockTitle_saldo}" />
+                        <p:outputLabel value="#{bundle.EditWsStockLabel_tomadoPorMovil}" for="tomadoPorMovil" />
+                        <p:selectBooleanCheckbox id="tomadoPorMovil" value="#{wsStockController.selected.tomadoPorMovil}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{wsStockController.update}" value="#{bundle.Save}" update="display,:WsStockListForm:datalist,:growl" oncomplete="handleSubmit(args, 'WsStockEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="WsStockEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

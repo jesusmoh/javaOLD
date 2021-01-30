@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="WsStockViewDlg" widgetVar="WsStockViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewWsStockTitle}">
+            <h:form id="WsStockViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{wsStockController.selected != null}">
+                        <h:outputText value="#{bundle.ViewWsStockLabel_id}"/>
+                        <h:outputText value="#{wsStockController.selected.id}" title="#{bundle.ViewWsStockTitle_id}"/>
+                        <h:outputText value="#{bundle.ViewWsStockLabel_codEmp}"/>
+                        <h:outputText value="#{wsStockController.selected.codEmp}" title="#{bundle.ViewWsStockTitle_codEmp}"/>
+                        <h:outputText value="#{bundle.ViewWsStockLabel_codProd}"/>
+                        <h:outputText value="#{wsStockController.selected.codProd}" title="#{bundle.ViewWsStockTitle_codProd}"/>
+                        <h:outputText value="#{bundle.ViewWsStockLabel_deposito}"/>
+                        <h:outputText value="#{wsStockController.selected.deposito}" title="#{bundle.ViewWsStockTitle_deposito}"/>
+                        <h:outputText value="#{bundle.ViewWsStockLabel_movil}"/>
+                        <h:outputText value="#{wsStockController.selected.movil}" title="#{bundle.ViewWsStockTitle_movil}"/>
+                        <h:outputText value="#{bundle.ViewWsStockLabel_saldo}"/>
+                        <h:outputText value="#{wsStockController.selected.saldo}" title="#{bundle.ViewWsStockTitle_saldo}"/>
+                        <h:outputText value="#{bundle.ViewWsStockLabel_tomadoPorMovil}"/>
+                        <p:selectBooleanCheckbox value="#{wsStockController.selected.tomadoPorMovil}" disabled="true"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="WsStockViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>
