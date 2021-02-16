@@ -5,6 +5,7 @@
  */
 package core.controller.ui;
 
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -27,22 +28,27 @@ public class HomeController {
         return "home";
     }
 
-    /*
     @RequestMapping("home1")
     public String home1(String name, HttpSession httpSession) {
         httpSession.setAttribute("name", name);
-        System.out.println(""+name);
+        System.out.println("" + name);
         return "home";
     }
-     */
- /*
+
     @RequestMapping("home2")
     public ModelAndView home2(String name, HttpSession httpSession) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("name", name);
         modelAndView.setViewName("home2");
-        System.out.println(""+name);
+        System.out.println("" + name);
         return modelAndView;
     }
-     */
+    
+     @RequestMapping("home3")
+    public ModelAndView home3(Map<String, Object> model) {
+        ModelAndView modelAndView = new ModelAndView();
+        model.put("name", "nene");
+        return modelAndView;
+    }
+
 }
