@@ -18,7 +18,6 @@ public class MyWebSocket {
     @OnMessage
     public String square(String value) throws InterruptedException
     {
-        
         Thread.sleep(9000);
         return " Squared value ("+Double.parseDouble(value)*Double.parseDouble(value)+") ";
     }
