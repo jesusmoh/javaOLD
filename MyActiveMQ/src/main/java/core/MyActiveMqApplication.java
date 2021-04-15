@@ -1,13 +1,13 @@
-package com.example;
+package core;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BasicApplication {
+public class MyActiveMqApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(BasicApplication.class, args);
+		SpringApplication.run(MyActiveMqApplication.class, args);
 	}
 
 }
