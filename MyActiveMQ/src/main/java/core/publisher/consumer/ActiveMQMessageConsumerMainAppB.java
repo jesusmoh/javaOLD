@@ -2,7 +2,7 @@ package core.publisher.consumer;
 
 import javax.jms.JMSException;
 
-public class ActiveMQMessageConsumerMainApp {
+public class ActiveMQMessageConsumerMainAppB {
  
     public static void main(String[] args) {
  
@@ -18,7 +18,7 @@ public class ActiveMQMessageConsumerMainApp {
         // the message in the topic before this subscriber starts will not be
         // picked up.
         ActiveMQMessageConsumer queueMsgListener = new ActiveMQMessageConsumer("tcp://localhost:61616", "admin","admin");
-        queueMsgListener.setDestinationName("Consumer.enzo." + "VirtualTopic.Customer.Topic");
+        queueMsgListener.setDestinationName("Consumer.b." + "VirtualTopic.Customer.Topic");
  
         try {
             queueMsgListener.run();

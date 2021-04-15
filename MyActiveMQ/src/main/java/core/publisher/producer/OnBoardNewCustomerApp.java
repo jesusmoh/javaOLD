@@ -20,7 +20,7 @@ public class OnBoardNewCustomerApp {
        ActiveMQMessageProducer msgQueueSender = new ActiveMQMessageProducer("tcp://localhost:61616", "admin", "admin");
         try {
             msgQueueSender.setup(false, true, "VirtualTopic.Customer.Topic");
-            msgQueueSender.sendMessage("MYCUSTOMER--------");
+            msgQueueSender.sendMessage("-- NEW CUSTOMER -- MYID --"+ Math.random()+"--");
         } catch (JMSException e) {
         }
     }
