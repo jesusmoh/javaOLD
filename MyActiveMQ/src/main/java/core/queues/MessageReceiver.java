@@ -1,4 +1,4 @@
-package core.point_to_point;
+package core.queues;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;

@@ -1,4 +1,4 @@
-package core.publisher.consumer;
+package core.topics.consumer;
 
 import javax.jms.JMSException;
 

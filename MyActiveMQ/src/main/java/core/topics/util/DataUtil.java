@@ -1,6 +1,6 @@
-package core.publisher.util;
+package core.topics.util;
 
-import core.publisher.model.Customer;
+import core.topics.model.Customer;
 
 public class DataUtil {
 

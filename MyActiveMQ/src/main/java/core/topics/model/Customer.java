@@ -1,4 +1,4 @@
-package core.publisher.model;
+package core.topics.model;
 
 public class Customer {
   private String id;

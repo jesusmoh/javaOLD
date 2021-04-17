@@ -1,6 +1,6 @@
-package core.publisher.producer;
+package core.topics.producer;
 
-import core.publisher.util.DataUtil;
+import core.topics.util.DataUtil;
 import java.util.Random;
 
 import javax.jms.Connection;
