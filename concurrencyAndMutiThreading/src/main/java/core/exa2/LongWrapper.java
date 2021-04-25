@@ -14,7 +14,14 @@ public class LongWrapper {
     private Object key = new Object();
     private long l;
 
+    
     public long getL() {
+         /* fixe RaceCondition
+        synchronized(key)
+        {
+        return l;
+        }
+        */
         return l;
     }
 
