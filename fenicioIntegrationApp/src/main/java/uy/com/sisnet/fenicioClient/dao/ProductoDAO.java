@@ -11,7 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.springframework.stereotype.Component;
-import uy.com.sisnet.fenicioClient.model.entities.ProductoDB;
+import uy.com.sisnet.fenicioClient.model.entities.bo.WebMaProductos;
 
 @Component
 public class ProductoDAO {
@@ -19,10 +19,10 @@ public class ProductoDAO {
     @PersistenceContext
     private EntityManager entityManager;
     
-     public List<ProductoDB> allProducts() {
-        List<ProductoDB> r = new ArrayList<>();
-        Query q = entityManager.createNativeQuery("SELECT * FROM productos",ProductoDB.class);
-        q.getResultList().stream().forEach((entity)-> {r.add(((ProductoDB) entity));});
+     public List<WebMaProductos> allProducts() {
+        List<WebMaProductos> r = new ArrayList<>();
+        Query q = entityManager.createNativeQuery("SELECT * FROM web_ma_productos",WebMaProductos.class);
+        q.getResultList().stream().forEach((entity)-> {r.add(((WebMaProductos) entity));});
         return r;
     }
 

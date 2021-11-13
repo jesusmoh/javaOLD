@@ -25,6 +25,9 @@ import uy.com.sisnet.fenicioClient.dto.RequestProductsDTO;
 import uy.com.sisnet.fenicioClient.model.Data;
 import uy.com.sisnet.fenicioClient.model.Producto;
 import uy.com.sisnet.fenicioClient.service.ProductService;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 @RestController
 public class ProductsController {
@@ -62,12 +65,14 @@ public class ProductsController {
         productsDTO.setMensaje("JSON RECIVE FROM FENICIO " + fenicioJson);
         productsDTO.setIdSolicitud(requestProductDTO.getIdSolicitud());
 
+        log.info(ToStringBuilder.reflectionToString(productsDTO.getData(), ToStringStyle.JSON_STYLE));
         return productsDTO;
     }
 
     @ExceptionHandler(Exception.class)
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Error message")
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Server error")
     public Object handleError(HttpServletRequest req, Exception ex) {
+        log.severe(ex.getMessage());
         Object errorObject = new Object();
         return errorObject;
     }

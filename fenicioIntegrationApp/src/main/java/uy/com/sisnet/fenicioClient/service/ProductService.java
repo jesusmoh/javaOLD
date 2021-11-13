@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uy.com.sisnet.fenicioClient.dao.ProductoDAO;
 import uy.com.sisnet.fenicioClient.model.Producto;
-import uy.com.sisnet.fenicioClient.model.entities.ProductoDB;
+import uy.com.sisnet.fenicioClient.model.entities.bo.WebMaProductos;
 
 @Service("ProductService")
 public class ProductService {
@@ -25,13 +25,13 @@ public class ProductService {
         return productos;
     }
 
-    private Producto convertToProducto(ProductoDB productoDB) {
+    private Producto convertToProducto(WebMaProductos webMaProductos) {
         Producto producto = new Producto();
-        producto.setCodigo(productoDB.getCodigo());
-        producto.setNombre(productoDB.getNombre());
-        producto.setGuiaTalles(productoDB.getGuiatalles());
-        producto.setFechaCreacion(productoDB.getFechacreacion());
-        producto.setMonedaPredeterminada(productoDB.getMonedapredeterminada());
+        producto.setCodigo(webMaProductos.getCodProd().toString());
+        producto.setNombre(webMaProductos.getNomProd());
+        producto.setGuiaTalles(webMaProductos.getTalle());
+        producto.setFechaCreacion(webMaProductos.getFecReg().toString());
+        producto.setMonedaPredeterminada("UYU");
 
         return producto;
     }
