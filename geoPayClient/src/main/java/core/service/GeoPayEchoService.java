@@ -78,13 +78,19 @@ public class GeoPayEchoService {
                 if (!response.isSuccessful())
                 {
                     log.severe("ECHO ERROR CALL # " + echoCounter + " " + Optional.ofNullable(response).get().toString());
-                    response.close();
+ 
                 }
                 log.info("ECHO RESPONSE # " + echoCounter + " " + Optional.ofNullable(response).get().toString());
 
             } catch (IOException e) {
-                response.close();
                 log.severe(echoCounter + " " + e.getMessage());
+            }finally {
+            	if (!response.isSuccessful())
+            	{
+            		response.body().close();
+            		response.close();
+            	}
+            	
             }
 
         }

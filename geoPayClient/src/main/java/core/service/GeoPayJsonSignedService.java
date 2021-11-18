@@ -6,11 +6,11 @@
 package core.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 
 import core.dto.AppResponseHeaderDTO;
 
@@ -107,13 +107,12 @@ public class GeoPayJsonSignedService {
         String digitalSign = null;
 
         try {
-            //Asigned json
-            final String jsonData = (new JSONObject(json)).toString();
-            log.info("JSON  TO  PROCESS : " + jsonData );
-
 
             //Validate json and Sort by key 
-            mapper.readTree(json);
+            JsonNode actualObj = mapper.readTree(json);
+            final String jsonData = mapper.writeValueAsString(actualObj);
+            log.info("JSON  TO  PROCESS : " + jsonData );
+            
             Map<String, Object> map = mapper.readValue(jsonData, HashMap.class);
             jsonStringResult = mapper.writeValueAsString(map);
             List<String> sortedKeys = new ArrayList<String>(map.keySet());

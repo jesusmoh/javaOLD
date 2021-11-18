@@ -31,7 +31,7 @@ public class SignedController {
     @RequestMapping("/signed")
     public AppResponseHeaderDTO post(@RequestBody String jsonInput) {
         
-    	 log.info("Client Request");
+    	 log.info("Client Signed Request");
          return jsonSignedService.singAnyJson(jsonInput);
     }
     
