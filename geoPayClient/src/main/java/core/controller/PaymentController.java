@@ -4,7 +4,9 @@ package core.controller;
 
 import core.dto.geopay.request.PaymentDTO;
 import core.dto.geopay.request.PaymentQueryDTO;
+import core.dto.geopay.request.VoidPaymentDTO;
 import core.dto.geopay.response.PaymentTokenDTO;
+import core.dto.geopay.response.VoidPaymentResultDTO;
 import core.service.GeoPaymentService;
 
 import java.net.URL;
@@ -52,6 +54,18 @@ public class PaymentController {
     @RequestMapping("/signedAndBuildPaymentQuery")
     public PaymentQueryDTO signedAndBuildPaymentQueryWS (@RequestBody String jsonInputPayment) {
     	return geoPaymentService.signedAndBuildPaymentQueryFromJson(jsonInputPayment);
+    }
+    
+    @PostMapping
+    @RequestMapping("/signedAndBuildVoidPayment")
+    public VoidPaymentDTO signedAndBuildVoidPaymentWS (@RequestBody String jsonInputPayment) {
+    	return geoPaymentService.signedAndBuildVoidPaymentFromJson(jsonInputPayment);
+    }
+    
+    @PostMapping
+    @RequestMapping("/getVoidPayment")
+    public VoidPaymentResultDTO getVoidPaymentWS (@RequestBody String jsonInputPayment) {
+    	return geoPaymentService.getVoidPaymentResult(jsonInputPayment);
     }
     
     @ExceptionHandler(Exception.class)

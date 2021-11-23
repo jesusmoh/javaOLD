@@ -85,7 +85,7 @@ public class GeoPayEchoService {
             } catch (IOException e) {
                 log.severe(echoCounter + " " + e.getMessage());
             }finally {
-            	if (!response.isSuccessful())
+            	if (response!=null && !response.isSuccessful())
             	{
             		response.body().close();
             		response.close();

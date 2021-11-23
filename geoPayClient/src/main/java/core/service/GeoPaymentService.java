@@ -5,12 +5,15 @@
  */
 package core.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import core.dto.AppResponseHeaderDTO;
 import core.dto.geopay.request.PaymentDTO;
 import core.dto.geopay.request.PaymentQueryDTO;
+import core.dto.geopay.request.VoidPaymentDTO;
 import core.dto.geopay.response.PaymentTokenDTO;
+import core.dto.geopay.response.VoidPaymentResultDTO;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -36,8 +39,6 @@ public class GeoPaymentService {
 
     static Logger log = Logger.getLogger(GeoPaymentService.class.getName());
 
-    private final DateTimeFormatter p = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
     @Value("${geo.url.payment}")
     private String geoUrlPayment;
 
@@ -52,7 +53,9 @@ public class GeoPaymentService {
 
     @Value("${geo.url.request.payment}")
     private String geoUrlRequestPayment;
-
+    
+    @Value("${geo.url.void.payment}")
+    private String geoUrlVoidPayment;
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -90,6 +93,22 @@ public class GeoPaymentService {
         }
         return paymentQueryDTO;
     }
+    
+    public VoidPaymentDTO signedAndBuildVoidPaymentFromJson(String inputJson) {
+        VoidPaymentDTO voidPaymentDTO = null;
+        if (Optional.ofNullable(inputJson).isPresent()) {
+            AppResponseHeaderDTO responseHeaderDTO = jsonSignedService.singAnyJson(inputJson);
+            if (responseHeaderDTO.getState().equalsIgnoreCase("ok")) {
+                try {
+                	voidPaymentDTO = mapper.readValue(inputJson, VoidPaymentDTO.class);
+                	voidPaymentDTO.getRequestHeader().setDigitalSign(responseHeaderDTO.getDigitalSignt());
+                } catch (IOException e) {
+                    log.severe(" " + e.getMessage());
+                }
+            }
+        }
+        return voidPaymentDTO;
+    }
 
     public PaymentTokenDTO getTokenByJsonSignedPayment(String jsonPaymentDTO) {
 
@@ -118,6 +137,13 @@ public class GeoPaymentService {
                     jsonData = response.body().string();
                 } catch (IOException e1) {
                     log.severe(e1.getMessage());
+                }finally {
+                	if (response!=null && !response.isSuccessful())
+                	{
+                		response.body().close();
+                		response.close();
+                	}
+                	
                 }
             }
 
@@ -143,4 +169,47 @@ public class GeoPaymentService {
         return url;
     }
 
+	public VoidPaymentResultDTO getVoidPaymentResult(String jsonVoidPayment) {
+		
+		VoidPaymentResultDTO voidPaymentResultDTO = null;
+		Response response = null;
+		String jsonData = null;
+		VoidPaymentDTO voidPaymentDTO = signedAndBuildVoidPaymentFromJson(jsonVoidPayment);
+	
+		if (Optional.ofNullable(voidPaymentDTO).isPresent()) {
+
+			try {
+				final String voidPaymentJSON = mapper.writeValueAsString(voidPaymentDTO);
+				final OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(30, TimeUnit.SECONDS).writeTimeout(30, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
+				final MediaType mediaType = MediaType.parse("application/json");
+				final RequestBody body = RequestBody.create(mediaType, voidPaymentJSON);
+				final Request request = new Request.Builder().url(geoUrlVoidPayment).method("POST", body).addHeader("Content-Type", "application/json").build();
+				
+				response = client.newCall(request).execute();
+				
+			} catch (JsonProcessingException e2) {
+				log.severe(e2.getMessage());
+			} catch (IOException e) {
+				log.severe(e.getMessage());
+			}
+			
+			if (response != null) {
+				try {
+					jsonData = response.body().string();
+					voidPaymentResultDTO = mapper.readValue(jsonData, VoidPaymentResultDTO.class);
+				} catch (IOException e1) {
+					log.severe(e1.getMessage());
+				} finally {
+					if (!response.isSuccessful()) {
+						response.body().close();
+						response.close();
+					}
+
+				}
+			}
+
+		}
+
+		return voidPaymentResultDTO;
+	}
 }
