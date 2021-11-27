@@ -1,10 +1,12 @@
 
 package core.controller;
-
-
+import core.common.Actions;
+import core.common.ApiResponse;
+import core.common.ApiResponseCode;
 import core.dto.geopay.request.PaymentDTO;
 import core.dto.geopay.request.PaymentQueryDTO;
 import core.dto.geopay.request.VoidPaymentDTO;
+import core.dto.geopay.response.PaymentAndUrlDTO;
 import core.dto.geopay.response.PaymentTokenDTO;
 import core.dto.geopay.response.VoidPaymentResultDTO;
 import core.service.GeoPaymentService;
@@ -12,13 +14,15 @@ import core.service.GeoPaymentService;
 import java.net.URL;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
+
 
 /**
  *
@@ -27,51 +31,84 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RestController
 public class PaymentController {
     
-	static Logger log = Logger.getLogger(PaymentController.class.getName());
+    static final Logger log = Logger.getLogger(PaymentController.class.getName());
+   
 	
+    @Value("${m.payment.controller.ok}")
+    private String mPaymentControllerOk;	
+    
+    @Value("${m.payment.controller.fail}")
+    private String mPaymentControllerFail;
+    
     @Autowired
     GeoPaymentService geoPaymentService ;
     
     @PostMapping
     @RequestMapping("/signedAndBuildPayment")
-    public PaymentDTO signedAndBuildPaymentWS (@RequestBody String jsonInputPayment) {
-    	return geoPaymentService.signedAndBuildPaymentFromJson(jsonInputPayment);
+    public ResponseEntity<ApiResponse> signedAndBuildPaymentWS (@RequestBody String jsonInputPayment) {
+    	log.info(Actions.ACTION_REST_IN);
+        PaymentDTO paymentDTO=geoPaymentService.signedAndBuildPaymentFromJson(jsonInputPayment);
+        log.info(Actions.ACTION_REST_OUT);
+         return new ResponseEntity<>(new ApiResponse(true,mPaymentControllerOk,paymentDTO,ApiResponseCode.API_RESPONSE_OK), HttpStatus.OK);
     }
     
     @PostMapping
     @RequestMapping("/getTokenPayment")
-    public PaymentTokenDTO getTokenPaymentWS (@RequestBody String jsonInputPayment) {
-    	return geoPaymentService.getTokenByJsonSignedPayment(jsonInputPayment);
+    public ResponseEntity<ApiResponse> getTokenPaymentWS (@RequestBody String jsonInputPayment) {
+        log.info(Actions.ACTION_REST_IN);
+        PaymentTokenDTO paymentTokenDTO = geoPaymentService.getTokenByJsonSignedPayment(jsonInputPayment);
+        log.info(Actions.ACTION_REST_OUT);
+    	return new ResponseEntity<>(new ApiResponse(true,mPaymentControllerOk,paymentTokenDTO,Integer.valueOf(paymentTokenDTO.getResponseHeader().getResponseCode())), HttpStatus.OK);
     }
     
     @PostMapping
     @RequestMapping("/getUrlTokenPayment")
-    public URL getUrlTokenPaymentWS (@RequestBody String jsonInputPayment) {
-    	return geoPaymentService.getTokenUrlByJsonSignedPayment(jsonInputPayment);
+    public ResponseEntity<ApiResponse> getUrlTokenPaymentWS(@RequestBody String jsonInputPayment) {
+        log.info(Actions.ACTION_REST_IN);
+        PaymentAndUrlDTO paymentAndUrlDTO = geoPaymentService.getTokenUrlByJsonSignedPayment(jsonInputPayment);
+        log.info(Actions.ACTION_REST_OUT);
+        return new ResponseEntity<>(new ApiResponse(true, mPaymentControllerOk, paymentAndUrlDTO.getUrl(), Integer.valueOf(paymentAndUrlDTO.getPaymentTokenDTO().getResponseHeader().getResponseCode())), HttpStatus.OK);
+    }
+    
+    @PostMapping
+    @RequestMapping("/getUrlTokenPaymentv2")
+    public ResponseEntity<ApiResponse> getUrlTokenPaymentv2WS(@RequestBody String jsonInputPayment) {
+        log.info(Actions.ACTION_REST_IN);
+        PaymentAndUrlDTO paymentAndUrlDTO = geoPaymentService.getTokenUrlByJsonSignedPaymentv2(jsonInputPayment);
+        log.info(Actions.ACTION_REST_OUT);
+        return new ResponseEntity<>(new ApiResponse(true, mPaymentControllerOk, paymentAndUrlDTO, Integer.valueOf(paymentAndUrlDTO.getPaymentTokenDTO().getResponseHeader().getResponseCode())), HttpStatus.OK);
     }
     
     @PostMapping
     @RequestMapping("/signedAndBuildPaymentQuery")
-    public PaymentQueryDTO signedAndBuildPaymentQueryWS (@RequestBody String jsonInputPayment) {
-    	return geoPaymentService.signedAndBuildPaymentQueryFromJson(jsonInputPayment);
+    public ResponseEntity<ApiResponse> signedAndBuildPaymentQueryWS (@RequestBody String jsonInputPayment) {
+    	log.info(Actions.ACTION_REST_IN);
+        PaymentQueryDTO paymentQueryDTO =geoPaymentService.signedAndBuildPaymentQueryFromJson(jsonInputPayment);
+        log.info(Actions.ACTION_REST_OUT);
+        return new ResponseEntity<>(new ApiResponse(true, mPaymentControllerOk, paymentQueryDTO, ApiResponseCode.API_RESPONSE_OK), HttpStatus.OK);
     }
     
     @PostMapping
     @RequestMapping("/signedAndBuildVoidPayment")
-    public VoidPaymentDTO signedAndBuildVoidPaymentWS (@RequestBody String jsonInputPayment) {
-    	return geoPaymentService.signedAndBuildVoidPaymentFromJson(jsonInputPayment);
+    public ResponseEntity<ApiResponse> signedAndBuildVoidPaymentWS (@RequestBody String jsonInputPayment) {
+    	log.info(Actions.ACTION_REST_IN); 
+        VoidPaymentDTO voidPaymentDTO =geoPaymentService.signedAndBuildVoidPaymentFromJson(jsonInputPayment);
+        log.info(Actions.ACTION_REST_OUT);
+         return new ResponseEntity<>(new ApiResponse(true, mPaymentControllerOk, voidPaymentDTO, ApiResponseCode.API_RESPONSE_OK), HttpStatus.OK);
     }
     
     @PostMapping
     @RequestMapping("/getVoidPayment")
-    public VoidPaymentResultDTO getVoidPaymentWS (@RequestBody String jsonInputPayment) {
-    	return geoPaymentService.getVoidPaymentResult(jsonInputPayment);
+    public ResponseEntity<ApiResponse> getVoidPaymentWS (@RequestBody String jsonInputPayment) {
+    	log.info(Actions.ACTION_REST_IN);
+        VoidPaymentResultDTO paymentResultDTO =geoPaymentService.getVoidPaymentResult(jsonInputPayment);
+        log.info(Actions.ACTION_REST_OUT);
+        return new ResponseEntity<>(new ApiResponse(true, mPaymentControllerOk, paymentResultDTO, Integer.valueOf(paymentResultDTO.getResponseHeader().getResponseCode())), HttpStatus.OK);
     }
     
     @ExceptionHandler(Exception.class)
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "geoPayClient general payment error")
-    public void handleError() {
-    	 log.severe("geoPayClient general payment error");
+    public ResponseEntity <ApiResponse> handleError() {
+          return new ResponseEntity<>(new ApiResponse(false,mPaymentControllerFail,"",ApiResponseCode.API_RESPONSE_FAIL), HttpStatus.INTERNAL_SERVER_ERROR);
     }
     
 }

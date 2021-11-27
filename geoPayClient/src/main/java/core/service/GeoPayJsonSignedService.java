@@ -10,10 +10,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-
-import core.dto.AppResponseHeaderDTO;
-
+import core.dto.SignedDTO;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -32,12 +29,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.annotation.PostConstruct;
-
 import org.apache.tomcat.util.codec.binary.Base64;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +42,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class GeoPayJsonSignedService {
 
-    static Logger log = Logger.getLogger(GeoPayJsonSignedService.class.getName());
+    static final Logger log = Logger.getLogger(GeoPayJsonSignedService.class.getName());
 
     @Value("${keystore.directory}")
     private String keyStoreDirectory;
@@ -98,11 +93,14 @@ public class GeoPayJsonSignedService {
         } catch (NoSuchAlgorithmException | UnrecoverableKeyException | CertificateException | IOException ex) {
             log.severe(ex.getMessage());
         }
+        
+        log.log(Level.INFO, "keyStoreDirectory ok on {0}", keyStoreDirectory);
+                
     }
 
-    public AppResponseHeaderDTO singAnyJson(String json) {
+    public SignedDTO singAnyJson(String json) {
 
-        AppResponseHeaderDTO signedJResponseDTO = new AppResponseHeaderDTO();
+        SignedDTO signedJResponseDTO = new SignedDTO();
         String jsonStringResult = null;
         String digitalSign = null;
 
@@ -111,11 +109,11 @@ public class GeoPayJsonSignedService {
             //Validate json and Sort by key 
             JsonNode actualObj = mapper.readTree(json);
             final String jsonData = mapper.writeValueAsString(actualObj);
-            log.info("JSON  TO  PROCESS : " + jsonData );
+            log.log(Level.INFO, "JSON  TO  PROCESS : {0}", jsonData);
             
             Map<String, Object> map = mapper.readValue(jsonData, HashMap.class);
             jsonStringResult = mapper.writeValueAsString(map);
-            List<String> sortedKeys = new ArrayList<String>(map.keySet());
+            List<String> sortedKeys = new ArrayList<>(map.keySet());
             Collections.sort(sortedKeys);
 
             //Append sorted josn
@@ -148,7 +146,7 @@ public class GeoPayJsonSignedService {
             log.info("JSON STRING RESULT : " + jsonStringResult);
             log.info("JSON  DIGITAL SIGN : " + digitalSign);
 
-            signedJResponseDTO.setState("ok");
+            signedJResponseDTO.setSignedState("ok");
             signedJResponseDTO.setDigitalSign(digitalSign);
             signedJResponseDTO.setDetail(jsonStringResult);
 
@@ -156,12 +154,12 @@ public class GeoPayJsonSignedService {
             log.severe(ex.getMessage());
             signedJResponseDTO.setDetail(ex.getMessage());
             signedJResponseDTO.setDigitalSign("nosigned");
-            signedJResponseDTO.setState("error");
+            signedJResponseDTO.setSignedState("error");
         } catch (InvalidKeyException | SignatureException ex) {
             log.severe(ex.getMessage());
             signedJResponseDTO.setDetail(ex.getMessage());
             signedJResponseDTO.setDigitalSign("nosigned");
-            signedJResponseDTO.setState("error");
+            signedJResponseDTO.setSignedState("error");
         }
 
         return signedJResponseDTO;

@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import okhttp3.*;
@@ -32,8 +33,7 @@ import org.springframework.stereotype.Service;
 @EnableAsync
 public class GeoPayEchoService {
 
-    static Logger log = Logger.getLogger(GeoPayEchoService.class.getName());
-
+    static final Logger log = Logger.getLogger(GeoPayEchoService.class.getName());
     private final DateTimeFormatter p = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Value("${url.echotest}")
@@ -57,12 +57,8 @@ public class GeoPayEchoService {
 
     @Async
     public void executeGeoPayEchoTask() {
-
         String echoJson = buildGeoPayEchoJson();
-        log.info("ECHO JSON TO ADD : " + Optional.ofNullable(echoJson).get().toString());
-
         if (Optional.ofNullable(echoJson).isPresent()) {
-
             echoCounter++;
             OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(30, TimeUnit.SECONDS).writeTimeout(30, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
             MediaType mediaType = MediaType.parse("application/json");
@@ -72,30 +68,22 @@ public class GeoPayEchoService {
             Response response = null;
 
             try {
-                log.info("ECHO REQUEST  # " + echoCounter + " " + Optional.ofNullable(request).get().toString());
+                log.log(Level.INFO, "ECHO REQUEST  # {0} {1}", new Object[]{echoCounter, Optional.ofNullable(request).get().toString()});
                 response = client.newCall(request).execute();
-
-                if (!response.isSuccessful())
-                {
-                    log.severe("ECHO ERROR CALL # " + echoCounter + " " + Optional.ofNullable(response).get().toString());
- 
+                if (!response.isSuccessful()) {
+                    log.log(Level.SEVERE, "ECHO ERROR CALL # {0} {1}", new Object[]{echoCounter, Optional.ofNullable(response).get().toString()});
                 }
-                log.info("ECHO RESPONSE # " + echoCounter + " " + Optional.ofNullable(response).get().toString());
+                log.log(Level.INFO, "ECHO RESPONSE # {0} {1}", new Object[]{echoCounter, Optional.ofNullable(response).get().toString()});
 
             } catch (IOException e) {
-                log.severe(echoCounter + " " + e.getMessage());
-            }finally {
-            	if (response!=null && !response.isSuccessful())
-            	{
-            		response.body().close();
-            		response.close();
-            	}
-            	
+                log.log(Level.SEVERE, "{0} {1}", new Object[]{echoCounter, e.getMessage()});
+            } finally {
+                if (response != null && !response.isSuccessful()) {
+                    response.body().close();
+                    response.close();
+                }
             }
-
         }
-
-
     }
 
     private String buildGeoPayEchoJson() {

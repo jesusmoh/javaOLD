@@ -8,23 +8,21 @@ package core.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import core.dto.AppResponseHeaderDTO;
+import core.dto.SignedDTO;
 import core.dto.geopay.request.PaymentDTO;
 import core.dto.geopay.request.PaymentQueryDTO;
 import core.dto.geopay.request.VoidPaymentDTO;
+import core.dto.geopay.response.PaymentAndUrlDTO;
 import core.dto.geopay.response.PaymentTokenDTO;
 import core.dto.geopay.response.VoidPaymentResultDTO;
-
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import okhttp3.*;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -37,7 +35,7 @@ import org.springframework.stereotype.Service;
 @EnableAsync
 public class GeoPaymentService {
 
-    static Logger log = Logger.getLogger(GeoPaymentService.class.getName());
+    static final Logger log = Logger.getLogger(GeoPaymentService.class.getName());
 
     @Value("${geo.url.payment}")
     private String geoUrlPayment;
@@ -65,13 +63,13 @@ public class GeoPaymentService {
     public PaymentDTO signedAndBuildPaymentFromJson(String inputJson) {
         PaymentDTO paymentDTO = null;
         if (Optional.ofNullable(inputJson).isPresent()) {
-            AppResponseHeaderDTO responseHeaderDTO = jsonSignedService.singAnyJson(inputJson);
-            if (responseHeaderDTO.getState().equalsIgnoreCase("ok")) {
+            SignedDTO responseHeaderDTO = jsonSignedService.singAnyJson(inputJson);
+            if (responseHeaderDTO.getSignedState().equalsIgnoreCase("ok")) {
                 try {
                     paymentDTO = mapper.readValue(inputJson, PaymentDTO.class);
                     paymentDTO.getRequestHeader().setDigitalSign(responseHeaderDTO.getDigitalSignt());
                 } catch (IOException e) {
-                    log.severe(" " + e.getMessage());
+                    log.log(Level.SEVERE, " {0}", e.getMessage());
                 }
             }
         }
@@ -81,13 +79,13 @@ public class GeoPaymentService {
     public PaymentQueryDTO signedAndBuildPaymentQueryFromJson(String inputJson) {
         PaymentQueryDTO paymentQueryDTO = null;
         if (Optional.ofNullable(inputJson).isPresent()) {
-            AppResponseHeaderDTO responseHeaderDTO = jsonSignedService.singAnyJson(inputJson);
-            if (responseHeaderDTO.getState().equalsIgnoreCase("ok")) {
+            SignedDTO responseHeaderDTO = jsonSignedService.singAnyJson(inputJson);
+            if (responseHeaderDTO.getSignedState().equalsIgnoreCase("ok")) {
                 try {
                     paymentQueryDTO = mapper.readValue(inputJson, PaymentQueryDTO.class);
                     paymentQueryDTO.getRequestHeader().setDigitalSign(responseHeaderDTO.getDigitalSignt());
                 } catch (IOException e) {
-                    log.severe(" " + e.getMessage());
+                    log.log(Level.SEVERE, " {0}", e.getMessage());
                 }
             }
         }
@@ -97,13 +95,13 @@ public class GeoPaymentService {
     public VoidPaymentDTO signedAndBuildVoidPaymentFromJson(String inputJson) {
         VoidPaymentDTO voidPaymentDTO = null;
         if (Optional.ofNullable(inputJson).isPresent()) {
-            AppResponseHeaderDTO responseHeaderDTO = jsonSignedService.singAnyJson(inputJson);
-            if (responseHeaderDTO.getState().equalsIgnoreCase("ok")) {
+            SignedDTO responseHeaderDTO = jsonSignedService.singAnyJson(inputJson);
+            if (responseHeaderDTO.getSignedState().equalsIgnoreCase("ok")) {
                 try {
                 	voidPaymentDTO = mapper.readValue(inputJson, VoidPaymentDTO.class);
                 	voidPaymentDTO.getRequestHeader().setDigitalSign(responseHeaderDTO.getDigitalSignt());
                 } catch (IOException e) {
-                    log.severe(" " + e.getMessage());
+                    log.log(Level.SEVERE, " {0}", e.getMessage());
                 }
             }
         }
@@ -157,19 +155,52 @@ public class GeoPaymentService {
         return responsePaymentTokenDTO;
     }
 
-    public URL getTokenUrlByJsonSignedPayment(String jsonPaymentDTO) {
+    public PaymentAndUrlDTO getTokenUrlByJsonSignedPayment(String jsonPaymentDTO) {
         URL url = null;
-        PaymentTokenDTO paymentTokenDTO;
+        PaymentAndUrlDTO paymentAndUrlDTO=null;
+        PaymentTokenDTO paymentTokenDTO=null;
+        
         paymentTokenDTO = getTokenByJsonSignedPayment(jsonPaymentDTO);
         try {
             url = new URL(geoUrlRequestPayment.concat("?token=" + paymentTokenDTO.getToken()));
         } catch (MalformedURLException e) {
-            log.severe(" " + e.getMessage());
+            log.log(Level.SEVERE, " {0}", e.getMessage());
         }
-        return url;
+        
+        paymentAndUrlDTO= new PaymentAndUrlDTO();
+        paymentAndUrlDTO.setUrl(url);
+        paymentAndUrlDTO.setPaymentTokenDTO(paymentTokenDTO);
+        return paymentAndUrlDTO;
+    }
+    
+    public PaymentAndUrlDTO getTokenUrlByJsonSignedPaymentv2(String jsonPaymentDTO) {
+        PaymentAndUrlDTO paymentAndUrlDTO=null;
+        URL url = null;
+        PaymentDTO paymentDTO=null;
+        String jsonPaymentSigned= null;
+        
+        paymentDTO = signedAndBuildPaymentFromJson(jsonPaymentDTO);
+        try {
+            jsonPaymentSigned =mapper.writeValueAsString(paymentDTO);
+        } catch (JsonProcessingException ex) {
+            log.log(Level.SEVERE, " {0}", ex.getMessage());
+        }
+        
+        PaymentTokenDTO paymentTokenDTO;
+        paymentTokenDTO = getTokenByJsonSignedPayment(jsonPaymentSigned);
+        try {
+            url = new URL(geoUrlRequestPayment.concat("?token=" + paymentTokenDTO.getToken()));
+        } catch (MalformedURLException e) {
+            log.log(Level.SEVERE, " {0}", e.getMessage());
+        }
+        paymentAndUrlDTO= new PaymentAndUrlDTO();
+        paymentAndUrlDTO.setPaymentTokenDTO(paymentTokenDTO);
+        paymentAndUrlDTO.setUrl(url);
+        
+        return paymentAndUrlDTO;
     }
 
-	public VoidPaymentResultDTO getVoidPaymentResult(String jsonVoidPayment) {
+    public VoidPaymentResultDTO getVoidPaymentResult(String jsonVoidPayment) {
 		
 		VoidPaymentResultDTO voidPaymentResultDTO = null;
 		Response response = null;

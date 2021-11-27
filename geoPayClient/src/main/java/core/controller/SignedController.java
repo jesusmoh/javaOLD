@@ -1,19 +1,25 @@
 
 package core.controller;
 
-import core.dto.AppResponseHeaderDTO;
+import core.common.Actions;
+import core.common.ApiResponse;
+import core.common.ApiResponseCode;
+import static core.controller.PaymentController.log;
+import core.dto.SignedDTO;
 import core.service.GeoPayJsonSignedService;
 
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
+
 
 /**
  *
@@ -22,23 +28,30 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RestController
 public class SignedController {
     
-	static Logger log = Logger.getLogger(SignedController.class.getName());
-	
+    static final Logger log = Logger.getLogger(SignedController.class.getName());
+    
+    @Value("${m.signed.controller.ok}")
+    private String mSignedControllerOk;	
+    
+    @Value("${m.signed.controller.fail}")
+    private String mSignedControllerFail;	
+    
     @Autowired
     GeoPayJsonSignedService jsonSignedService;
    
     @PostMapping
     @RequestMapping("/signed")
-    public AppResponseHeaderDTO post(@RequestBody String jsonInput) {
+    public ResponseEntity<ApiResponse> post(@RequestBody String jsonInput) {
         
-    	 log.info("Client Signed Request");
-         return jsonSignedService.singAnyJson(jsonInput);
+        log.info(Actions.ACTION_REST_IN);
+        SignedDTO appResponseHeaderDTO =jsonSignedService.singAnyJson(jsonInput);
+        log.info(Actions.ACTION_REST_OUT);
+        return new ResponseEntity<>(new ApiResponse(true,mSignedControllerOk,appResponseHeaderDTO,ApiResponseCode.API_RESPONSE_OK), HttpStatus.OK);
     }
     
     @ExceptionHandler(Exception.class)
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Can't signed the JSON")
-    public void handleError() {
-    	 log.severe("Can't signed the JSON");
+    public ResponseEntity <ApiResponse> handleError() {
+          return new ResponseEntity<>(new ApiResponse(false,mSignedControllerFail,"",ApiResponseCode.API_RESPONSE_FAIL), HttpStatus.INTERNAL_SERVER_ERROR);
     }
     
 }

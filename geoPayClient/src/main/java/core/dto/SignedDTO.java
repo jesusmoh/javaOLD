@@ -8,28 +8,28 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "state",
+    "stateSigned",
     "digitalSign",
     "detail"
 })
 @Generated("jsonschema2pojo")
-public class AppResponseHeaderDTO {
+public class SignedDTO {
 
-    @JsonProperty("state")
-    private String state;
+    @JsonProperty("stateSigned")
+    private String stateSigned;
     @JsonProperty("digitalSign")
     private String digitalSign;
     @JsonProperty("detail")
     private String detail;
 
-    @JsonProperty("state")
-    public String getState() {
-        return state;
+    @JsonProperty("stateSigned")
+    public String getSignedState() {
+        return stateSigned;
     }
 
-    @JsonProperty("state")
-    public void setState(String state) {
-        this.state = state;
+    @JsonProperty("stateSigned")
+    public void setSignedState(String state) {
+        this.stateSigned = state;
     }
 
     @JsonProperty("digitalSign")
