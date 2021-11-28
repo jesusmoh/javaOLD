@@ -25,7 +25,7 @@ import core.model.geopay.RequestHeader;
     "cardCVV"
 })
 @Generated("jsonschema2pojo")
-public class VoidPaymentDTO {
+public class VoidPaymentRequestDTO {
 
     @JsonProperty("requestHeader")
     private RequestHeader requestHeader;

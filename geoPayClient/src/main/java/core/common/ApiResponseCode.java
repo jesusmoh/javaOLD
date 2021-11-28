@@ -11,7 +11,5 @@ package core.common;
  */
 public class ApiResponseCode {
     public static final int API_RESPONSE_OK = 1001;
-    public static final int API_RESPONSE_FAIL = 1002;
-    
-    
+    public static final int API_RESPONSE_FAIL = 1002;   
 }

@@ -44,7 +44,7 @@ public class SignedController {
     public ResponseEntity<ApiResponse> post(@RequestBody String jsonInput) {
         
         log.info(Actions.ACTION_REST_IN);
-        SignedDTO appResponseHeaderDTO =jsonSignedService.singAnyJson(jsonInput);
+        SignedDTO appResponseHeaderDTO =jsonSignedService.createDigitalSignForAJson(jsonInput);
         log.info(Actions.ACTION_REST_OUT);
         return new ResponseEntity<>(new ApiResponse(true,mSignedControllerOk,appResponseHeaderDTO,ApiResponseCode.API_RESPONSE_OK), HttpStatus.OK);
     }

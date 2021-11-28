@@ -36,7 +36,7 @@ import core.model.geopay.ShippingAddress;
     "authorizerAdditionalData"
 })
 @Generated("jsonschema2pojo")
-public class PaymentDTO {
+public class PaymentRequestDTO {
 
     @JsonProperty("requestHeader")
     private RequestHeader requestHeader;

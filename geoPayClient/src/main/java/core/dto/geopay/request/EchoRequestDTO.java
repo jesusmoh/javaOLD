@@ -12,7 +12,7 @@ import core.model.geopay.RequestHeader;
 "requestHeader"
 })
 @Generated("jsonschema2pojo")
-public class EchoDTO {
+public class EchoRequestDTO {
 
 @JsonProperty("requestHeader")
 private RequestHeader requestHeader;

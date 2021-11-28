@@ -1,14 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package core.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import core.dto.geopay.request.EchoDTO;
+import core.dto.geopay.request.EchoRequestDTO;
 import core.model.geopay.RequestHeader;
 
 import java.io.IOException;
@@ -18,7 +12,6 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import okhttp3.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -57,28 +50,37 @@ public class GeoPayEchoService {
 
     @Async
     public void executeGeoPayEchoTask() {
+        
         String echoJson = buildGeoPayEchoJson();
+
         if (Optional.ofNullable(echoJson).isPresent()) {
             echoCounter++;
             OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(30, TimeUnit.SECONDS).writeTimeout(30, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
             MediaType mediaType = MediaType.parse("application/json");
             RequestBody body = RequestBody.create(mediaType, echoJson);
             Request request = new Request.Builder().url(echoTest).method("POST", body).addHeader("Content-Type", "application/json").build();
+            log.log(Level.INFO, "ECHO REQUEST SENT  # {0} {1}", new Object[]{echoCounter, Optional.ofNullable(request).get().toString()});
 
             Response response = null;
 
             try {
-                log.log(Level.INFO, "ECHO REQUEST  # {0} {1}", new Object[]{echoCounter, Optional.ofNullable(request).get().toString()});
                 response = client.newCall(request).execute();
-                if (!response.isSuccessful()) {
-                    log.log(Level.SEVERE, "ECHO ERROR CALL # {0} {1}", new Object[]{echoCounter, Optional.ofNullable(response).get().toString()});
+                if (response == null) {
+                    log.log(Level.SEVERE, "ECHO ERROR # {0} {1}", new Object[]{echoCounter, Optional.ofNullable(response).get().toString()});
+                } else 
+                {
+                    if (response.isSuccessful()) 
+                    {
+                        String jsonData = response.body().string();
+                        if (jsonSignedService.checkDigitalSignForAJson(jsonData)) {
+                            log.log(Level.INFO, "ECHO RESPONSE RECEIVED # {0} {1}", new Object[]{echoCounter, Optional.ofNullable(response).get().toString()});
+                        }
+                    }
                 }
-                log.log(Level.INFO, "ECHO RESPONSE # {0} {1}", new Object[]{echoCounter, Optional.ofNullable(response).get().toString()});
-
             } catch (IOException e) {
                 log.log(Level.SEVERE, "{0} {1}", new Object[]{echoCounter, e.getMessage()});
             } finally {
-                if (response != null && !response.isSuccessful()) {
+                if (response != null && response.isSuccessful()) {
                     response.body().close();
                     response.close();
                 }
@@ -88,7 +90,7 @@ public class GeoPayEchoService {
 
     private String buildGeoPayEchoJson() {
 
-        EchoDTO echoDTO = new EchoDTO();
+        EchoRequestDTO echoDTO = new EchoRequestDTO();
         RequestHeader requestHeader = new RequestHeader();
         String jsonEchoDTO = "";
         String signedtJsonFromEchoDTO = "";
@@ -104,7 +106,7 @@ public class GeoPayEchoService {
 
             echoDTO.setRequestHeader(requestHeader);
             jsonEchoDTO = mapper.writeValueAsString(echoDTO);
-            String ds = jsonSignedService.singAnyJson(jsonEchoDTO).getDigitalSignt();
+            String ds = jsonSignedService.createDigitalSignForAJson(jsonEchoDTO).getDigitalSignt();
             echoDTO.getRequestHeader().setDigitalSign(ds);
             signedtJsonFromEchoDTO = mapper.writeValueAsString(echoDTO);
 

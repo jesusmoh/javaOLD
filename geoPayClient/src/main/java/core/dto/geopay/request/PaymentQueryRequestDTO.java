@@ -18,7 +18,7 @@ import core.model.geopay.RequestHeader;
     "accessToken"
 })
 @Generated("jsonschema2pojo")
-public class PaymentQueryDTO {
+public class PaymentQueryRequestDTO {
 
     @JsonProperty("requestHeader")
     private RequestHeader requestHeader;

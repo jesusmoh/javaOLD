@@ -11,9 +11,9 @@ import java.net.URL;
  *
  * @author jesus
  */
-public class PaymentAndUrlDTO {
+public class PaymentAndUrlResponseDTO {
     private URL url ;
-    private PaymentTokenDTO paymentTokenDTO;
+    private PaymentTokenResponseDTO paymentTokenDTO;
 
     public URL getUrl() {
         return url;
@@ -23,11 +23,11 @@ public class PaymentAndUrlDTO {
         this.url = url;
     }
 
-    public PaymentTokenDTO getPaymentTokenDTO() {
+    public PaymentTokenResponseDTO getPaymentTokenDTO() {
         return paymentTokenDTO;
     }
 
-    public void setPaymentTokenDTO(PaymentTokenDTO paymentTokenDTO) {
+    public void setPaymentTokenDTO(PaymentTokenResponseDTO paymentTokenDTO) {
         this.paymentTokenDTO = paymentTokenDTO;
     }
 
