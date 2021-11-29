@@ -63,7 +63,8 @@ public class GeoPaymentService {
 
     public PaymentRequestDTO signedAndBuildPaymentFromJson(String inputJson) {
         PaymentRequestDTO paymentDTO = null;
-        if (Optional.ofNullable(inputJson).isPresent()) {
+        if (Optional.ofNullable(inputJson).isPresent()) 
+        {
             SignedDTO signedDTO = jsonSignedService.createDigitalSignForAJson(inputJson);
             if (signedDTO.getSignedState().equalsIgnoreCase(CodeSignedResponseCollection.API_RESPONSE_SIGNED_OK)) {
                 try {
@@ -71,6 +72,7 @@ public class GeoPaymentService {
                     paymentDTO.getRequestHeader().setDigitalSign(signedDTO.getDigitalSignt());
                 } catch (IOException e) {
                     log.log(Level.SEVERE, " {0}", e.getMessage());
+                    return paymentDTO;
                 }
             }
         }
@@ -110,9 +112,7 @@ public class GeoPaymentService {
     }
 
     public PaymentTokenResponseDTO getTokenByJsonSignedPayment(String jsonPaymentDTO) {
-
         PaymentTokenResponseDTO responsePaymentTokenDTO = null;
-
         if (Optional.ofNullable(jsonPaymentDTO).isPresent()) {
 
             final OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(restTimeoutSecond, TimeUnit.SECONDS).writeTimeout(restTimeoutWriteSecond, TimeUnit.SECONDS).readTimeout(restTimeoutReadSecond, TimeUnit.SECONDS).build();
@@ -187,6 +187,7 @@ public class GeoPaymentService {
         PaymentTokenResponseDTO paymentTokenDTO = null;
 
         paymentDTO = signedAndBuildPaymentFromJson(jsonPaymentDTO);
+        
         try {
             jsonPaymentSigned = mapper.writeValueAsString(paymentDTO);
         } catch (JsonProcessingException ex) {
@@ -197,7 +198,7 @@ public class GeoPaymentService {
         paymentTokenDTO = getTokenByJsonSignedPayment(jsonPaymentSigned);
         try {
             url = new URL(geoUrlRequestPayment.concat("?token=" + paymentTokenDTO.getToken()));
-        } catch (MalformedURLException e) {
+        } catch (Exception e) {
             log.log(Level.SEVERE, " {0}", e.getMessage());
             return paymentAndUrlDTO;
         }
