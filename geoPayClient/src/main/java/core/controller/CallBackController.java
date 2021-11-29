@@ -6,7 +6,7 @@
 package core.controller;
 
 import core.common.ApiResponse;
-import core.common.ApiResponseCode;
+import core.common.util.CodeApiResponseCollection;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,12 +32,12 @@ public class CallBackController {
     
     @PostMapping("/geoPayPayment")
     public ResponseEntity<?> post(@RequestBody String input) {
-        return new ResponseEntity<>(new ApiResponse(true, mCallBackControllerOk, input, ApiResponseCode.API_RESPONSE_OK), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse(true, mCallBackControllerOk, input, CodeApiResponseCollection.API_RESPONSE_OK), HttpStatus.OK);
     }
     
     @ExceptionHandler(Exception.class)
     public ResponseEntity <ApiResponse> handleError() {
-          return new ResponseEntity<>(new ApiResponse(false,mCallBackControllerFail,"",ApiResponseCode.API_RESPONSE_FAIL), HttpStatus.INTERNAL_SERVER_ERROR);
+          return new ResponseEntity<>(new ApiResponse(false,mCallBackControllerFail,"",CodeApiResponseCollection.API_RESPONSE_FAIL), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

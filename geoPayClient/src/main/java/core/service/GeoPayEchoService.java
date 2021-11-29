@@ -29,6 +29,15 @@ public class GeoPayEchoService {
     static final Logger log = Logger.getLogger(GeoPayEchoService.class.getName());
     private final DateTimeFormatter p = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
+    @Value("${rest.timeout.second}")
+    private Long restTimeoutSecond;
+
+    @Value("${rest.timeout.read.second}")
+    private Long restTimeoutReadSecond;
+
+    @Value("${rest.timeout.write.second}")
+    private Long restTimeoutWriteSecond;
+
     @Value("${url.echotest}")
     private String echoTest;
 
@@ -50,12 +59,12 @@ public class GeoPayEchoService {
 
     @Async
     public void executeGeoPayEchoTask() {
-        
+
         String echoJson = buildGeoPayEchoJson();
 
         if (Optional.ofNullable(echoJson).isPresent()) {
             echoCounter++;
-            OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(30, TimeUnit.SECONDS).writeTimeout(30, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
+            OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(restTimeoutSecond, TimeUnit.SECONDS).writeTimeout(restTimeoutWriteSecond, TimeUnit.SECONDS).readTimeout(restTimeoutReadSecond, TimeUnit.SECONDS).build();
             MediaType mediaType = MediaType.parse("application/json");
             RequestBody body = RequestBody.create(mediaType, echoJson);
             Request request = new Request.Builder().url(echoTest).method("POST", body).addHeader("Content-Type", "application/json").build();
@@ -67,10 +76,8 @@ public class GeoPayEchoService {
                 response = client.newCall(request).execute();
                 if (response == null) {
                     log.log(Level.SEVERE, "ECHO ERROR # {0} {1}", new Object[]{echoCounter, Optional.ofNullable(response).get().toString()});
-                } else 
-                {
-                    if (response.isSuccessful()) 
-                    {
+                } else {
+                    if (response.isSuccessful()) {
                         String jsonData = response.body().string();
                         if (jsonSignedService.checkDigitalSignForAJson(jsonData)) {
                             log.log(Level.INFO, "ECHO RESPONSE RECEIVED # {0} {1}", new Object[]{echoCounter, Optional.ofNullable(response).get().toString()});

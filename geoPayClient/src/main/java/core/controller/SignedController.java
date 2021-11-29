@@ -3,7 +3,7 @@ package core.controller;
 
 import core.common.Actions;
 import core.common.ApiResponse;
-import core.common.ApiResponseCode;
+import core.common.util.CodeApiResponseCollection;
 import static core.controller.PaymentController.log;
 import core.dto.SignedDTO;
 import core.service.GeoPayJsonSignedService;
@@ -46,12 +46,12 @@ public class SignedController {
         log.info(Actions.ACTION_REST_IN);
         SignedDTO appResponseHeaderDTO =jsonSignedService.createDigitalSignForAJson(jsonInput);
         log.info(Actions.ACTION_REST_OUT);
-        return new ResponseEntity<>(new ApiResponse(true,mSignedControllerOk,appResponseHeaderDTO,ApiResponseCode.API_RESPONSE_OK), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse(true,mSignedControllerOk,appResponseHeaderDTO,CodeApiResponseCollection.API_RESPONSE_OK), HttpStatus.OK);
     }
     
     @ExceptionHandler(Exception.class)
     public ResponseEntity <ApiResponse> handleError() {
-          return new ResponseEntity<>(new ApiResponse(false,mSignedControllerFail,"",ApiResponseCode.API_RESPONSE_FAIL), HttpStatus.INTERNAL_SERVER_ERROR);
+          return new ResponseEntity<>(new ApiResponse(false,mSignedControllerFail,"",CodeApiResponseCollection.API_RESPONSE_FAIL), HttpStatus.OK);
     }
     
 }

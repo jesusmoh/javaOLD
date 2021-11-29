@@ -2,7 +2,7 @@
 package core.controller;
 import core.common.Actions;
 import core.common.ApiResponse;
-import core.common.ApiResponseCode;
+import core.common.util.CodeApiResponseCollection;
 import core.dto.geopay.request.PaymentRequestDTO;
 import core.dto.geopay.request.PaymentQueryRequestDTO;
 import core.dto.geopay.request.VoidPaymentRequestDTO;
@@ -47,7 +47,7 @@ public class PaymentController {
     	log.info(Actions.ACTION_REST_IN);
         PaymentRequestDTO paymentDTO=geoPaymentService.signedAndBuildPaymentFromJson(jsonInputPayment);
         log.info(Actions.ACTION_REST_OUT);
-         return new ResponseEntity<>(new ApiResponse(true,mPaymentControllerOk,paymentDTO,ApiResponseCode.API_RESPONSE_OK), HttpStatus.OK);
+         return new ResponseEntity<>(new ApiResponse(true,mPaymentControllerOk,paymentDTO,CodeApiResponseCollection.API_RESPONSE_OK), HttpStatus.OK);
     }
     
     @PostMapping
@@ -56,7 +56,7 @@ public class PaymentController {
         log.info(Actions.ACTION_REST_IN);
         PaymentTokenResponseDTO paymentTokenDTO = geoPaymentService.getTokenByJsonSignedPayment(jsonInputPayment);
         log.info(Actions.ACTION_REST_OUT);
-    	return new ResponseEntity<>(new ApiResponse(true,mPaymentControllerOk,paymentTokenDTO,Integer.valueOf(paymentTokenDTO.getResponseHeader().getResponseCode())), HttpStatus.OK);
+    	return new ResponseEntity<>(new ApiResponse(true,mPaymentControllerOk,paymentTokenDTO,CodeApiResponseCollection.API_RESPONSE_OK), HttpStatus.OK);
     }
     
     @PostMapping
@@ -65,7 +65,7 @@ public class PaymentController {
         log.info(Actions.ACTION_REST_IN);
         PaymentAndUrlResponseDTO paymentAndUrlDTO = geoPaymentService.getTokenUrlByJsonSignedPayment(jsonInputPayment);
         log.info(Actions.ACTION_REST_OUT);
-        return new ResponseEntity<>(new ApiResponse(true, mPaymentControllerOk, paymentAndUrlDTO.getUrl(), Integer.valueOf(paymentAndUrlDTO.getPaymentTokenDTO().getResponseHeader().getResponseCode())), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse(true, mPaymentControllerOk, paymentAndUrlDTO.getUrl(), CodeApiResponseCollection.API_RESPONSE_OK), HttpStatus.OK);
     }
     
     @PostMapping
@@ -74,7 +74,7 @@ public class PaymentController {
         log.info(Actions.ACTION_REST_IN);
         PaymentAndUrlResponseDTO paymentAndUrlDTO = geoPaymentService.getTokenUrlByJsonSignedPaymentv2(jsonInputPayment);
         log.info(Actions.ACTION_REST_OUT);
-        return new ResponseEntity<>(new ApiResponse(true, mPaymentControllerOk, paymentAndUrlDTO.getUrl(), Integer.valueOf(paymentAndUrlDTO.getPaymentTokenDTO().getResponseHeader().getResponseCode())), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse(true, mPaymentControllerOk, paymentAndUrlDTO.getUrl(), CodeApiResponseCollection.API_RESPONSE_OK), HttpStatus.OK);
     }
     
     @PostMapping
@@ -83,7 +83,7 @@ public class PaymentController {
     	log.info(Actions.ACTION_REST_IN);
         PaymentQueryRequestDTO paymentQueryDTO =geoPaymentService.signedAndBuildPaymentQueryFromJson(jsonInputPayment);
         log.info(Actions.ACTION_REST_OUT);
-        return new ResponseEntity<>(new ApiResponse(true, mPaymentControllerOk, paymentQueryDTO, ApiResponseCode.API_RESPONSE_OK), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse(true, mPaymentControllerOk, paymentQueryDTO, CodeApiResponseCollection.API_RESPONSE_OK), HttpStatus.OK);
     }
     
     @PostMapping
@@ -92,7 +92,7 @@ public class PaymentController {
     	log.info(Actions.ACTION_REST_IN); 
         VoidPaymentRequestDTO voidPaymentDTO =geoPaymentService.signedAndBuildVoidPaymentFromJson(jsonInputPayment);
         log.info(Actions.ACTION_REST_OUT);
-         return new ResponseEntity<>(new ApiResponse(true, mPaymentControllerOk, voidPaymentDTO, ApiResponseCode.API_RESPONSE_OK), HttpStatus.OK);
+         return new ResponseEntity<>(new ApiResponse(true, mPaymentControllerOk, voidPaymentDTO, CodeApiResponseCollection.API_RESPONSE_OK), HttpStatus.OK);
     }
     
     @PostMapping
@@ -101,12 +101,12 @@ public class PaymentController {
     	log.info(Actions.ACTION_REST_IN);
         VoidPaymentResponseDTO paymentResultDTO =geoPaymentService.getVoidPaymentResult(jsonInputPayment);
         log.info(Actions.ACTION_REST_OUT);
-        return new ResponseEntity<>(new ApiResponse(true, mPaymentControllerOk, paymentResultDTO, Integer.valueOf(paymentResultDTO.getResponseHeader().getResponseCode())), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse(true, mPaymentControllerOk, paymentResultDTO, CodeApiResponseCollection.API_RESPONSE_OK), HttpStatus.OK);
     }
     
     @ExceptionHandler(Exception.class)
     public ResponseEntity <ApiResponse> handleError() {
-          return new ResponseEntity<>(new ApiResponse(false,mPaymentControllerFail,"",ApiResponseCode.API_RESPONSE_FAIL), HttpStatus.INTERNAL_SERVER_ERROR);
+          return new ResponseEntity<>(new ApiResponse(false,mPaymentControllerFail,"",CodeApiResponseCollection.API_RESPONSE_FAIL), HttpStatus.OK);
     }
     
 }

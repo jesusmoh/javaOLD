@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package core.common;
+package core.common.util;
 
 /**
  *
  * @author jesus
  */
-public class ApiResponseCode {
+public class CodeApiResponseCollection {
     public static final int API_RESPONSE_OK = 1001;
-    public static final int API_RESPONSE_FAIL = 1002;   
+    public static final int API_RESPONSE_FAIL = 1002; 
+   
 }

@@ -10,11 +10,10 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import core.common.util.CodeSignedResponseCollection;
 import core.dto.SignedDTO;
 import core.dto.geopay.response.ResponseHeaderDTO;
-import core.model.geopay.ResponseHeader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.KeyStore;
@@ -80,11 +79,11 @@ public class GeoPayJsonSignedService {
 
     @PostConstruct
     public void init() {
-
+        
         mapper = new ObjectMapper();
         mapper.enable(DeserializationFeature.FAIL_ON_READING_DUP_TREE_KEY);
         mapper.configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
-
+        
         try {
             signature = Signature.getInstance("SHA1withRSA");
         } catch (NoSuchAlgorithmException e) {
@@ -94,17 +93,12 @@ public class GeoPayJsonSignedService {
         try {
             keyStore = KeyStore.getInstance("PKCS12");
             keyStore.load(new FileInputStream(keyStoreDirectory), keystorePass.toCharArray());
-
             privateKey = (PrivateKey) keyStore.getKey(privateKeyAlias, privateKeyPass.toCharArray());
             publicKey = keyStore.getCertificate(publicKeyAlias).getPublicKey();
-
-        } catch (FileNotFoundException | KeyStoreException ex) {
-            log.severe(ex.getMessage());
-        } catch (NoSuchAlgorithmException | UnrecoverableKeyException | CertificateException | IOException ex) {
+            log.log(Level.INFO, "keyStoreDirectory OK on {0}", keyStoreDirectory);
+        } catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException | CertificateException | IOException ex) {
             log.severe(ex.getMessage());
         }
-
-        log.log(Level.INFO, "keyStoreDirectory ok on {0}", keyStoreDirectory);
 
     }
 
@@ -156,20 +150,15 @@ public class GeoPayJsonSignedService {
             log.log(Level.INFO, "JSON STRING RESULT : {0}", jsonStringResult);
             log.log(Level.INFO, "JSON  DIGITAL SIGN : {0}", digitalSign);
 
-            signedJResponseDTO.setSignedState("ok");
+            signedJResponseDTO.setSignedState(CodeSignedResponseCollection.API_RESPONSE_SIGNED_OK);
             signedJResponseDTO.setDigitalSign(digitalSign);
             signedJResponseDTO.setDetail(jsonStringResult);
 
-        } catch (JsonProcessingException ex) {
+        } catch (JsonProcessingException |InvalidKeyException | SignatureException ex) {
             log.severe(ex.getMessage());
             signedJResponseDTO.setDetail(ex.getMessage());
-            signedJResponseDTO.setDigitalSign("nosigned");
-            signedJResponseDTO.setSignedState("error");
-        } catch (InvalidKeyException | SignatureException ex) {
-            log.severe(ex.getMessage());
-            signedJResponseDTO.setDetail(ex.getMessage());
-            signedJResponseDTO.setDigitalSign("nosigned");
-            signedJResponseDTO.setSignedState("error");
+            signedJResponseDTO.setDigitalSign(null);
+            signedJResponseDTO.setSignedState(CodeSignedResponseCollection.API_RESPONSE_SIGNED_FAIL);
         }
 
         return signedJResponseDTO;
