@@ -2,7 +2,7 @@ package core.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import core.dto.geopay.request.EchoRequestDTO;
+import core.dto.geopay.request.RequestEchoDTO;
 import core.model.geopay.RequestHeader;
 
 import java.io.IOException;
@@ -97,7 +97,7 @@ public class GeoPayEchoService {
 
     private String buildGeoPayEchoJson() {
 
-        EchoRequestDTO echoDTO = new EchoRequestDTO();
+        RequestEchoDTO echoDTO = new RequestEchoDTO();
         RequestHeader requestHeader = new RequestHeader();
         String jsonEchoDTO = "";
         String signedtJsonFromEchoDTO = "";

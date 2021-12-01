@@ -4,12 +4,9 @@ package core.controller;
 import core.common.Actions;
 import core.common.ApiResponse;
 import core.common.util.CodeApiResponseCollection;
-import static core.controller.PaymentController.log;
 import core.dto.SignedDTO;
 import core.service.GeoPayJsonSignedService;
-
 import java.util.logging.Logger;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RestController;

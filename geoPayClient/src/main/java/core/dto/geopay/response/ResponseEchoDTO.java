@@ -17,7 +17,7 @@ import core.model.geopay.ResponseHeader;
 "responseHeader"
 })
 @Generated("jsonschema2pojo")
-public class EchoResponseDTO {
+public class ResponseEchoDTO {
 
 @JsonProperty("responseHeader")
 private ResponseHeader responseHeader;

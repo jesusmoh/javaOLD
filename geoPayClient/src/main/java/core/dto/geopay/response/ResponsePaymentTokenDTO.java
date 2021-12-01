@@ -13,7 +13,7 @@ import core.model.geopay.ResponseHeader;
     "token"
 })
 @Generated("jsonschema2pojo")
-public class PaymentTokenResponseDTO {
+public class ResponsePaymentTokenDTO {
 
     @JsonProperty("responseHeader")
     private ResponseHeader responseHeader;
