@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="jugador1" class="core.model.Jugador" scope="prototype">
+        <property name="id" value="1"></property>
+        <property name="nombre" value="Jesus"></property>
+        <property name="camiseta" ref="camiseta1"></property>
+    </bean>
+
+    <bean id="jugador2" class="core.model.Jugador" autowire="byName" >
+        <property name="id" value="1"></property>
+        <property name="nombre" value="Enzo"></property>
+    </bean>
+
+
+    <bean id="camiseta" class="core.model.Camiseta">
+        <property name="id" value="1"></property>
+        <property name="numero" value="1"></property>
+        <property name="marca" ref="nike"></property>
+    </bean>
+
+    <bean id="camiseta1" class="core.model.Camiseta">
+        <property name="id" value="1"></property>
+        <property name="numero" value="10"></property>
+        <property name="marca" ref="nike"></property>
+    </bean>
+
+    <bean id="camiseta2" class="core.model.Camiseta">
+        <property name="id" value="1"></property>
+        <property name="numero" value="10"></property>
+        <property name="marca" ref="adidas"></property>
+    </bean>
+
+    <bean id="nike" class="core.model.Marca">
+        <property name="id" value="1"></property>
+        <property name="nombre" value="NIKE"></property>
+    </bean>
+
+    <bean id="adidas" class="core.model.Marca">
+        <property name="id" value="2"></property>
+        <property name="nombre" value="ADIDAS"></property>
+    </bean>
+
+</beans>
