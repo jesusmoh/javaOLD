@@ -18,6 +18,8 @@ import core.mapper.UserMapper;
 import core.security.jwt.JwtTokenProvider;
 import core.persistence.IUserRepository;
 import core.service.IUserService;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
@@ -50,10 +52,10 @@ public class UserService implements IUserService{
 
     @Override
     public TokenDTO signup(SignUpUserRequestDTO dto) {
-        if (!userRepository.existsByUsername(dto.getUsername())) {
+        if (!userRepository.existsByUsername(dto.getUserName())) {
             dto.setPassword(passwordEncoder.encode(dto.getPassword()));
             AppUser appUser = userRepository.save(UserMapper.getAppUser(dto));
-            String t=jwtTokenProvider.createToken(dto.getUsername(), appUser);
+            String t=jwtTokenProvider.createToken(dto.getUserName(), appUser);
             TokenDTO tokenDTO=new TokenDTO();
             tokenDTO.setToken(t);
             return tokenDTO;
@@ -73,10 +75,14 @@ public class UserService implements IUserService{
 
     @Override
     public UserResponseDTO save(UserResquestDTO dto) {
-        AppUser appUser = userRepository.save(UserMapper.getAppUser(dto));
-        if (appUser == null) {
+        if (search(dto.getUserName())!=null) {
             throw new CustomException(AppHttpMessagess.UNPROCESSABLE_ENTITY, HttpStatus.UNPROCESSABLE_ENTITY);
         }
+        AppUser appUser = userRepository.save(UserMapper.getAppUser(dto));
+        if (appUser == null ) {
+            throw new CustomException(AppHttpMessagess.UNPROCESSABLE_ENTITY, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+       
         return UserMapper.getUserResponseDTO(appUser);
     }
 
@@ -101,6 +107,13 @@ public class UserService implements IUserService{
     @Override
     public String refresh(String username) {
         return jwtTokenProvider.createToken(username, userRepository.findByUsername(username));
+    }
+
+    @Override
+    public List<UserResponseDTO> allUsers() {
+        List<UserResponseDTO> l = new ArrayList<>();
+        userRepository.allUser().stream().forEach(x -> l.add(UserMapper.getUserResponseDTO(x)));
+        return l;
     }
 
 }

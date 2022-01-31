@@ -29,14 +29,15 @@ public class AppUser implements Serializable {
     private Integer id;
 
     @Size(min = 4, max = 20)
-    @Column(unique = true, nullable = false)
-    private String username;
+    @Column(name = "username",unique = true, nullable = false)
+    private String userName;
 
     @Column(unique = true, nullable = false)
     @ApiEmailValidator
     private String email;
 
-    @Size(min = 8, max = 255)
+    @Size(min = 8, max = 25)
+    @Column(nullable = false)
     private String password;
     
     @Column(name="roles")

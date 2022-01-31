@@ -7,6 +7,7 @@ package core.validation.validators;
 
 import core.dto.request.SignInUserRequestDTO;
 import core.dto.request.SignUpUserRequestDTO;
+import core.dto.request.UserResquestDTO;
 
 /**
  *
@@ -17,4 +18,6 @@ public interface IUserValidator {
     public void validator(SignInUserRequestDTO dto);
     
     public void validator(SignUpUserRequestDTO dto);
+
+    public void validator(UserResquestDTO dto);
 }

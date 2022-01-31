@@ -3,6 +3,7 @@ package core.persistence.imp;
 import core.entities.AppUser;
 import core.persistence.IUserRepository;
 import core.persistence.imp.dao.PostgresUserDAO;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +37,12 @@ public class UserRepositoryImp implements IUserRepository {
     public AppUser save(AppUser appUser) {
         return postgresUserDAO.save(appUser);
     }
-    
+
+    @Override
+    @Transactional
+    public List<AppUser> allUser() {
+         return postgresUserDAO.allUser();
+    }
 
 
 }

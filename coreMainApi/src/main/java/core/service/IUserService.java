@@ -11,6 +11,7 @@ import core.dto.request.SignUpUserRequestDTO;
 import core.dto.request.UserResquestDTO;
 import core.dto.response.TokenDTO;
 import core.dto.response.UserResponseDTO;
+import java.util.List;
 
 public interface IUserService {
 
@@ -27,4 +28,6 @@ public interface IUserService {
     UserResponseDTO whoami(HttpServletRequest req);
 
     String refresh(String username);
+    
+    List<UserResponseDTO> allUsers();
 }

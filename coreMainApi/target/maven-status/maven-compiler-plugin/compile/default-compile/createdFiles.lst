@@ -1,10 +1,13 @@
 core\commons\AppUserRoles.class
+core\commons\AppHttpMessagess.class
 core\persistence\imp\UserRepositoryImp.class
 core\security\WebSecurityConfig.class
 core\security\jwt\JwtTokenFilter.class
 core\validation\annotations\impl\ApiPinValidatorImpl.class
 core\dto\response\TokenDTO.class
 core\security\jwt\JwtTokenFilterConfigurer.class
+core\service\impl\UserService.class
+.netbeans_automatic_build
 core\validation\annotations\impl\ApiEmailValidatorImpl.class
 core\App.class
 core\controller\rest\UserController.class
@@ -17,6 +20,7 @@ core\dto\request\SignUpUserRequestDTO.class
 core\service\IUserService.class
 core\dto\response\UserResponseDTO.class
 core\persistence\imp\dao\PostgresUserDAO.class
+core\commons\AppBDMessagess.class
 core\mapper\UserMapper.class
 core\security\impl\MyUserDetailsImpl.class
 core\entities\AppUser.class

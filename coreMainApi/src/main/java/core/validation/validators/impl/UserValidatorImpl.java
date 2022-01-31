@@ -7,6 +7,7 @@ package core.validation.validators.impl;
 
 import core.dto.request.SignInUserRequestDTO;
 import core.dto.request.SignUpUserRequestDTO;
+import core.dto.request.UserResquestDTO;
 import core.exception.CustomException;
 import core.validation.validators.IUserValidator;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,7 +31,6 @@ public class UserValidatorImpl implements IUserValidator {
 
     @Override
     public void validator(SignInUserRequestDTO dto ) {
-
         if (!dto.getUserName().matches(validatorUserNameRegex) && !dto.getUserName().equalsIgnoreCase("admin") ) {
             throw new CustomException(validatorUserNameMessages, HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -39,11 +39,16 @@ public class UserValidatorImpl implements IUserValidator {
      @Override
     public void validator(SignUpUserRequestDTO dto ) {
 
-        if (!dto.getUsername().matches(validatorUserNameRegex)) {
+        if (!dto.getUserName().matches(validatorUserNameRegex)) {
             throw new CustomException(validatorUserNameMessages, HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
-    
-   
+
+    @Override
+    public void validator(UserResquestDTO dto) {
+       if (!dto.getUserName().matches(validatorUserNameRegex) && !dto.getUserName().equalsIgnoreCase("admin") ) {
+            throw new CustomException(validatorUserNameMessages, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+    }
 
 }

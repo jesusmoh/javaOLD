@@ -8,7 +8,7 @@ public class UserResquestDTO {
 
   private Integer id;
 
-  private String username;
+  private String userName;
 
   private String email;
 
