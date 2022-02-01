@@ -66,24 +66,28 @@ public class UserService implements IUserService{
 
     @Override
     public UserResponseDTO delete(String username) {
-        AppUser appUser = userRepository.deleteByUsername(username);
-        if (appUser == null) {
-            throw new CustomException(AppHttpMessagess.NOT_FOUND, HttpStatus.NOT_FOUND);
+        try {
+            AppUser appUser = userRepository.deleteByUsername(username);
+            if (appUser == null) {
+                throw new CustomException(AppHttpMessagess.NOT_FOUND, HttpStatus.NOT_FOUND);
+            }
+            return UserMapper.getUserResponseDTO(appUser);
+        } catch (Exception exception) {
+            throw new CustomException(AppHttpMessagess.UNPROCESSABLE_ENTITY, HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        return UserMapper.getUserResponseDTO(appUser);
     }
 
     @Override
     public UserResponseDTO save(UserResquestDTO dto) {
-        if (search(dto.getUserName())!=null) {
+        try {
+            AppUser appUser = userRepository.save(UserMapper.getAppUser(dto));
+            if (appUser == null) 
+                  throw new CustomException(AppHttpMessagess.UNPROCESSABLE_ENTITY, HttpStatus.UNPROCESSABLE_ENTITY);
+            return UserMapper.getUserResponseDTO(appUser);
+        } catch (Exception exception) {
             throw new CustomException(AppHttpMessagess.UNPROCESSABLE_ENTITY, HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        AppUser appUser = userRepository.save(UserMapper.getAppUser(dto));
-        if (appUser == null ) {
-            throw new CustomException(AppHttpMessagess.UNPROCESSABLE_ENTITY, HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-       
-        return UserMapper.getUserResponseDTO(appUser);
+        
     }
 
     @Override
