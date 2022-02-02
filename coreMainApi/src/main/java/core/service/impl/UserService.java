@@ -20,6 +20,7 @@ import core.persistence.IUserRepository;
 import core.service.IUserService;
 import java.util.ArrayList;
 import java.util.List;
+import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
@@ -31,7 +32,8 @@ public class UserService implements IUserService{
 
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
-
+    
+//SECURITY
     @Override
     public TokenDTO signin(SignInUserRequestDTO dto) {
         try {
@@ -65,13 +67,21 @@ public class UserService implements IUserService{
     }
 
     @Override
+    public String refresh(String username) {
+        return jwtTokenProvider.createToken(username, userRepository.findByUsername(username));
+    }
+    
+//CRUD
+    @Override
     public UserResponseDTO delete(String username) {
         try {
             AppUser appUser = userRepository.deleteByUsername(username);
             if (appUser == null)
                 throw new CustomException(AppHttpMessagess.NOT_FOUND, HttpStatus.NOT_FOUND);
             return UserMapper.getUserResponseDTO(appUser);
-        } catch (Exception exception) {
+        } catch (ConstraintViolationException exception) {
+            throw exception;
+        } catch (Exception exception2) {
             throw new CustomException(AppHttpMessagess.UNPROCESSABLE_ENTITY, HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
@@ -83,9 +93,12 @@ public class UserService implements IUserService{
             if (appUser == null) 
                   throw new CustomException(AppHttpMessagess.CONFLICT, HttpStatus.CONFLICT);
             return UserMapper.getUserResponseDTO(appUser);
-        } catch (Exception exception) {
+        } catch (ConstraintViolationException exception) {
+            throw exception;
+        } catch (Exception exception2) {
             throw new CustomException(AppHttpMessagess.UNPROCESSABLE_ENTITY, HttpStatus.UNPROCESSABLE_ENTITY);
         }
+        
      }
     
     @Override
@@ -95,7 +108,9 @@ public class UserService implements IUserService{
             if (appUser == null) 
                   throw new CustomException(AppHttpMessagess.UNPROCESSABLE_ENTITY, HttpStatus.UNPROCESSABLE_ENTITY);
             return UserMapper.getUserResponseDTO(appUser);
-        } catch (Exception exception) {
+        } catch (ConstraintViolationException exception) {
+            throw exception;
+        } catch (Exception exception2) {
             throw new CustomException(AppHttpMessagess.UNPROCESSABLE_ENTITY, HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
@@ -108,7 +123,9 @@ public class UserService implements IUserService{
                 throw new CustomException(AppHttpMessagess.NOT_FOUND, HttpStatus.NOT_FOUND);
             }
             return UserMapper.getUserResponseDTO(appUser);
-        } catch (Exception exception) {
+        } catch (ConstraintViolationException exception) {
+            throw exception;
+        } catch (Exception exception2) {
             throw new CustomException(AppHttpMessagess.UNPROCESSABLE_ENTITY, HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
@@ -120,14 +137,11 @@ public class UserService implements IUserService{
             if (appUser == null) 
                   throw new CustomException(AppHttpMessagess.NOT_FOUND, HttpStatus.NOT_FOUND);
             return UserMapper.getUserResponseDTO(appUser);
-        } catch (Exception exception) {
+        } catch (ConstraintViolationException exception) {
+            throw exception;
+        } catch (Exception exception2) {
             throw new CustomException(AppHttpMessagess.UNPROCESSABLE_ENTITY, HttpStatus.UNPROCESSABLE_ENTITY);
         }
-    }
-
-    @Override
-    public String refresh(String username) {
-        return jwtTokenProvider.createToken(username, userRepository.findByUsername(username));
     }
 
     @Override
@@ -136,7 +150,9 @@ public class UserService implements IUserService{
             List<UserResponseDTO> l = new ArrayList<>();
             userRepository.allUser().stream().forEach(x -> l.add(UserMapper.getUserResponseDTO(x)));
             return l;
-        } catch (Exception exception) {
+        } catch (ConstraintViolationException exception) {
+            throw exception;
+        } catch (Exception exception2) {
             throw new CustomException(AppHttpMessagess.UNPROCESSABLE_ENTITY, HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }

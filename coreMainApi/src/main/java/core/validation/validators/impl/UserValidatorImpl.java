@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-
 /**
  *
  * @author jesus
@@ -27,27 +26,62 @@ public class UserValidatorImpl implements IUserValidator {
 
     @Value("${validator.user.name.messages}")
     private String validatorUserNameMessages;
-    
+
+    @Value("${validator.first.name.regex}")
+    private String validatorFirstNameRegex;
+
+    @Value("${validator.first.name.messages}")
+    private String validatorFirstNameMessages;
+
+    @Value("${validator.last.name.regex}")
+    private String validatorLastNameRegex;
+
+    @Value("${validator.last.name.messages}")
+    private String validatorLastNameMessages;
+
+    private boolean isUserNameValid(String userName) {
+        return userName.matches(validatorUserNameRegex);
+    }
+
+    private boolean isLastNameValid(String lastName) {
+        return lastName.matches(validatorLastNameRegex);
+    }
+
+    private boolean isFirstNameValid(String firstName) {
+        return firstName.matches(validatorFirstNameRegex);
+    }
 
     @Override
-    public void validator(SignInUserRequestDTO dto ) {
-        if (!dto.getUserName().matches(validatorUserNameRegex) && !dto.getUserName().equalsIgnoreCase("admin") ) {
+    public void validator(SignInUserRequestDTO dto) {
+        if (!isUserNameValid(dto.getUserName())) {
             throw new CustomException(validatorUserNameMessages, HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
-    
-     @Override
-    public void validator(SignUpUserRequestDTO dto ) {
 
-        if (!dto.getUserName().matches(validatorUserNameRegex)) {
+    @Override
+    public void validator(SignUpUserRequestDTO dto) {
+
+        if (!isUserNameValid(dto.getUserName())) {
             throw new CustomException(validatorUserNameMessages, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        if (!isFirstNameValid(dto.getFirstName())) {
+            throw new CustomException(validatorFirstNameMessages, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        if (!isLastNameValid(dto.getLastName())) {
+            throw new CustomException(validatorLastNameMessages, HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 
     @Override
     public void validator(UserResquestDTO dto) {
-       if (!dto.getUserName().matches(validatorUserNameRegex) && !dto.getUserName().equalsIgnoreCase("admin") ) {
+        if (!isUserNameValid(dto.getUserName())) {
             throw new CustomException(validatorUserNameMessages, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        if (!isFirstNameValid(dto.getFirstName())) {
+            throw new CustomException(validatorFirstNameMessages, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        if (!isLastNameValid(dto.getLastName())) {
+            throw new CustomException(validatorLastNameMessages, HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 

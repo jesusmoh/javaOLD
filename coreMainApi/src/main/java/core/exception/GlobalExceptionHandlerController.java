@@ -25,12 +25,7 @@ public class GlobalExceptionHandlerController {
     public void handleAccessDeniedException(HttpServletResponse res) throws IOException {
         res.sendError(HttpStatus.FORBIDDEN.value(), "Access denied");
     }
-
-    @ExceptionHandler(Exception.class)
-    public void handleException(HttpServletResponse res) throws IOException {
-        res.sendError(HttpStatus.BAD_REQUEST.value(), "Something went wrong");
-    }
-
+    
     @ExceptionHandler(ConstraintViolationException.class)
     public void handleExceptionConstraintViolationException(HttpServletResponse res, ConstraintViolationException ex) throws IOException {
         String m = "";
@@ -39,5 +34,12 @@ public class GlobalExceptionHandlerController {
         }
         res.sendError(HttpStatus.UNPROCESSABLE_ENTITY.value(), exceptionApiGeneralMessages.concat(m));
     }
+
+    @ExceptionHandler(Exception.class)
+    public void handleException(HttpServletResponse res) throws IOException {
+        res.sendError(HttpStatus.BAD_REQUEST.value(), "Something went wrong");
+    }
+
+
 
 }

@@ -36,7 +36,7 @@ public class AppUser implements Serializable {
     @ApiEmailValidator
     private String email;
 
-    @Size(min = 8, max = 25)
+    @Size(min = 8, max = 224)
     @Column(nullable = false)
     private String password;
     
