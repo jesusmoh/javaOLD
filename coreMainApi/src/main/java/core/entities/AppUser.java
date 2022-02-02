@@ -1,7 +1,6 @@
 package core.entities;
 
 import core.commons.AppUserRoles;
-import core.validation.annotations.ApiEmailValidator;
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
@@ -15,7 +14,6 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.validation.constraints.Size;
-import core.validation.annotations.ApiPinValidator;
 
 @Entity
 @Data 
@@ -33,7 +31,6 @@ public class AppUser implements Serializable {
     private String userName;
 
     @Column(unique = true, nullable = false)
-    @ApiEmailValidator
     private String email;
 
     @Size(min = 8, max = 224)
@@ -68,7 +65,6 @@ public class AppUser implements Serializable {
     
     @Column(name = "pin")
     @Size(min = 6, max = 6)
-    @ApiPinValidator
     private String pin;
 
     @PrePersist

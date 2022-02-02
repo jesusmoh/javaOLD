@@ -38,6 +38,18 @@ public class UserValidatorImpl implements IUserValidator {
 
     @Value("${validator.last.name.messages}")
     private String validatorLastNameMessages;
+    
+    @Value("${validator.api.pin.regex}")
+    private String validatorApiPinRegex;
+    
+    @Value("${validator.api.pin.messages}")
+    private String validatorApiPinMessages;
+    
+    @Value("${validator.api.email.regex}")
+    private String validatorApiEmailRegex;
+    
+    @Value("${validator.api.email.messages}")
+    private String validatorApiEmailMessages;
 
     private boolean isUserNameValid(String userName) {
         return userName.matches(validatorUserNameRegex);
@@ -49,6 +61,14 @@ public class UserValidatorImpl implements IUserValidator {
 
     private boolean isFirstNameValid(String firstName) {
         return firstName.matches(validatorFirstNameRegex);
+    }
+    
+    private boolean isPinValid(String pin) {
+        return pin.matches(validatorApiPinRegex);
+    }
+    
+    private boolean isEmailValid(String email) {
+        return email.matches(validatorApiEmailRegex);
     }
 
     @Override
@@ -70,6 +90,12 @@ public class UserValidatorImpl implements IUserValidator {
         if (!isLastNameValid(dto.getLastName())) {
             throw new CustomException(validatorLastNameMessages, HttpStatus.UNPROCESSABLE_ENTITY);
         }
+          if (!isPinValid(dto.getPin())) {
+            throw new CustomException(validatorApiPinMessages, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+          if (!isEmailValid(dto.getEmail())) {
+            throw new CustomException(validatorApiEmailMessages, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
     }
 
     @Override
@@ -82,6 +108,12 @@ public class UserValidatorImpl implements IUserValidator {
         }
         if (!isLastNameValid(dto.getLastName())) {
             throw new CustomException(validatorLastNameMessages, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+          if (!isPinValid(dto.getPin())) {
+            throw new CustomException(validatorApiPinMessages, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+           if (!isEmailValid(dto.getEmail())) {
+            throw new CustomException(validatorApiEmailMessages, HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 

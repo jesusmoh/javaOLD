@@ -3,17 +3,14 @@ core\commons\AppHttpMessagess.class
 core\persistence\imp\UserRepositoryImp.class
 core\security\WebSecurityConfig.class
 core\security\jwt\JwtTokenFilter.class
-core\validation\annotations\impl\ApiPinValidatorImpl.class
 core\dto\response\TokenDTO.class
 core\security\jwt\JwtTokenFilterConfigurer.class
 core\service\impl\UserService.class
-core\validation\annotations\impl\ApiEmailValidatorImpl.class
 core\App.class
 core\controller\rest\UserController.class
 core\validation\validators\IUserValidator.class
 core\exception\GlobalExceptionHandlerController.class
 core\dto\request\UserResquestDTO.class
-core\validation\annotations\ApiPinValidator.class
 core\exception\CustomException.class
 core\dto\request\SignUpUserRequestDTO.class
 core\service\IUserService.class
@@ -25,6 +22,5 @@ core\security\impl\MyUserDetailsImpl.class
 core\entities\AppUser.class
 core\persistence\IUserRepository.class
 core\security\jwt\JwtTokenProvider.class
-core\validation\annotations\ApiEmailValidator.class
 core\validation\validators\impl\UserValidatorImpl.class
 core\dto\request\SignInUserRequestDTO.class
