@@ -22,6 +22,8 @@ public interface IUserService {
     UserResponseDTO delete(String username);
 
     UserResponseDTO save(UserResquestDTO dto);
+    
+    UserResponseDTO update(UserResquestDTO dto);
 
     UserResponseDTO search(String username);
 

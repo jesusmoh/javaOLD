@@ -68,9 +68,8 @@ public class UserService implements IUserService{
     public UserResponseDTO delete(String username) {
         try {
             AppUser appUser = userRepository.deleteByUsername(username);
-            if (appUser == null) {
+            if (appUser == null)
                 throw new CustomException(AppHttpMessagess.NOT_FOUND, HttpStatus.NOT_FOUND);
-            }
             return UserMapper.getUserResponseDTO(appUser);
         } catch (Exception exception) {
             throw new CustomException(AppHttpMessagess.UNPROCESSABLE_ENTITY, HttpStatus.UNPROCESSABLE_ENTITY);
@@ -82,30 +81,48 @@ public class UserService implements IUserService{
         try {
             AppUser appUser = userRepository.save(UserMapper.getAppUser(dto));
             if (appUser == null) 
+                  throw new CustomException(AppHttpMessagess.CONFLICT, HttpStatus.CONFLICT);
+            return UserMapper.getUserResponseDTO(appUser);
+        } catch (Exception exception) {
+            throw new CustomException(AppHttpMessagess.UNPROCESSABLE_ENTITY, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+     }
+    
+    @Override
+    public UserResponseDTO update(UserResquestDTO dto) {
+        try {
+            AppUser appUser = userRepository.update(UserMapper.getAppUser(dto));
+            if (appUser == null) 
                   throw new CustomException(AppHttpMessagess.UNPROCESSABLE_ENTITY, HttpStatus.UNPROCESSABLE_ENTITY);
             return UserMapper.getUserResponseDTO(appUser);
         } catch (Exception exception) {
             throw new CustomException(AppHttpMessagess.UNPROCESSABLE_ENTITY, HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        
     }
 
     @Override
     public UserResponseDTO search(String username) {
-        AppUser appUser = userRepository.findByUsername(username);
-        if (appUser == null) {
-            throw new CustomException(AppHttpMessagess.NOT_FOUND, HttpStatus.NOT_FOUND);
+        try {
+            AppUser appUser = userRepository.findByUsername(username);
+            if (appUser == null) {
+                throw new CustomException(AppHttpMessagess.NOT_FOUND, HttpStatus.NOT_FOUND);
+            }
+            return UserMapper.getUserResponseDTO(appUser);
+        } catch (Exception exception) {
+            throw new CustomException(AppHttpMessagess.UNPROCESSABLE_ENTITY, HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        return UserMapper.getUserResponseDTO(appUser);
     }
 
     @Override
     public UserResponseDTO whoami(HttpServletRequest req) {
-         AppUser appUser = userRepository.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
-          if (appUser == null) {
-            throw new CustomException(AppHttpMessagess.NOT_FOUND, HttpStatus.NOT_FOUND);
+        try {
+            AppUser appUser = userRepository.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
+            if (appUser == null) 
+                  throw new CustomException(AppHttpMessagess.NOT_FOUND, HttpStatus.NOT_FOUND);
+            return UserMapper.getUserResponseDTO(appUser);
+        } catch (Exception exception) {
+            throw new CustomException(AppHttpMessagess.UNPROCESSABLE_ENTITY, HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        return UserMapper.getUserResponseDTO(appUser);
     }
 
     @Override
@@ -115,9 +132,13 @@ public class UserService implements IUserService{
 
     @Override
     public List<UserResponseDTO> allUsers() {
-        List<UserResponseDTO> l = new ArrayList<>();
-        userRepository.allUser().stream().forEach(x -> l.add(UserMapper.getUserResponseDTO(x)));
-        return l;
+        try {
+            List<UserResponseDTO> l = new ArrayList<>();
+            userRepository.allUser().stream().forEach(x -> l.add(UserMapper.getUserResponseDTO(x)));
+            return l;
+        } catch (Exception exception) {
+            throw new CustomException(AppHttpMessagess.UNPROCESSABLE_ENTITY, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
     }
 
 }

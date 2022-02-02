@@ -21,26 +21,28 @@ import core.service.IUserService;
 import core.validation.validators.IUserValidator;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
 
-  private final IUserService userService;
-  
-  @Autowired
-  private IUserValidator userValidator;
+    private final IUserService userService;
+
+    @Autowired
+    private IUserValidator userValidator;
 
 //SECURITY
-  
     @PostMapping("/signin")
     public TokenDTO login(@RequestBody SignInUserRequestDTO dto) {
         return userService.signin(dto);
     }
 
     @PostMapping("/signup")
+    @ResponseStatus(code = HttpStatus.CREATED)
     public TokenDTO signup(@RequestBody SignUpUserRequestDTO dto) {
         userValidator.validator(dto);
         return userService.signup(dto);
@@ -51,46 +53,46 @@ public class UserController {
     public String refresh(HttpServletRequest req) {
         return userService.refresh(req.getRemoteUser());
     }
-  
+
 //CRUD
-  
-  @PostMapping("")
-  public UserResponseDTO create(@RequestBody UserResquestDTO dto) {  
-    userValidator.validator(dto);
-    return userService.save(dto);
-  }
-  
-  @PutMapping("")
-  public UserResponseDTO update(@RequestBody UserResquestDTO dto) {  
-    userValidator.validator(dto);
-    return userService.save(dto);
-  }
+    @PostMapping("")
+    @ResponseStatus(code = HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public UserResponseDTO create(@RequestBody UserResquestDTO dto) {
+        userValidator.validator(dto);
+        return userService.save(dto);
+    }
 
-  @DeleteMapping(value = "/{username}")
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public UserResponseDTO delete(@PathVariable String username) {
-    return userService.delete(username);
-  }
+    @PutMapping("")
+    @ResponseStatus(code = HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public UserResponseDTO update(@RequestBody UserResquestDTO dto) {
+        userValidator.validator(dto);
+        return userService.update(dto);
+    }
 
-  @GetMapping(value = "/{username}")
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public UserResponseDTO search(@PathVariable String username) {
-     return  userService.search(username);
-  }
-  
-  @GetMapping()
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
-  public List<UserResponseDTO> allUsers() {
-     return  userService.allUsers();
-  }
+    @DeleteMapping(value = "/{username}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public UserResponseDTO delete(@PathVariable String username) {
+        return userService.delete(username);
+    }
 
-  @GetMapping(value = "/me")
-  @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
-  public UserResponseDTO whoami(HttpServletRequest req) {  
-     return  userService.whoami(req);
-  }
+    @GetMapping(value = "/{username}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public UserResponseDTO search(@PathVariable String username) {
+        return userService.search(username);
+    }
 
+    @GetMapping()
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public List<UserResponseDTO> allUsers() {
+        return userService.allUsers();
+    }
 
-  
+    @GetMapping(value = "/me")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
+    public UserResponseDTO whoami(HttpServletRequest req) {
+        return userService.whoami(req);
+    }
 
 }

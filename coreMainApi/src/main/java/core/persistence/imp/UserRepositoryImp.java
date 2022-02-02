@@ -37,6 +37,12 @@ public class UserRepositoryImp implements IUserRepository {
     public AppUser save(AppUser appUser) {
         return postgresUserDAO.save(appUser);
     }
+    
+     @Override
+    @Transactional
+    public AppUser update(AppUser appUser) {
+        return postgresUserDAO.update(appUser);
+    }
 
     @Override
     @Transactional

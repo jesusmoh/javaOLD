@@ -7,7 +7,6 @@ core\validation\annotations\impl\ApiPinValidatorImpl.class
 core\dto\response\TokenDTO.class
 core\security\jwt\JwtTokenFilterConfigurer.class
 core\service\impl\UserService.class
-.netbeans_automatic_build
 core\validation\annotations\impl\ApiEmailValidatorImpl.class
 core\App.class
 core\controller\rest\UserController.class

@@ -55,6 +55,19 @@ public class PostgresUserDAO {
     }
 
     public AppUser save(AppUser appUser) {
+         entityManager.persist(appUser);
+         AppUser r= findByUserName(appUser.getUserName());
+         if(r==null)
+           return null;
+         return r;
+    }
+    
+    public AppUser update(AppUser appUser) {
+        AppUser r= findByUserName(appUser.getUserName());
+        if(r==null)
+           return null;
+        appUser.setId(r.getId());
+        appUser.setCreateAt(r.getCreateAt());
         return entityManager.merge(appUser);
     }
 

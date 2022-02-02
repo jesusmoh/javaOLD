@@ -19,6 +19,7 @@ import org.modelmapper.ModelMapper;
 public class UserMapper {
     
     private static final ModelMapper modelMapper= new ModelMapper();
+
     
     public static UserResponseDTO getUserResponseDTO( AppUser appUser)
     {
@@ -32,6 +33,7 @@ public class UserMapper {
      
        public static AppUser getAppUser( UserResquestDTO dto)
     {
+
        return  modelMapper.map(dto, AppUser.class);
     }
     

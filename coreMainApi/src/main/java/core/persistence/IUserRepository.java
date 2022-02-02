@@ -12,6 +12,8 @@ public interface IUserRepository  {
   AppUser deleteByUsername(String username);
   
   AppUser save(AppUser appUser);
+  
+  AppUser update(AppUser appUser);
 
   List<AppUser> allUser();
 
