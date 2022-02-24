@@ -1,11 +1,13 @@
 package core.dto.request;
 
+import java.io.Serializable;
 import lombok.Data;
 
 @Data
-public class UserResquestDTO {
+public class UserResquestDTO implements Serializable{
 
-
+  private static final long serialVersionUID = 1L;   
+    
   private Integer id;
 
   private String userName;

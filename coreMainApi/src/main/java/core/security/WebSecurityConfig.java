@@ -28,6 +28,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     // Disable CSRF (cross site request forgery)
     http.csrf().disable();
+    
+    http.cors().disable();
 
     // No session will be created or used by spring security
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -52,12 +54,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   public void configure(WebSecurity web) throws Exception {
     // Allow swagger to be accessed without authentication
-    web.ignoring().antMatchers("/v2/api-docs")//
-        .antMatchers("/swagger-resources/**")//
-        .antMatchers("/swagger-ui.html")//
-        .antMatchers("/configuration/**")//
-        .antMatchers("/webjars/**")//
-        .antMatchers("/public")
+    web.ignoring()
+        .antMatchers("/v1/api-docs")
+        .antMatchers("/echo")
         
         // Un-secure H2 Database (for testing purposes, H2 console shouldn't be unprotected in production)
         .and()

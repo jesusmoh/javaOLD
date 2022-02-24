@@ -1,13 +1,14 @@
 core\commons\AppUserRoles.class
 core\commons\AppHttpMessagess.class
 core\persistence\imp\UserRepositoryImp.class
+core\controller\rest\EchoController.class
 core\security\WebSecurityConfig.class
 core\security\jwt\JwtTokenFilter.class
 core\dto\response\TokenDTO.class
 core\security\jwt\JwtTokenFilterConfigurer.class
 core\service\impl\UserService.class
+core\controller\rest\user\UserController.class
 core\App.class
-core\controller\rest\UserController.class
 core\validation\validators\IUserValidator.class
 core\exception\GlobalExceptionHandlerController.class
 core\dto\request\UserResquestDTO.class

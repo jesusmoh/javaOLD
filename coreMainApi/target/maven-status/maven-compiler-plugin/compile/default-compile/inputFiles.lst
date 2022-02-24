@@ -8,8 +8,10 @@ C:\fuentes\java\javaArchitectureShowCase\coreMainApi\src\main\java\core\App.java
 C:\fuentes\java\javaArchitectureShowCase\coreMainApi\src\main\java\core\dto\request\SignUpUserRequestDTO.java
 C:\fuentes\java\javaArchitectureShowCase\coreMainApi\src\main\java\core\entities\AppUser.java
 C:\fuentes\java\javaArchitectureShowCase\coreMainApi\src\main\java\core\dto\request\UserResquestDTO.java
+C:\fuentes\java\javaArchitectureShowCase\coreMainApi\src\main\java\core\controller\rest\user\UserController.java
 C:\fuentes\java\javaArchitectureShowCase\coreMainApi\src\main\java\core\dto\response\UserResponseDTO.java
 C:\fuentes\java\javaArchitectureShowCase\coreMainApi\src\main\java\core\persistence\imp\dao\PostgresUserDAO.java
+C:\fuentes\java\javaArchitectureShowCase\coreMainApi\src\main\java\core\controller\rest\EchoController.java
 C:\fuentes\java\javaArchitectureShowCase\coreMainApi\src\main\java\core\mapper\UserMapper.java
 C:\fuentes\java\javaArchitectureShowCase\coreMainApi\src\main\java\core\security\jwt\JwtTokenFilter.java
 C:\fuentes\java\javaArchitectureShowCase\coreMainApi\src\main\java\core\dto\request\SignInUserRequestDTO.java
@@ -20,7 +22,6 @@ C:\fuentes\java\javaArchitectureShowCase\coreMainApi\src\main\java\core\exceptio
 C:\fuentes\java\javaArchitectureShowCase\coreMainApi\src\main\java\core\security\jwt\JwtTokenProvider.java
 C:\fuentes\java\javaArchitectureShowCase\coreMainApi\src\main\java\core\validation\validators\IUserValidator.java
 C:\fuentes\java\javaArchitectureShowCase\coreMainApi\src\main\java\core\exception\CustomException.java
-C:\fuentes\java\javaArchitectureShowCase\coreMainApi\src\main\java\core\controller\rest\UserController.java
 C:\fuentes\java\javaArchitectureShowCase\coreMainApi\src\main\java\core\commons\AppHttpMessagess.java
 C:\fuentes\java\javaArchitectureShowCase\coreMainApi\src\main\java\core\service\IUserService.java
 C:\fuentes\java\javaArchitectureShowCase\coreMainApi\src\main\java\core\security\WebSecurityConfig.java
