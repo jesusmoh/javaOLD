@@ -28,6 +28,9 @@ public class JwtTokenProvider {
 
     @Value("${security.jwt.token.expire-length:36000000}")
     private long validityInMilliseconds = 36000000; // 1h
+    
+    @Value("${security.jwt.token.issuer}")
+    private String securityJwtTokenIssuer ; 
 
     @Autowired
     private MyUserDetailsImpl myUserDetails;
@@ -48,6 +51,7 @@ public class JwtTokenProvider {
         return Jwts.builder()//
                 .setClaims(claims)//
                 .setIssuedAt(now)//
+                .setIssuer(securityJwtTokenIssuer)
                 .setExpiration(validity)//
                 .signWith(SignatureAlgorithm.HS256, secretKey)//
                 .compact();

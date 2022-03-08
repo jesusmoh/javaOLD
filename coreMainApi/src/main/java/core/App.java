@@ -11,11 +11,12 @@ import org.springframework.context.annotation.Bean;
 import core.service.impl.UserService;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @SpringBootApplication
 @RequiredArgsConstructor
 @EnableAutoConfiguration
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST,RequestMethod.OPTIONS})
 public class App implements CommandLineRunner {
 
   final UserService userService;

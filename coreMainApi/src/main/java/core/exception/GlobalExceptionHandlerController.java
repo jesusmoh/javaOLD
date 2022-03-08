@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import javax.validation.ConstraintViolationException;
 import java.util.logging.Logger;
-import javax.servlet.ServletException;
 import org.springframework.beans.factory.annotation.Value;
 
 @RestControllerAdvice
