@@ -35,9 +35,9 @@ public class App implements CommandLineRunner {
   public void run(String... params) throws Exception {
     AppUser admin = new AppUser();
     admin.setId(1);
-    admin.setUserName("admin");
-    admin.setLastName("ortiz");
-    admin.setFirstName("jesus");
+    admin.setUsername("admin");
+    admin.setLastname("ortiz");
+    admin.setFirstname("jesus");
     admin.setPassword("admin");
     admin.setEmail("admin@email.com");
     admin.setRoles("ROLE_ADMIN");
@@ -46,9 +46,9 @@ public class App implements CommandLineRunner {
 
     AppUser client = new AppUser();
     client.setId(2);
-    client.setUserName("client");
-    client.setLastName("enzo");
-    client.setFirstName("ortiz");
+    client.setUsername("client");
+    client.setLastname("enzo");
+    client.setFirstname("ortiz");
     client.setPassword("client");
     client.setEmail("client@email.com");
     client.setRoles("ROLE_CLIENT");

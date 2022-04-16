@@ -73,6 +73,13 @@ public class JwtTokenProvider {
         }
         return null;
     }
+     public String resolveFingerprint(HttpServletRequest req) {
+        String fingerprint = req.getHeader("Fingerprintdevice");
+        if (fingerprint != null) {
+            return fingerprint;
+        }
+        return "????????????????????????????????";
+    }
 
     public boolean validateToken(String token) {
         try {

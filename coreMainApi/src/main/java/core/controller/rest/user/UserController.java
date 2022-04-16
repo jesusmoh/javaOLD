@@ -85,7 +85,7 @@ public class UserController {
     public UserResponseDTO search(@PathVariable String username) {
         return userService.search(username);
     }
-
+    
     @GetMapping()
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<UserResponseDTO> allUsers() {
@@ -97,5 +97,7 @@ public class UserController {
     public UserResponseDTO whoami(HttpServletRequest req) {
         return userService.whoami(req);
     }
+    
+//PAGINATION   
 
 }

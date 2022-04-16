@@ -20,9 +20,9 @@ public class PostgresUserDAO {
         return entityManager.find(AppUser.class, id);
     }
 
-    public AppUser findByUserName(String userName) {
-        Query query = entityManager.createQuery("SELECT a FROM AppUser a WHERE a.userName = :userName", AppUser.class);
-        query.setParameter("userName", userName);
+    public AppUser findByUserName(String username) {
+        Query query = entityManager.createQuery("SELECT a FROM AppUser a WHERE a.username = :username", AppUser.class);
+        query.setParameter("username", username);
         List<AppUser> results = query.getResultList();
         if (results.size() >= 1) {
             return results.get(0);
@@ -43,10 +43,10 @@ public class PostgresUserDAO {
         }
     }
 
-    public AppUser isUserDeleted(String userName) {
-        Query query = entityManager.createQuery("SELECT a FROM AppUser a WHERE a.username = :userName AND a.status= :status", AppUser.class);
+    public AppUser isUserDeleted(String username) {
+        Query query = entityManager.createQuery("SELECT a FROM AppUser a WHERE a.username = :username AND a.status= :status", AppUser.class);
         query.setParameter("status", 0);
-        query.setParameter("userName", userName);
+        query.setParameter("username", username);
         List<AppUser> results = query.getResultList();
         if (results.size() >= 1) {
             return results.get(0);
@@ -56,14 +56,14 @@ public class PostgresUserDAO {
 
     public AppUser save(AppUser appUser) {
          entityManager.persist(appUser);
-         AppUser r= findByUserName(appUser.getUserName());
+         AppUser r= findByUserName(appUser.getUsername());
          if(r==null)
            return null;
          return r;
     }
     
     public AppUser update(AppUser appUser) {
-        AppUser r= findByUserName(appUser.getUserName());
+        AppUser r= findByUserName(appUser.getUsername());
         if(r==null)
            return null;
         appUser.setId(r.getId());

@@ -73,7 +73,7 @@ public class UserValidatorImpl implements IUserValidator {
 
     @Override
     public void validator(SignInUserRequestDTO dto) {
-        if (!isUserNameValid(dto.getUserName())) {
+        if (!isUserNameValid(dto.getUsername())) {
             throw new CustomException(validatorUserNameMessages, HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
@@ -81,13 +81,13 @@ public class UserValidatorImpl implements IUserValidator {
     @Override
     public void validator(SignUpUserRequestDTO dto) {
 
-        if (!isUserNameValid(dto.getUserName())) {
+        if (!isUserNameValid(dto.getUsername())) {
             throw new CustomException(validatorUserNameMessages, HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        if (!isFirstNameValid(dto.getFirstName())) {
+        if (!isFirstNameValid(dto.getFirstname())) {
             throw new CustomException(validatorFirstNameMessages, HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        if (!isLastNameValid(dto.getLastName())) {
+        if (!isLastNameValid(dto.getLastname())) {
             throw new CustomException(validatorLastNameMessages, HttpStatus.UNPROCESSABLE_ENTITY);
         }
           if (!isPinValid(dto.getPin())) {
@@ -100,13 +100,13 @@ public class UserValidatorImpl implements IUserValidator {
 
     @Override
     public void validator(UserResquestDTO dto) {
-        if (!isUserNameValid(dto.getUserName())) {
+        if (!isUserNameValid(dto.getUsername())) {
             throw new CustomException(validatorUserNameMessages, HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        if (!isFirstNameValid(dto.getFirstName())) {
+        if (!isFirstNameValid(dto.getFirstname())) {
             throw new CustomException(validatorFirstNameMessages, HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        if (!isLastNameValid(dto.getLastName())) {
+        if (!isLastNameValid(dto.getLastname())) {
             throw new CustomException(validatorLastNameMessages, HttpStatus.UNPROCESSABLE_ENTITY);
         }
           if (!isPinValid(dto.getPin())) {

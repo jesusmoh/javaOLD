@@ -7,13 +7,13 @@ public class SignUpUserRequestDTO implements Serializable{
 
   private static final long serialVersionUID = 1L;
 
-  private String userName;
+  private String username;
 
   private String email;
 
-  private String firstName;
+  private String firstname;
 
-  private String lastName;
+  private String lastname;
   
   private String password;
   

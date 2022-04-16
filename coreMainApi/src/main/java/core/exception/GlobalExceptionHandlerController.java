@@ -1,7 +1,7 @@
 package core.exception;
 
+import core.util.LogAuditFactory;
 import java.io.IOException;
-import java.util.UUID;
 import java.util.logging.Level;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
@@ -23,37 +23,33 @@ public class GlobalExceptionHandlerController {
     
     @ExceptionHandler(CustomException.class)
     public void handleCustomException(HttpServletResponse res, CustomException ex) throws IOException {
-        UUID uuid = UUID.randomUUID();
-        String temp= String.valueOf(" >> "+uuid +" >> " +exceptionApiGeneralMessages.concat(ex.getMessage()));
-        log.log(Level.SEVERE, temp);
-        res.sendError(ex.getHttpStatus().value(), temp );
+        String fullMessage= String.valueOf(" >> "+LogAuditFactory.getKey()+" >> " +exceptionApiGeneralMessages.concat(ex.getMessage()));
+        log.log(Level.SEVERE, fullMessage);
+        res.sendError(ex.getHttpStatus().value(),fullMessage );
     }
 
     @ExceptionHandler(value = {AccessDeniedException.class,org.springframework.security.access.AccessDeniedException.class})
     public void handleAccessDeniedException(HttpServletResponse res) throws IOException {
-        UUID uuid = UUID.randomUUID();
-        String temp= String.valueOf(" >> "+uuid +" >> ");
-        log.log(Level.SEVERE, temp);
-        res.sendError(HttpStatus.FORBIDDEN.value(), temp+" Access denied");
+        String fullMessage= String.valueOf(" >> "+LogAuditFactory.getKey() +" >> ");
+        log.log(Level.SEVERE, fullMessage);
+        res.sendError(HttpStatus.FORBIDDEN.value(), fullMessage+" Access-denied");
     }
     
     @ExceptionHandler(ConstraintViolationException.class)
     public void handleExceptionConstraintViolationException(HttpServletResponse res, ConstraintViolationException ex) throws IOException {
-        String temp = "";
+        String fullMessage = "";
         for (ConstraintViolation cv : ex.getConstraintViolations()) {
-            temp = cv.getMessage() + " Error in value " + (cv.getInvalidValue() == null ? "null" : cv.getInvalidValue().toString() + " and field " + cv.getPropertyPath().toString());
+            fullMessage = cv.getMessage() + " Error in value " + (cv.getInvalidValue() == null ? "null" : cv.getInvalidValue().toString() + " and field " + cv.getPropertyPath().toString());
         }
-        UUID uuid = UUID.randomUUID();
-        temp= temp+" "+String.valueOf(" >> "+uuid +" >> " +exceptionApiGeneralMessages.concat(ex.getMessage()));
-        log.log(Level.SEVERE, temp);
-        res.sendError(HttpStatus.UNPROCESSABLE_ENTITY.value(), temp);
+        fullMessage= fullMessage+" "+String.valueOf(" >> "+LogAuditFactory.getKey() +" >> " +exceptionApiGeneralMessages.concat(ex.getMessage()));
+        log.log(Level.SEVERE, fullMessage);
+        res.sendError(HttpStatus.UNPROCESSABLE_ENTITY.value(), fullMessage);
     }
 
     @ExceptionHandler(Exception.class)
-    public void handleException(HttpServletResponse res) throws IOException {
-         UUID uuid = UUID.randomUUID();
-        String temp= String.valueOf(" >> "+uuid +" >> ");
-        log.log(Level.SEVERE, temp);
+    public void handleException(HttpServletResponse res ,Exception ex) throws IOException {
+        String temp= String.valueOf(" >> "+LogAuditFactory.getKey() +" >> ");
+        log.log(Level.SEVERE, temp +ex.getMessage().toString());
         res.sendError(HttpStatus.BAD_REQUEST.value(), temp+" Something went wrong");
     }
 

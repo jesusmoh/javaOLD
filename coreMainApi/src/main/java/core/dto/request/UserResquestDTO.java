@@ -10,15 +10,15 @@ public class UserResquestDTO implements Serializable{
     
   private Integer id;
 
-  private String userName;
+  private String username;
 
   private String email;
 
   private String roles;
   
-  private String firstName;
+  private String firstname;
 
-  private String lastName;
+  private String lastname;
   
   private int status;
   

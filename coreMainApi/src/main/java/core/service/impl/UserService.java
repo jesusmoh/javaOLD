@@ -37,13 +37,18 @@ public class UserService implements IUserService{
     @Override
     public TokenDTO signin(SignInUserRequestDTO dto) {
         try {
-            AppUser appUser = userRepository.findByUsername(dto.getUserName());
+            AppUser appUser = userRepository.findByUsername(dto.getUsername());
             if(appUser==null)
                 throw new CustomException("Invalid username/password supplied", HttpStatus.UNAUTHORIZED);
             if (passwordEncoder.matches(dto.getPassword(), passwordEncoder.encode(dto.getPassword()))) 
             {
                 TokenDTO tokenDTO = new TokenDTO();
-                tokenDTO.setToken(jwtTokenProvider.createToken(dto.getUserName(), appUser));
+                tokenDTO.setToken(jwtTokenProvider.createToken(dto.getUsername(), appUser));
+                
+                appUser.setProfiledevice(dto.getProfiledevice());
+                appUser.setFingerprintdevice(dto.getFingerprintdevice());
+                userRepository.update(appUser);
+
                 return tokenDTO;
             }
         } catch (AuthenticationException e) {
@@ -54,10 +59,10 @@ public class UserService implements IUserService{
 
     @Override
     public TokenDTO signup(SignUpUserRequestDTO dto) {
-        if (!userRepository.existsByUsername(dto.getUserName())) {
+        if (!userRepository.existsByUsername(dto.getUsername())) {
             dto.setPassword(passwordEncoder.encode(dto.getPassword()));
             AppUser appUser = userRepository.save(UserMapper.getAppUser(dto));
-            String t=jwtTokenProvider.createToken(dto.getUserName(), appUser);
+            String t=jwtTokenProvider.createToken(dto.getUsername(), appUser);
             TokenDTO tokenDTO=new TokenDTO();
             tokenDTO.setToken(t);
             return tokenDTO;

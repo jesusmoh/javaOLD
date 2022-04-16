@@ -28,7 +28,7 @@ public class AppUser implements Serializable {
 
     @Size(min = 4, max = 20)
     @Column(name = "username",unique = true, nullable = false)
-    private String userName;
+    private String username;
 
     @Column(unique = true, nullable = false)
     private String email;
@@ -42,11 +42,11 @@ public class AppUser implements Serializable {
 
     @Size(min = 4, max = 100)
     @Column(name = "firstname")
-    private String firstName;
+    private String firstname;
      
     @Size(min = 4, max = 100)
     @Column(name = "lastname")
-    private String lastName;
+    private String lastname;
     
     @Size(min = 4, max = 100)
     @Column(name = "phone")
@@ -66,6 +66,16 @@ public class AppUser implements Serializable {
     @Column(name = "pin")
     @Size(min = 6, max = 6)
     private String pin;
+    
+    @Column(name = "fingerprintdevice")
+    @Size(min = 10, max = 100)
+    private String fingerprintdevice;
+    
+    @Column(name = "profiledevice")
+    @Size(min = 50, max = 500)
+    private String profiledevice;
+    
+    
 
     @PrePersist
     public void prePersist() {
