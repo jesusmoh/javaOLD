@@ -86,18 +86,17 @@ public class UserController {
         return userService.search(username);
     }
     
-    @GetMapping()
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public List<UserResponseDTO> allUsers() {
-        return userService.allUsers();
-    }
-
     @GetMapping(value = "/me")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
     public UserResponseDTO whoami(HttpServletRequest req) {
         return userService.whoami(req);
     }
     
-//PAGINATION   
+//PAGINATION 
+    @GetMapping()
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public List<UserResponseDTO> allUsers() {
+        return userService.allUsers();
+    }
 
 }

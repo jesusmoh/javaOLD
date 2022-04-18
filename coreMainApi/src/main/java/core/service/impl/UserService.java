@@ -36,11 +36,15 @@ public class UserService implements IUserService{
 //SECURITY
     @Override
     public TokenDTO signin(SignInUserRequestDTO dto) {
+        
+        AppUser appUser=null;
         try {
-            AppUser appUser = userRepository.findByUsername(dto.getUsername());
+            appUser = userRepository.findByUsername(dto.getUsername());
+           
             if(appUser==null)
-                throw new CustomException("Invalid username/password supplied", HttpStatus.UNAUTHORIZED);
-            if (passwordEncoder.matches(dto.getPassword(), passwordEncoder.encode(dto.getPassword()))) 
+                throw new CustomException("Invalid username/password supplied 1", HttpStatus.UNAUTHORIZED);
+            
+            if (passwordEncoder.matches(dto.getPassword(),appUser.getPassword()))
             {
                 TokenDTO tokenDTO = new TokenDTO();
                 tokenDTO.setToken(jwtTokenProvider.createToken(dto.getUsername(), appUser));
@@ -50,11 +54,14 @@ public class UserService implements IUserService{
                 userRepository.update(appUser);
 
                 return tokenDTO;
+            }else{
+              throw new CustomException("Invalid username/password supplied 2", HttpStatus.UNAUTHORIZED);
             }
         } catch (AuthenticationException e) {
-            throw new CustomException("Invalid username/password supplied", HttpStatus.UNAUTHORIZED);
+            throw new CustomException("Invalid username/password supplied 3", HttpStatus.UNAUTHORIZED);
         }
-        throw new CustomException("Invalid username/password supplied", HttpStatus.UNAUTHORIZED);
+        
+       
     }
 
     @Override

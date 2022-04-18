@@ -30,29 +30,29 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         final String token = jwtTokenProvider.resolveToken(httpServletRequest);
         final String fingerprintdevice = jwtTokenProvider.resolveFingerprint(httpServletRequest);
         TimeMeasurer timer = new TimeMeasurer();
-        
-        log.info(fingerprintdevice.concat("|"+uuid.concat(AppLogMessagess.REQUEST_IN)));
-        log.info(fingerprintdevice.concat("|"+uuid.concat(AppLogMessagess.URL.concat(httpServletRequest.getMethod()+" >> "+ httpServletRequest.getRequestURL()))));
-        log.info(fingerprintdevice.concat("|"+uuid.concat(String.valueOf(AppLogMessagess.TOKEN+token))));
-        
-        if(token==null)
-            log.info(fingerprintdevice.concat("|"+uuid.concat(String.valueOf(AppLogMessagess.FINGERPRINTDEVICE+fingerprintdevice)))); 
-       
+
+        log.info(fingerprintdevice.concat("|" + uuid.concat(AppLogMessagess.REQUEST_IN)));
+        log.info(fingerprintdevice.concat("|" + uuid.concat(AppLogMessagess.URL.concat(httpServletRequest.getMethod() + " >> " + httpServletRequest.getRequestURL()))));
+        log.info(fingerprintdevice.concat("|" + uuid.concat(String.valueOf(AppLogMessagess.TOKEN + token))));
+
+        if (token == null) {
+            log.info(fingerprintdevice.concat("|" + uuid.concat(String.valueOf(AppLogMessagess.FINGERPRINTDEVICE + fingerprintdevice))));
+        }
+
         try {
             if (token != null && jwtTokenProvider.validateToken(token)) {
                 Authentication auth = jwtTokenProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
 
-            httpServletResponse.setHeader( "uuid", uuid);
+            httpServletResponse.setHeader("uuid", uuid);
             filterChain.doFilter(httpServletRequest, httpServletResponse);
         } catch (Exception e) {
             throw new CustomException("Invalid token supplied", HttpStatus.UNAUTHORIZED);
-        } finally {           
-            log.info(fingerprintdevice.concat("|"+uuid.concat(AppLogMessagess.RESPONSE_CODE.concat(String.valueOf(httpServletResponse.getStatus())))));
-            log.info(fingerprintdevice.concat("|"+uuid.concat(AppLogMessagess.DISPATCHTIME.concat(String.valueOf(timer.measure())))));
-            log.info(fingerprintdevice.concat("|"+uuid.concat(AppLogMessagess.DISPATCHTIME.concat(String.valueOf(timer.measure())))));
-            log.info(fingerprintdevice.concat("|"+uuid.concat(AppLogMessagess.RESPONSE_OUT)));
+        } finally {
+            log.info(fingerprintdevice.concat("|" + uuid.concat(AppLogMessagess.RESPONSE_CODE.concat(String.valueOf(httpServletResponse.getStatus())))));
+            log.info(fingerprintdevice.concat("|" + uuid.concat(AppLogMessagess.DISPATCHTIME.concat(String.valueOf(timer.measure())))));
+            log.info(fingerprintdevice.concat("|" + uuid.concat(AppLogMessagess.RESPONSE_OUT)));
         }
 
     }
