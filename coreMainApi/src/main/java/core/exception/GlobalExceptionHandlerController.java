@@ -1,6 +1,5 @@
 package core.exception;
 
-import core.util.LogAuditFactory;
 import java.io.IOException;
 import java.util.logging.Level;
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import javax.validation.ConstraintViolationException;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 
 @RestControllerAdvice
@@ -21,16 +21,26 @@ public class GlobalExceptionHandlerController {
     
     static final Logger log = Logger.getLogger(GlobalExceptionHandlerController.class.getName());
     
+    
+    public String resolveFingerprint(HttpServletRequest req) {
+        String fingerprint = req.getHeader("Fingerprintdevice");
+        if (fingerprint != null) {
+            return fingerprint;
+        }
+        return "????????????????????????????????";
+    }
+    
     @ExceptionHandler(CustomException.class)
     public void handleCustomException(HttpServletResponse res, CustomException ex) throws IOException {
-        String fullMessage= String.valueOf(" >> "+LogAuditFactory.getKey()+" >> " +exceptionApiGeneralMessages.concat(ex.getMessage()));
+        
+        String fullMessage= String.valueOf(res.getHeader("checkInUUID")+" " +exceptionApiGeneralMessages.concat(ex.getMessage()));
         log.log(Level.SEVERE, fullMessage);
-        res.sendError(ex.getHttpStatus().value(),fullMessage );
+        res.sendError(ex.getHttpStatus().value(),exceptionApiGeneralMessages.concat(ex.getMessage()) );
     }
 
     @ExceptionHandler(value = {AccessDeniedException.class,org.springframework.security.access.AccessDeniedException.class})
     public void handleAccessDeniedException(HttpServletResponse res) throws IOException {
-        String fullMessage= String.valueOf(" >> "+LogAuditFactory.getKey() +" >> ");
+        String fullMessage= String.valueOf(res.getHeader("checkInUUID")+" ");
         log.log(Level.SEVERE, fullMessage);
         res.sendError(HttpStatus.FORBIDDEN.value(), fullMessage+" Access-denied");
     }
@@ -41,14 +51,14 @@ public class GlobalExceptionHandlerController {
         for (ConstraintViolation cv : ex.getConstraintViolations()) {
             fullMessage = cv.getMessage() + " Error in value " + (cv.getInvalidValue() == null ? "null" : cv.getInvalidValue().toString() + " and field " + cv.getPropertyPath().toString());
         }
-        fullMessage= fullMessage+" "+String.valueOf(" >> "+LogAuditFactory.getKey() +" >> " +exceptionApiGeneralMessages.concat(ex.getMessage()));
+        fullMessage= fullMessage+" "+String.valueOf(res.getHeader("checkInUUID")+" "+exceptionApiGeneralMessages.concat(ex.getMessage()));
         log.log(Level.SEVERE, fullMessage);
         res.sendError(HttpStatus.UNPROCESSABLE_ENTITY.value(), fullMessage);
     }
 
     @ExceptionHandler(Exception.class)
     public void handleException(HttpServletResponse res ,Exception ex) throws IOException {
-        String temp= String.valueOf(" >> "+LogAuditFactory.getKey() +" >> ");
+        String temp= String.valueOf(res.getHeader("checkInUUID")+" ");
         log.log(Level.SEVERE, temp +ex.getMessage().toString());
         res.sendError(HttpStatus.BAD_REQUEST.value(), temp+" Something went wrong");
     }

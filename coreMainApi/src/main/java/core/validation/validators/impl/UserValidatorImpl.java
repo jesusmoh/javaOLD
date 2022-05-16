@@ -8,10 +8,9 @@ package core.validation.validators.impl;
 import core.dto.request.SignInUserRequestDTO;
 import core.dto.request.SignUpUserRequestDTO;
 import core.dto.request.UserResquestDTO;
-import core.exception.CustomException;
+import core.dto.response.ValidApiObjetcDTO;
 import core.validation.validators.IUserValidator;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 /**
@@ -38,16 +37,16 @@ public class UserValidatorImpl implements IUserValidator {
 
     @Value("${validator.last.name.messages}")
     private String validatorLastNameMessages;
-    
+
     @Value("${validator.api.pin.regex}")
     private String validatorApiPinRegex;
-    
+
     @Value("${validator.api.pin.messages}")
     private String validatorApiPinMessages;
-    
+
     @Value("${validator.api.email.regex}")
     private String validatorApiEmailRegex;
-    
+
     @Value("${validator.api.email.messages}")
     private String validatorApiEmailMessages;
 
@@ -62,59 +61,102 @@ public class UserValidatorImpl implements IUserValidator {
     private boolean isFirstNameValid(String firstName) {
         return firstName.matches(validatorFirstNameRegex);
     }
-    
+
     private boolean isPinValid(String pin) {
         return pin.matches(validatorApiPinRegex);
     }
-    
+
     private boolean isEmailValid(String email) {
         return email.matches(validatorApiEmailRegex);
     }
 
     @Override
-    public void validator(SignInUserRequestDTO dto) {
+    public ValidApiObjetcDTO validator(SignInUserRequestDTO dto) {
+
+        ValidApiObjetcDTO r = new ValidApiObjetcDTO();
         if (!isUserNameValid(dto.getUsername())) {
-            throw new CustomException(validatorUserNameMessages, HttpStatus.UNPROCESSABLE_ENTITY);
+            r.setMessages(validatorUserNameMessages);
+            r.setValid(false);
         }
+        return r;
     }
 
     @Override
-    public void validator(SignUpUserRequestDTO dto) {
+    public ValidApiObjetcDTO validator(SignUpUserRequestDTO dto) {
+        ValidApiObjetcDTO r = new ValidApiObjetcDTO();
 
         if (!isUserNameValid(dto.getUsername())) {
-            throw new CustomException(validatorUserNameMessages, HttpStatus.UNPROCESSABLE_ENTITY);
+            r.setMessages(validatorUserNameMessages);
+            r.setValid(false);
         }
         if (!isFirstNameValid(dto.getFirstname())) {
-            throw new CustomException(validatorFirstNameMessages, HttpStatus.UNPROCESSABLE_ENTITY);
+            r.setMessages(validatorFirstNameMessages);
+            r.setValid(false);
         }
         if (!isLastNameValid(dto.getLastname())) {
-            throw new CustomException(validatorLastNameMessages, HttpStatus.UNPROCESSABLE_ENTITY);
+            r.setMessages(validatorLastNameMessages);
+            r.setValid(false);
         }
-          if (!isPinValid(dto.getPin())) {
-            throw new CustomException(validatorApiPinMessages, HttpStatus.UNPROCESSABLE_ENTITY);
+        if (!isPinValid(dto.getPin())) {
+            r.setMessages(validatorApiPinMessages);
+            r.setValid(false);
         }
-          if (!isEmailValid(dto.getEmail())) {
-            throw new CustomException(validatorApiEmailMessages, HttpStatus.UNPROCESSABLE_ENTITY);
+        if (!isEmailValid(dto.getEmail())) {
+            r.setMessages(validatorApiEmailMessages);
+            r.setValid(false);
         }
+
+        return r;
     }
 
     @Override
-    public void validator(UserResquestDTO dto) {
+    public ValidApiObjetcDTO validator(UserResquestDTO dto) {
+
+        ValidApiObjetcDTO r = new ValidApiObjetcDTO();
+
         if (!isUserNameValid(dto.getUsername())) {
-            throw new CustomException(validatorUserNameMessages, HttpStatus.UNPROCESSABLE_ENTITY);
+            r.setMessages(validatorUserNameMessages);
+            r.setValid(false);
         }
         if (!isFirstNameValid(dto.getFirstname())) {
-            throw new CustomException(validatorFirstNameMessages, HttpStatus.UNPROCESSABLE_ENTITY);
+            r.setMessages(validatorFirstNameMessages);
+            r.setValid(false);
         }
         if (!isLastNameValid(dto.getLastname())) {
-            throw new CustomException(validatorLastNameMessages, HttpStatus.UNPROCESSABLE_ENTITY);
+            r.setMessages(validatorLastNameMessages);
+            r.setValid(false);
         }
-          if (!isPinValid(dto.getPin())) {
-            throw new CustomException(validatorApiPinMessages, HttpStatus.UNPROCESSABLE_ENTITY);
+        if (!isPinValid(dto.getPin())) {
+            r.setMessages(validatorApiPinMessages);
+            r.setValid(false);
         }
-           if (!isEmailValid(dto.getEmail())) {
-            throw new CustomException(validatorApiEmailMessages, HttpStatus.UNPROCESSABLE_ENTITY);
+        if (!isEmailValid(dto.getEmail())) {
+            r.setMessages(validatorApiEmailMessages);
+            r.setValid(false);
         }
+        return r;
+    }
+
+    @Override
+    public ValidApiObjetcDTO fieldValidator(String fieldName, String fieldValue) {
+
+        ValidApiObjetcDTO dto = new ValidApiObjetcDTO();
+
+        switch (fieldName) {
+            case "username":
+                dto.setMessages(fieldName);
+                dto.setValid(isUserNameValid(fieldValue));
+                break;
+            case "email":
+                dto.setMessages(fieldName);
+                dto.setValid(isEmailValid(fieldValue));
+                break;
+            default:
+                dto.setMessages("?");
+                dto.setValid(false);
+                break;
+        }
+        return dto;
     }
 
 }

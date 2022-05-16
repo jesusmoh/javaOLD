@@ -22,6 +22,7 @@ core\service\IUserService.class
 core\dto\ApiResponse.class
 core\dto\response\UserResponseDTO.class
 core\util\LogAuditFactory.class
+core\dto\response\ValidApiObjetcDTO.class
 core\persistence\imp\dao\PostgresUserDAO.class
 core\commons\AppBDMessagess.class
 core\mapper\UserMapper.class

@@ -22,6 +22,7 @@ C:\fuentes\java\javaArchitectureShowCase\coreMainApi\src\main\java\core\dto\requ
 C:\fuentes\java\javaArchitectureShowCase\coreMainApi\src\main\java\core\persistence\imp\UserRepositoryImp.java
 C:\fuentes\java\javaArchitectureShowCase\coreMainApi\src\main\java\core\persistence\IUserRepository.java
 C:\fuentes\java\javaArchitectureShowCase\coreMainApi\src\main\java\core\security\jwt\JwtTokenFilterConfigurer.java
+C:\fuentes\java\javaArchitectureShowCase\coreMainApi\src\main\java\core\dto\response\ValidApiObjetcDTO.java
 C:\fuentes\java\javaArchitectureShowCase\coreMainApi\src\main\java\core\exception\GlobalExceptionHandlerController.java
 C:\fuentes\java\javaArchitectureShowCase\coreMainApi\src\main\java\core\util\LogAuditFactory.java
 C:\fuentes\java\javaArchitectureShowCase\coreMainApi\src\main\java\core\dto\response\EchoDTO.java

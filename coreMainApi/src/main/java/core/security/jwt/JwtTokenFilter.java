@@ -45,7 +45,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
 
-            httpServletResponse.setHeader("uuid", uuid);
+            httpServletResponse.setHeader("checkInUUID", fingerprintdevice.concat("|" + uuid));
             filterChain.doFilter(httpServletRequest, httpServletResponse);
         } catch (Exception e) {
             throw new CustomException("Invalid token supplied", HttpStatus.UNAUTHORIZED);

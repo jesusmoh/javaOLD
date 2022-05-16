@@ -8,6 +8,7 @@ package core.validation.validators;
 import core.dto.request.SignInUserRequestDTO;
 import core.dto.request.SignUpUserRequestDTO;
 import core.dto.request.UserResquestDTO;
+import core.dto.response.ValidApiObjetcDTO;
 
 /**
  *
@@ -15,9 +16,11 @@ import core.dto.request.UserResquestDTO;
  */
 public interface IUserValidator {
     
-    public void validator(SignInUserRequestDTO dto);
+    public ValidApiObjetcDTO validator(SignInUserRequestDTO dto);
     
-    public void validator(SignUpUserRequestDTO dto);
+    public ValidApiObjetcDTO validator(SignUpUserRequestDTO dto);
 
-    public void validator(UserResquestDTO dto);
+    public ValidApiObjetcDTO validator(UserResquestDTO dto);
+    
+    public ValidApiObjetcDTO fieldValidator(String fieldName, String fieldValue);
 }
